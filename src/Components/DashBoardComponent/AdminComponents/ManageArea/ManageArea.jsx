@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const ManageArea = () => {
   const [showName, setShowName] = useState("");
@@ -16,8 +17,12 @@ const ManageArea = () => {
       if (showName) {
         formData.append("image", showName);
       }
-      const response = await axios.post("/api/post-route", formData);
-      console.log(response.data);
+
+      console.log(formData);
+      const response = await axios.post("http://localhost:5000/area/add-area", formData);
+      if (response.data._id) {
+        toast.success('Successfully added areas');
+      }
     } catch (error) {
       console.error("Error:", error);
     }
@@ -29,7 +34,6 @@ const ManageArea = () => {
     fileInputRef.current.value = "";
   };
 
-  console.log(showName);
   return (
     <>
       <div className="min-h-screen">
