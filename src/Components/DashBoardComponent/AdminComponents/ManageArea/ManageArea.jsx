@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ManageArea = () => {
   const [showName, setShowName] = useState("");
@@ -20,7 +21,9 @@ const ManageArea = () => {
       }
       console.log(formData);
       const response = await axios.post("http://localhost:5000/area/add-area", formData);
-      console.log(response.data);
+      if (response.data._id) {
+        toast.success('Successfully added areas');
+      }
     } catch (error) {
       console.error("Error:", error);
     }
