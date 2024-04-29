@@ -21,7 +21,7 @@ const SoopReg = () => {
 
     return (
         <>
-            <div className="min-h-screen">
+            <div className="min-h-screen py-20">
                 <div className='lg:w-[600px] mx-auto shadow-xl bg-white p-16'>
                     <form onSubmit={handleRegi}>
                         <div>

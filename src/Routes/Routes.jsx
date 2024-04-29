@@ -9,6 +9,7 @@ import LoginSignUp from "../components/Authentication/LoginSignUp";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Dashboard from "../Layout/Dashboard/Dashboard";
+import SoopReg from "../components/SpooterRegistra/SoopReg";
 
 export const router = createBrowserRouter([
 
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
             {
                 path: "/reset_password/:id/:token",
                 element: <ResetPassword />
+            },
+            {
+                path: "/spotter-reg",
+                element: <SoopReg />
             },
         ]
     },
