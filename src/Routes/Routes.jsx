@@ -11,6 +11,7 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Dashboard from "../Layout/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
+   
     {
         path: "/",
         element: <Main />,
