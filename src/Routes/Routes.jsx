@@ -8,6 +8,7 @@ import SellPage from "../Pages/Sell/Sell";
 import LoginSignUp from "../components/Authentication/LoginSignUp";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
+import Dashboard from "../Layout/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
     {
@@ -48,4 +49,10 @@ export const router = createBrowserRouter([
               },
         ]
     },
+  
+{
+    path:"/dashboard",
+    element:<Dashboard/>
+}
 ]);
+
