@@ -11,6 +11,9 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import ManageArea from "../components/DashBoardComponent/AdminComponents/ManageArea/ManageArea";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
+import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
+import ManageAgent from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgent";
+import ManageSpotters from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageSpotters";
 
 export const router = createBrowserRouter([
 
@@ -65,7 +68,22 @@ export const router = createBrowserRouter([
           path:"/dashboard/manageAreas",
           element:<ManageArea/>
 
-        }
+        },
+        {
+            path:"/dashboard/ManageAllListings/manageAgencies",
+            element:<ManageAgency/>
+  
+          },
+          {
+              path:"/dashboard/ManageAllListings/manageAgents",
+              element:<ManageAgent/>
+    
+            },
+           {
+              path:"/dashboard/ManageAllListings/manageSpotters",
+              element:<ManageSpotters/>
+    
+            }
     ]
 }
 ]);
