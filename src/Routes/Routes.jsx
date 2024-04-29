@@ -10,9 +10,10 @@ import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import ManageArea from "../components/DashBoardComponent/AdminComponents/ManageArea/ManageArea";
+import SoopReg from "../components/SpooterRegistra/SoopReg";
 
 export const router = createBrowserRouter([
-   
+
     {
         path: "/",
         element: <Main />,
@@ -39,16 +40,20 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/loginSignup',
-                element: <LoginSignUp/>
+                element: <LoginSignUp />
             },
             {
                 path: '/forgot-password',
                 element: <ForgotPassword />
-              },
-              {
+            },
+            {
                 path: "/reset_password/:id/:token",
                 element: <ResetPassword />
-              },
+            },
+            {
+                path: "/spotter-reg",
+                element: <SoopReg />
+            },
         ]
     },
   

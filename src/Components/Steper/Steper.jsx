@@ -3,6 +3,7 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Select from 'react-select';
+import axios from 'axios';
 
 const colourOptions = [
     { value: 'ocean', label: 'Ocean', color: '#00B8D9' },
@@ -39,6 +40,8 @@ const Steper = () => {
         setAccess(false)
     };
 
+    console.log(spooEmail, spooName);
+
     const handleAgencySelect = (selectedOptions) => {
         const selectedValues = selectedOptions.map(option => option.value);
         console.log(selectedValues);
@@ -47,22 +50,27 @@ const Steper = () => {
 
     const isLastStep = activeStep === 4;
 
-    const handleButtonClick = () => {
+    console.log(selectedAgency);
+
+    const handleButtonClick = async () => {
         if (isLastStep) {
             console.log('done');
             const data = {
-                houseName: name,
+                spooterName: name,
                 bedroom,
                 bathroom,
                 previousStep,
                 sellTime,
-                spooName,
-                spooEmail,
-                spooPhone,
-                agency
+                houseOwnerName: spooName,
+                houseOwnerEmail: spooEmail,
+                houseOwnerPhone: spooPhone,
+                agency: selectedAgency === 'Yes' ? agency : ['first', 'second', 'all']
             }
-            console.log(data);
-            toast.success("Form submitted successfully", data);
+            const res = await axios.post('http://localhost:5000/house/add', data);
+            console.log(res.data);
+            if (res.data._id) {
+                toast.success("Form submitted successfully", data);
+            }
         } else {
             nextStep();
         }

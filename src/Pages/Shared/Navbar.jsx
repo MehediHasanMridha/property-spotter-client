@@ -246,7 +246,7 @@ const Navbar = () => {
                                     </Link>
                                 </div>
                                 <div className="">
-                                    <Link to={"/signup"}>
+                                    <Link to={"/spotter-reg"}>
                                         <button className="inline-flex justify-center items-center bg-primary text-white text-sm font-medium rounded-md gap-2 px-3.5 h-12">
                                             <GrUserManager size={18} />
                                             Become A Spotter

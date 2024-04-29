@@ -1,19 +1,27 @@
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const SoopReg = () => {
 
-    const handleRegi = (e) => {
+    const handleRegi = async (e) => {
         e.preventDefault()
         const spooterData = {
             name: e.target.name.value,
             email: e.target.email.value,
             password: e.target.password.value,
         }
-        console.log(spooterData, 'spooter data');
+        const res = await axios.post('http://localhost:5000/spotter/registration', spooterData)
+        if (res.data._id) {
+            toast.success("Form submitted successfully");
+        } else {
+            toast.error("Email already use");
+            console.log('error here');
+        }
     }
 
     return (
         <>
-            <div className="min-h-screen">
+            <div className="min-h-screen py-20">
                 <div className='lg:w-[600px] mx-auto shadow-xl bg-white p-16'>
                     <form onSubmit={handleRegi}>
                         <div>
