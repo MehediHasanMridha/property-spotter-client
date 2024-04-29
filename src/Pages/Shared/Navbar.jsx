@@ -241,12 +241,8 @@ const Navbar = () => {
                                             ></rect>
                                         </svg>
                                     </span>
-                                    <Link to={"/login"}>
-                                        <button>Login</button>
-                                    </Link>
-                                    <span>or</span>
-                                    <Link to={"/login"}>
-                                        <button>Signup</button>
+                                    <Link to={"/loginSignup"}>
+                                        <button>Login or Signup</button>
                                     </Link>
                                 </div>
                                 <div className="">

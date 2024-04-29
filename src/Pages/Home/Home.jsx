@@ -1,3 +1,5 @@
+import SoopReg from "../../components/SpooterRegistra/SoopReg";
+import Steper from "../../components/Steper/Steper";
 import AdvertisesProperty from "./AdvertisesProperty";
 import Banner from "./Banner";
 import Places from "./Places";
@@ -7,11 +9,12 @@ const Home = () => {
     return (
         <main>
             <Banner />
-            <Places/>
-            <AdvertisesProperty/>
-            <ReducedPrice/>
+            <Places />
+            <AdvertisesProperty />
+            <ReducedPrice />
+            <SoopReg />
+            <Steper/>
         </main>
     );
 };
-
 export default Home;

@@ -5,6 +5,9 @@ import CommercialPage from "../Pages/Commercial/Commercial";
 import Home from "../Pages/Home/Home";
 import ResidentialPage from "../Pages/Residential/Residential";
 import SellPage from "../Pages/Sell/Sell";
+import LoginSignUp from "../components/Authentication/LoginSignUp";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
+import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 
 export const router = createBrowserRouter([
     {
@@ -31,6 +34,18 @@ export const router = createBrowserRouter([
                 path: "/commercial",
                 element: <CommercialPage />,
             },
-        ],
+            {
+                path: '/loginSignup',
+                element: <LoginSignUp/>
+            },
+            {
+                path: '/forgot-password',
+                element: <ForgotPassword />
+              },
+              {
+                path: "/reset_password/:id/:token",
+                element: <ResetPassword />
+              },
+        ]
     },
 ]);

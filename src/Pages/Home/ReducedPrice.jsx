@@ -10,7 +10,7 @@ const ReducedPrice = () => {
                 subheading={"Exploring Reduced Property Lists"}
             />
             <Container>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10">
                     {Array.from({ length: 6 }, (_, idx) => (
                         <PropertyCard key={idx} />
                     ))}
