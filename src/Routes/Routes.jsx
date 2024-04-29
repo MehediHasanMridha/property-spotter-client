@@ -1,20 +1,38 @@
-import {
-    createBrowserRouter,
-} from "react-router-dom";
+import { createBrowserRouter } from "react-router-dom";
 import Main from "../Layout/Main";
+import BuyPage from "../Pages/Buy/Buy";
+import CommercialPage from "../Pages/Commercial/Commercial";
 import Home from "../Pages/Home/Home";
-import LoginSignUp from "../Components/Authentication/LoginSignUp";
-import ForgotPassword from "../Components/ForgotPassword/ForgotPassword";
-import ResetPassword from "../Components/ForgotPassword/ResetPassword/ResetPassword";
+import ResidentialPage from "../Pages/Residential/Residential";
+import SellPage from "../Pages/Sell/Sell";
+import LoginSignUp from "../components/Authentication/LoginSignUp";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
+import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 
 export const router = createBrowserRouter([
     {
         path: "/",
-        element: <Main/>,
+        element: <Main />,
         children: [
             {
-                path: '/',
-                element: <Home/>
+                path: "/",
+                element: <Home />,
+            },
+            {
+                path: "/buy",
+                element: <BuyPage />,
+            },
+            {
+                path: "/sell",
+                element: <SellPage />,
+            },
+            {
+                path: "/residential",
+                element: <ResidentialPage />,
+            },
+            {
+                path: "/commercial",
+                element: <CommercialPage />,
             },
             {
                 path: '/loginSignup',
