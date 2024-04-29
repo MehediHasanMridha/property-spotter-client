@@ -7,98 +7,95 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const adminItems = [
     {
+      path:"/dashboard",
       title: "Admin",
-      icon: "lu/LuTableProperties",
+      icon: "uBuilding",
       childrens: [
         {
           title: "Chat moderate (access to all chats and archives)",
-          icon: "bi-facebook",
+          icon: "uBuilding",
           path: "/chatModerate",
         },
         {
           title: "Manage areas (add or remove areas like province, city etc",
-          icon: "bi-twitter",
-          path: "/manageAreas",
+          icon: "uBuilding",
+          path: "/dashboard/manageAreas",
         },
         {
           title: "Manage search filters",
-          icon: "bi-twitter",
-          path: "/manageSearchFilters",
+          icon: "uBuilding",
+          path: "/dashboard/manageSearchFilters",
         },
         {
           title: "Manage all listings",
-          icon: "bi-twitter",
+          icon: "uBuilding",
+          path:"/dashboard/ManageAllListings",
           childrens: [
             {
               title: "Manage listing by Agency",
-              icon: "bi-facebook",
-              path: "/manageListingByAgency",
+              icon: "uBuilding",
+              path: "/dashboard/ManageAllListings/manageListingByAgency",
             },
             {
               title: "Manage listing by Agent",
-              icon: "bi-twitter",
-              path: "/manageAreas",
+              icon: "uBuilding",
+              path: "/dashboard/ManageAllListings/manageAreas",
             },
             {
               title: "Manage listing by Spotter (include the listing status)",
-              icon: "bi-twitter",
+              icon: "uBuilding",
               childrens: [
                 {
                   title: "SOLD",
-                  icon: "bi-twitter",
+                  icon: "uBuilding",
                   path: "/sold",
                 },
                 {
                   title: "AVAILABLE",
-                  icon: "bi-twitter",
+                  icon: "uBuilding",
                   path: "/available",
                 },
                 {
                   title: "OFFER PENDING",
-                  icon: "bi-twitter",
+                  icon: "uBuilding",
                   path: "/OFFER PENDING",
                 },
                 {
                   title: "HOLD",
-                  icon: "bi-twitter",
+                  icon: "uBuilding",
                   path: "/HOLD",
                 },
                 {
                   title: "PENDING MANDATE",
-                  icon: "bi-twitter",
+                  icon: "uBuilding",
                   path: "/PENDINGMANDATE",
                 },
                 {
                   title: "PENDING CONTACT WITH CLIENT)",
-                  icon: "bi-twitter",
+                  icon: "uBuilding",
                   path: "/PENDING CONTACT WITH CLIENT",
                 },
               ],
             },
             {
               title: "Manage Agencies (add remove or edit)",
-              icon: "bi-twitter",
-              path: "/manageAgencies",
+              icon: "uBuilding",
+              path: "/dashboard/ManageAllListings/manageAgencies",
             },
             {
               title: "Manage Agents (add remove or edit)",
-              icon: "bi-twitter",
-              path: "/manageAgents",
+              icon: "uBuilding",
+              path: "/dashboard/ManageAllListings/manageAgents",
             },
             {
               title: "Manage Spotters",
-              icon: "bi-twitter",
-              path: "/manageSpotters",
-            },
-            {
-              title: "Abuse Reports",
-              icon: "bi-twitter",
-              path: "/manageAgencies",
+              icon: "uBuilding",
+              path: "/dashboard/ManageAllListings/manageSpotters",
             },
             {
               title: "Profile",
-              icon: "bi-twitter",
-              path: "/profile",
+              icon: "uBuilding",
+              path: "/dashboard/ManageAllListings/profile",
             },
           ],
         },
@@ -113,38 +110,38 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       childrens: [
         {
           title: "Manage Listings",
-          icon: "bi-facebook",
+          icon: "uBuilding",
           path: "/chatModerate",
         },
         {
           title: "Manage listings by agent",
-          icon: "bi-twitter",
+          icon: "uBuilding",
           path: "/manageAreas",
         },
         {
           title: "Manage listings by spotter",
-          icon: "bi-twitter",
+          icon: "uBuilding",
           path: "/manageSearchFilters",
         },
         {
           title: "Pending spotted listings",
-          icon: "bi-twitter",
+          icon: "uBuilding",
           childrens: [
             {
               title: "Manage listing by Agency",
-              icon: "bi-facebook",
+              icon: "uBuilding",
               path: "/manageListingByAgency",
             },
             {
               title: "Manage listing by Agent",
-              icon: "bi-twitter",
+              icon: "uBuilding",
               path: "/manageAreas",
             },
           ],
         },
         {
           title: "Profile",
-          icon: "bi-twitter",
+          icon: "uBuilding",
           path: "/profile",
         },
       ],
@@ -158,23 +155,23 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       childrens: [
         {
           title: "Manage listings",
-          icon: "bi-twitter",
+          icon: "uBuilding",
           childrens: [
             {
               title: " This is only the agents listings",
-              icon: "bi-facebook",
+              icon: "uBuilding",
               path: "/manageListingByAgency",
             },
           ],
         },
         {
           title: "Pending Spotted listings",
-          icon: "bi-twitter",
+          icon: "uBuilding",
           path: "/Pending Spotted listings",
         },
         {
           title: "Profile",
-          icon: "bi-twitter",
+          icon: "Luuilding",
           path: "/profile",
         },
       ],

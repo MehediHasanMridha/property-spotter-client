@@ -9,6 +9,7 @@ import LoginSignUp from "../components/Authentication/LoginSignUp";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Dashboard from "../Layout/Dashboard/Dashboard";
+import ManageArea from "../components/DashBoardComponent/AdminComponents/ManageArea/ManageArea";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
 
 export const router = createBrowserRouter([
@@ -55,10 +56,17 @@ export const router = createBrowserRouter([
             },
         ]
     },
+  
+{
+    path:"dashboard",
+    element:<Dashboard/>,
+    children:[
+        {
+          path:"/dashboard/manageAreas",
+          element:<ManageArea/>
 
-    {
-        path: "/dashboard",
-        element: <Dashboard />
-    }
+        }
+    ]
+}
 ]);
 

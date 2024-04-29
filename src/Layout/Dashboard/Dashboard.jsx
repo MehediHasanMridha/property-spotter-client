@@ -5,6 +5,7 @@ import Sidebar from "./Sidebar";
 
 const Dashboard = () => {
     const [sidebarOpen, setSidebarOpen] = useState();
+    
     return (
         <div className="flex h-screen">
             <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen}/>
