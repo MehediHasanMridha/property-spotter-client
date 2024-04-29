@@ -3,7 +3,7 @@ import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 const ResidentialPage = () => {
     return (
         <div>
-            <Breadcrumb title={"Residential"}/>
+            <Breadcrumb title={"Residential"} />
         </div>
     );
 };

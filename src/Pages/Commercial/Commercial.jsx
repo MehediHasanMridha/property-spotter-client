@@ -3,7 +3,7 @@ import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 const CommercialPage = () => {
     return (
         <div>
-            <Breadcrumb title={"Commercial"}/>
+            <Breadcrumb title={"Commercial"} />
         </div>
     );
 };

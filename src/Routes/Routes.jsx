@@ -11,7 +11,7 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Dashboard from "../Layout/Dashboard/Dashboard";
 
 export const router = createBrowserRouter([
-   
+
     {
         path: "/",
         element: <Main />,
@@ -38,22 +38,22 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/loginSignup',
-                element: <LoginSignUp/>
+                element: <LoginSignUp />
             },
             {
                 path: '/forgot-password',
                 element: <ForgotPassword />
-              },
-              {
+            },
+            {
                 path: "/reset_password/:id/:token",
                 element: <ResetPassword />
-              },
+            },
         ]
     },
-  
-{
-    path:"/dashboard",
-    element:<Dashboard/>
-}
+
+    {
+        path: "/dashboard",
+        element: <Dashboard />
+    }
 ]);
 

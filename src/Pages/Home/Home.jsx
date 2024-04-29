@@ -13,7 +13,7 @@ const Home = () => {
             <AdvertisesProperty />
             <ReducedPrice />
             <SoopReg />
-            <Steper/>
+            <Steper />
         </main>
     );
 };
