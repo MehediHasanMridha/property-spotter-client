@@ -9,6 +9,7 @@ import LoginSignUp from "../components/Authentication/LoginSignUp";
 import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Dashboard from "../Layout/Dashboard/Dashboard";
+import ManageArea from "../components/DashBoardComponent/AdminComponents/ManageArea/ManageArea";
 
 export const router = createBrowserRouter([
    
@@ -56,7 +57,8 @@ export const router = createBrowserRouter([
     element:<Dashboard/>,
     children:[
         {
-          path:"/dashboard"
+          path:"/dashboard/manageAreas",
+          element:<ManageArea/>
 
         }
     ]

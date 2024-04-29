@@ -7,6 +7,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const adminItems = [
     {
+      path:"/dashboard",
       title: "Admin",
       icon: "uBuilding",
       childrens: [
@@ -18,26 +19,27 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {
           title: "Manage areas (add or remove areas like province, city etc",
           icon: "uBuilding",
-          path: "/manageAreas",
+          path: "/dashboard/manageAreas",
         },
         {
           title: "Manage search filters",
           icon: "uBuilding",
-          path: "/manageSearchFilters",
+          path: "/dashboard/manageSearchFilters",
         },
         {
           title: "Manage all listings",
           icon: "uBuilding",
+          path:"/dashboard/ManageAllListings",
           childrens: [
             {
               title: "Manage listing by Agency",
               icon: "uBuilding",
-              path: "/manageListingByAgency",
+              path: "/dashboard/ManageAllListings/manageListingByAgency",
             },
             {
               title: "Manage listing by Agent",
               icon: "uBuilding",
-              path: "/manageAreas",
+              path: "/dashboard/ManageAllListings/manageAreas",
             },
             {
               title: "Manage listing by Spotter (include the listing status)",
@@ -78,27 +80,22 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             {
               title: "Manage Agencies (add remove or edit)",
               icon: "uBuilding",
-              path: "/manageAgencies",
+              path: "/dashboard/ManageAllListings/manageAgencies",
             },
             {
               title: "Manage Agents (add remove or edit)",
               icon: "uBuilding",
-              path: "/manageAgents",
+              path: "/dashboard/ManageAllListings/manageAgents",
             },
             {
               title: "Manage Spotters",
               icon: "uBuilding",
-              path: "/manageSpotters",
-            },
-            {
-              title: "Abuse Reports",
-              icon: "uBuilding",
-              path: "/manageAgencies",
+              path: "/dashboard/ManageAllListings/manageSpotters",
             },
             {
               title: "Profile",
               icon: "uBuilding",
-              path: "/profile",
+              path: "/dashboard/ManageAllListings/profile",
             },
           ],
         },
