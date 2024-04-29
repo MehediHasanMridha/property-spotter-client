@@ -1,13 +1,28 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { LuMenu, LuX } from "react-icons/lu";
 import { Link, NavLink } from "react-router-dom";
 
 const Navbar = () => {
+    const [scrollY, setScrollY] = useState(0);
     const [user, setUser] = useState(false);
     const [isMenuOpen, setIsMenuOPen] = useState(false);
+    const [isHeaderSticky, setIsHeaderSticky] = useState(false);
+    useEffect(() => {
+        const handleScroll = () => {
+            return setScrollY(window.scrollY);
+        };
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
     return (
-        <header className="bg-white">
+        <header
+            className={`backdrop-blur-[8px] w-full top-0 ${
+                scrollY > 200 ? "sticky shadow-md animate" : ""
+            } transition-all duration-300 bg-white`}
+            style={{ zIndex: 9999 }}
+        >
             <div className="max-w-6xl mx-auto">
                 <div className="flex items-center justify-between gap-5 py-3.5 px-6 lg:px-0">
                     <Link to={"/"} className="flex items-center">
@@ -94,7 +109,9 @@ const Navbar = () => {
                             <NavLink
                                 to={"/"}
                                 className={({ isActive }) =>
-                                    isActive ? "text-primary border-b border-primary py-1" : ""
+                                    isActive
+                                        ? "text-primary border-b border-primary py-1"
+                                        : ""
                                 }
                             >
                                 Home
@@ -104,7 +121,9 @@ const Navbar = () => {
                             <NavLink
                                 to={"/buy"}
                                 className={({ isActive }) =>
-                                    isActive ? "text-primary border-b border-primary py-1" : ""
+                                    isActive
+                                        ? "text-primary border-b border-primary py-1"
+                                        : ""
                                 }
                             >
                                 Buy
@@ -114,7 +133,9 @@ const Navbar = () => {
                             <NavLink
                                 to={"/sell"}
                                 className={({ isActive }) =>
-                                    isActive ? "text-primary border-b border-primary py-1" : ""
+                                    isActive
+                                        ? "text-primary border-b border-primary py-1"
+                                        : ""
                                 }
                             >
                                 Sell
@@ -124,7 +145,9 @@ const Navbar = () => {
                             <NavLink
                                 to={"/residential"}
                                 className={({ isActive }) =>
-                                    isActive ? "text-primary border-b border-primary py-1" : ""
+                                    isActive
+                                        ? "text-primary border-b border-primary py-1"
+                                        : ""
                                 }
                             >
                                 Residential
@@ -134,7 +157,9 @@ const Navbar = () => {
                             <NavLink
                                 to={"/commercial"}
                                 className={({ isActive }) =>
-                                    isActive ? "text-primary border-b border-primary py-1" : ""
+                                    isActive
+                                        ? "text-primary border-b border-primary py-1"
+                                        : ""
                                 }
                             >
                                 Commercial
@@ -247,7 +272,9 @@ const Navbar = () => {
                                 <NavLink
                                     to={"/"}
                                     className={({ isActive }) =>
-                                        isActive ? "text-primary border-b border-primary py-1" : ""
+                                        isActive
+                                            ? "text-primary border-b border-primary py-1"
+                                            : ""
                                     }
                                 >
                                     Home
@@ -257,7 +284,9 @@ const Navbar = () => {
                                 <NavLink
                                     to={"/buy"}
                                     className={({ isActive }) =>
-                                        isActive ? "text-primary border-b border-primary py-1" : ""
+                                        isActive
+                                            ? "text-primary border-b border-primary py-1"
+                                            : ""
                                     }
                                 >
                                     Buy
@@ -267,7 +296,9 @@ const Navbar = () => {
                                 <NavLink
                                     to={"/sell"}
                                     className={({ isActive }) =>
-                                        isActive ? "text-primary border-b border-primary py-1" : ""
+                                        isActive
+                                            ? "text-primary border-b border-primary py-1"
+                                            : ""
                                     }
                                 >
                                     Sell
@@ -277,7 +308,9 @@ const Navbar = () => {
                                 <NavLink
                                     to={"/residential"}
                                     className={({ isActive }) =>
-                                        isActive ? "text-primary border-b border-primary py-1" : ""
+                                        isActive
+                                            ? "text-primary border-b border-primary py-1"
+                                            : ""
                                     }
                                 >
                                     Residential
@@ -287,7 +320,9 @@ const Navbar = () => {
                                 <NavLink
                                     to={"/commercial"}
                                     className={({ isActive }) =>
-                                        isActive ? "text-primary border-b border-primary py-1" : ""
+                                        isActive
+                                            ? "text-primary border-b border-primary py-1"
+                                            : ""
                                     }
                                 >
                                     Commercial

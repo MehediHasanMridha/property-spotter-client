@@ -6,8 +6,13 @@ export default {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        "jost": ["Jost",' sans-serif']
+      },
       colors: {
-        "primary": "#074da3"
+        "primary": "#074da3",
+        "secondary": "#0c2339",
+        "body": "#EFF4FC"
       }
     },
   },
