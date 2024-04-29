@@ -38,11 +38,11 @@ const AuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
-  const signinWithGoogle = () => {
+  const signinWithGoogle = async() => {
     setLoading(true);
     return signInWithPopup(auth, googleProvider).finally(() => setLoading(false));
   };
-  const facebookSignIn = () => {
+  const facebookSignIn = async() => {
     setLoading(true);
     return signInWithPopup(auth, FBprovider).finally(() => setLoading(false));
   };
