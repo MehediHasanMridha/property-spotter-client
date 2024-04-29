@@ -3,332 +3,183 @@ import PropTypes from "prop-types";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
+  const role = "Admin";
 
-
-  const sidebarItems = [
+  const adminItems = [
     {
-      title: "Dashboard",
-      icon: "luLayoutDashboard ",
-      "childrens": [
+      title: "Admin",
+      icon: "lu/LuTableProperties",
+      childrens: [
         {
-          title: "Admin",
-          icon: "lu/LuTableProperties",
-          "childrens": [
+          title: "Chat moderate (access to all chats and archives)",
+          icon: "bi-facebook",
+          path: "/chatModerate",
+        },
+        {
+          title: "Manage areas (add or remove areas like province, city etc",
+          icon: "bi-twitter",
+          path: "/manageAreas",
+        },
+        {
+          title: "Manage search filters",
+          icon: "bi-twitter",
+          path: "/manageSearchFilters",
+        },
+        {
+          title: "Manage all listings",
+          icon: "bi-twitter",
+          childrens: [
             {
-              title: "Chat moderate (access to all chats and archives",
+              title: "Manage listing by Agency",
               icon: "bi-facebook",
-              path: "/chatModerate",
+              path: "/manageListingByAgency",
             },
             {
-              title: "Manage areas (add or remove areas like province, city etc",
+              title: "Manage listing by Agent",
               icon: "bi-twitter",
               path: "/manageAreas",
             },
             {
-              title: "Manage search filters",
+              title: "Manage listing by Spotter (include the listing status)",
               icon: "bi-twitter",
-              path: "/manageSearchFilters",
-            },
-            {
-              title: "Manage all listings",
-              icon: "bi-twitter",
-              "childrens": [
+              childrens: [
                 {
-                  title: "Manage listing by Agency",
-                  icon: "bi-facebook",
-                  path: "/manageListingByAgency",
-                },
-                {
-                  title:"Manage listing by Agent",
+                  title: "SOLD",
                   icon: "bi-twitter",
-                  path: "/manageAreas",
+                  path: "/sold",
                 },
                 {
-                  title: "Manage listing by Spotter (include the listing status)",
+                  title: "AVAILABLE",
                   icon: "bi-twitter",
-                  "childrens":[
-                       {
-                        title:"SOLD",
-                        icon: "bi-twitter",
-                        path: "/sold",
-                       },
-                       {
-                        title:"AVAILABLE",
-                        icon: "bi-twitter",
-                        path: "/available",
-                       },
-                       {
-                        title:"OFFER PENDING",
-                        icon: "bi-twitter",
-                        path: "/OFFER PENDING",
-                       },
-                       {
-                        title:"HOLD",
-                        icon: "bi-twitter",
-                        path: "/HOLD",
-                       },
-                       {
-                        title:"PENDING MANDATE",
-                        icon: "bi-twitter",
-                        path: "/PENDINGMANDATE",
-                       },
-                       {
-                        title:"PENDING CONTACT WITH CLIENT)",
-                        icon: "bi-twitter",
-                        path: "/PENDING CONTACT WITH CLIENT",
-                       }
-                  ],
+                  path: "/available",
                 },
                 {
-                    title: "Manage Agencies (add remove or edit)",
-                    icon: "bi-twitter",
-                    path: "/manageAgencies",
+                  title: "OFFER PENDING",
+                  icon: "bi-twitter",
+                  path: "/OFFER PENDING",
                 },
                 {
-                    title: "Manage Agents (add remove or edit)",
-                    icon: "bi-twitter",
-                    path: "/manageAgents",
+                  title: "HOLD",
+                  icon: "bi-twitter",
+                  path: "/HOLD",
                 },
                 {
-                    title: "Manage Spotters",
-                    icon: "bi-twitter",
-                    path: "/manageSpotters",
+                  title: "PENDING MANDATE",
+                  icon: "bi-twitter",
+                  path: "/PENDINGMANDATE",
                 },
                 {
-                    title: "Abuse Reports",
-                    icon: "bi-twitter",
-                    path: "/manageAgencies",
-                },
-                {
-                    title: "Profile",
-                    icon: "bi-twitter",
-                    path: "/profile",
+                  title: "PENDING CONTACT WITH CLIENT)",
+                  icon: "bi-twitter",
+                  path: "/PENDING CONTACT WITH CLIENT",
                 },
               ],
+            },
+            {
+              title: "Manage Agencies (add remove or edit)",
+              icon: "bi-twitter",
+              path: "/manageAgencies",
+            },
+            {
+              title: "Manage Agents (add remove or edit)",
+              icon: "bi-twitter",
+              path: "/manageAgents",
+            },
+            {
+              title: "Manage Spotters",
+              icon: "bi-twitter",
+              path: "/manageSpotters",
+            },
+            {
+              title: "Abuse Reports",
+              icon: "bi-twitter",
+              path: "/manageAgencies",
+            },
+            {
+              title: "Profile",
+              icon: "bi-twitter",
+              path: "/profile",
             },
           ],
         },
       ],
     },
   ];
-
 
   const agencyItems = [
     {
-      title: "Dashboard",
-      icon: "luLayoutDashboard ",
-      "childrens": [
+      title: "Agency",
+      icon: "lu/LuTableProperties",
+      childrens: [
         {
-          title: "Agency",
-          icon: "lu/LuTableProperties",
-          "childrens": [
+          title: "Manage Listings",
+          icon: "bi-facebook",
+          path: "/chatModerate",
+        },
+        {
+          title: "Manage listings by agent",
+          icon: "bi-twitter",
+          path: "/manageAreas",
+        },
+        {
+          title: "Manage listings by spotter",
+          icon: "bi-twitter",
+          path: "/manageSearchFilters",
+        },
+        {
+          title: "Pending spotted listings",
+          icon: "bi-twitter",
+          childrens: [
             {
-              title: "Chat moderate (access to all chats and archives",
+              title: "Manage listing by Agency",
               icon: "bi-facebook",
-              path: "/chatModerate",
+              path: "/manageListingByAgency",
             },
             {
-              title: "Manage areas (add or remove areas like province, city etc",
+              title: "Manage listing by Agent",
               icon: "bi-twitter",
               path: "/manageAreas",
             },
-            {
-              title: "Manage search filters",
-              icon: "bi-twitter",
-              path: "/manageSearchFilters",
-            },
-            {
-              title: "Manage all listings",
-              icon: "bi-twitter",
-              "childrens": [
-                {
-                  title: "Manage listing by Agency",
-                  icon: "bi-facebook",
-                  path: "/manageListingByAgency",
-                },
-                {
-                  title:"Manage listing by Agent",
-                  icon: "bi-twitter",
-                  path: "/manageAreas",
-                },
-                {
-                  title: "Manage listing by Spotter (include the listing status)",
-                  icon: "bi-twitter",
-                  "childrens":[
-                       {
-                        title:"SOLD",
-                        icon: "bi-twitter",
-                        path: "/sold",
-                       },
-                       {
-                        title:"AVAILABLE",
-                        icon: "bi-twitter",
-                        path: "/available",
-                       },
-                       {
-                        title:"OFFER PENDING",
-                        icon: "bi-twitter",
-                        path: "/OFFER PENDING",
-                       },
-                       {
-                        title:"HOLD",
-                        icon: "bi-twitter",
-                        path: "/HOLD",
-                       },
-                       {
-                        title:"PENDING MANDATE",
-                        icon: "bi-twitter",
-                        path: "/PENDINGMANDATE",
-                       },
-                       {
-                        title:"PENDING CONTACT WITH CLIENT)",
-                        icon: "bi-twitter",
-                        path: "/PENDING CONTACT WITH CLIENT",
-                       }
-                  ],
-                },
-                {
-                    title: "Manage Agencies (add remove or edit)",
-                    icon: "bi-twitter",
-                    path: "/manageAgencies",
-                },
-                {
-                    title: "Manage Agents (add remove or edit)",
-                    icon: "bi-twitter",
-                    path: "/manageAgents",
-                },
-                {
-                    title: "Manage Spotters",
-                    icon: "bi-twitter",
-                    path: "/manageSpotters",
-                },
-                {
-                    title: "Abuse Reports",
-                    icon: "bi-twitter",
-                    path: "/manageAgencies",
-                },
-                {
-                    title: "Profile",
-                    icon: "bi-twitter",
-                    path: "/profile",
-                },
-              ],
-            },
           ],
         },
+        {
+          title: "Profile",
+          icon: "bi-twitter",
+          path: "/profile",
+        },
       ],
-      
     },
   ];
 
-const agentItems = [
+  const agentItems = [
     {
-      title: "Dashboard",
-      icon: "luLayoutDashboard ",
-      "childrens": [
+      title: "Agent",
+      icon: "lu/LuTableProperties",
+      childrens: [
         {
-          title: "Agent",
-          icon: "lu/LuTableProperties",
-          "childrens": [
+          title: "Manage listings",
+          icon: "bi-twitter",
+          childrens: [
             {
-              title: "Chat moderate (access to all chats and archives",
+              title: " This is only the agents listings",
               icon: "bi-facebook",
-              path: "/chatModerate",
-            },
-            {
-              title: "Manage areas (add or remove areas like province, city etc",
-              icon: "bi-twitter",
-              path: "/manageAreas",
-            },
-            {
-              title: "Manage search filters",
-              icon: "bi-twitter",
-              path: "/manageSearchFilters",
-            },
-            {
-              title: "Manage all listings",
-              icon: "bi-twitter",
-              "childrens": [
-                {
-                  title: "Manage listing by Agency",
-                  icon: "bi-facebook",
-                  path: "/manageListingByAgency",
-                },
-                {
-                  title:"Manage listing by Agent",
-                  icon: "bi-twitter",
-                  path: "/manageAreas",
-                },
-                {
-                  title: "Manage listing by Spotter (include the listing status)",
-                  icon: "bi-twitter",
-                  "childrens":[
-                       {
-                        title:"SOLD",
-                        icon: "bi-twitter",
-                        path: "/sold",
-                       },
-                       {
-                        title:"AVAILABLE",
-                        icon: "bi-twitter",
-                        path: "/available",
-                       },
-                       {
-                        title:"OFFER PENDING",
-                        icon: "bi-twitter",
-                        path: "/OFFER PENDING",
-                       },
-                       {
-                        title:"HOLD",
-                        icon: "bi-twitter",
-                        path: "/HOLD",
-                       },
-                       {
-                        title:"PENDING MANDATE",
-                        icon: "bi-twitter",
-                        path: "/PENDINGMANDATE",
-                       },
-                       {
-                        title:"PENDING CONTACT WITH CLIENT)",
-                        icon: "bi-twitter",
-                        path: "/PENDING CONTACT WITH CLIENT",
-                       }
-                  ],
-                },
-                {
-                    title: "Manage Agencies (add remove or edit)",
-                    icon: "bi-twitter",
-                    path: "/manageAgencies",
-                },
-                {
-                    title: "Manage Agents (add remove or edit)",
-                    icon: "bi-twitter",
-                    path: "/manageAgents",
-                },
-                {
-                    title: "Manage Spotters",
-                    icon: "bi-twitter",
-                    path: "/manageSpotters",
-                },
-                {
-                    title: "Abuse Reports",
-                    icon: "bi-twitter",
-                    path: "/manageAgencies",
-                },
-                {
-                    title: "Profile",
-                    icon: "bi-twitter",
-                    path: "/profile",
-                },
-              ],
+              path: "/manageListingByAgency",
             },
           ],
         },
+        {
+          title: "Pending Spotted listings",
+          icon: "bi-twitter",
+          path: "/Pending Spotted listings",
+        },
+        {
+          title: "Profile",
+          icon: "bi-twitter",
+          path: "/profile",
+        },
       ],
-      
     },
   ];
-
 
   return (
     <>
@@ -344,16 +195,25 @@ const agentItems = [
         }`}
       >
         <div className="flex items-center justify-center border-b border-slate-800 py-3">
-          <h3 className="text-xl text-gray-400">
-            property<span className="text-primary">spotted</span>
+          <h3 className="text-xl text-white font-semibold">
+            Property<span className="text-primary"> Spotted</span>
           </h3>
         </div>
         <div className="overflow-y-auto custom-scroll">
           <nav className="mt-5 px-3">
             <ul>
-              {sidebarItems.map((item, index) => (
-                <SidebarItem key={index} item={item} />
-              ))}
+              {role === "Admin" &&
+                adminItems.map((item, index) => (
+                  <SidebarItem key={index} item={item} />
+                ))}
+              {role === "Agency" &&
+                agencyItems.map((item, index) => (
+                  <SidebarItem key={index} item={item} />
+                ))}
+              {role === "Agent" &&
+                agentItems.map((item, index) => (
+                  <SidebarItem key={index} item={item} />
+                ))}
             </ul>
           </nav>
         </div>
