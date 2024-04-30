@@ -1,8 +1,27 @@
+import { useEffect, useState } from "react";
 import Container from "../../components/Container/Container";
 import PlacesCard from "../../components/cards/PlacesCard/PlacesCard";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
+import axios from "axios";
 
 const Places = () => {
+
+    const [area, setArea] = useState([])
+
+    
+  useEffect(() => {
+    fetchArea();
+  }, []);
+
+  const fetchArea = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/area/AreasData");
+      setArea(response.data);
+    } catch (error) {
+      console.error( error);
+      
+    }
+  }
     const places = [
         {
             id: 0,
@@ -61,8 +80,8 @@ const Places = () => {
             />
             <Container>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    {places.map((place) => (
-                        <PlacesCard key={place.id} place={place} />
+                    {area.map((item) => (
+                        <PlacesCard key={item.id} item={item} />
                     ))}
                 </div>
                 <div className="text-center py-4">
