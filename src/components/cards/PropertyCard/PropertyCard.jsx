@@ -5,7 +5,7 @@ import Slider from "../PropertyCard/Slider";
 
 const PropertyCard = () => {
     return (
-        <div className="bg-white shadow-xl rounded-2xl">
+        <div className="bg-white shadow rounded-xl">
             <Slider />
             <div className="px-3 py-2.5">
                 <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
