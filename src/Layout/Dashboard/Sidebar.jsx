@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  
-  const role = "Agency";
+
+  const role = "Admin";
 
   const adminItems = [
     {

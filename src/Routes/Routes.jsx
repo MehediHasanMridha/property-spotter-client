@@ -114,6 +114,7 @@ export const router = createBrowserRouter([
         path: "/dashboard/agency/profile",
         element: <AgencyProfile />,
       },
+      
       //Agent Components-----------------------
       {
         path: "/dashboard/agent/profile",
