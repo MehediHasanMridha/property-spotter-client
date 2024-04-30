@@ -23,6 +23,7 @@ import ManageListsByAgent from "../components/DashBoardComponent/AgencyComponent
 import AgencyProfile from "../components/DashBoardComponent/AgencyComponents/AgencyProfile";
 import PendingSpottedLists from "../components/DashBoardComponent/AgencyComponents/PendingSpottedLists";
 import ManageListsBySpotter from "../components/DashBoardComponent/AgencyComponents/ManageListsBySpotter";
+import Profiles from "../components/Profiles/Profiles";
 
 export const router = createBrowserRouter([
   {
@@ -64,6 +65,10 @@ export const router = createBrowserRouter([
       {
         path: "/spotter-reg",
         element: <SoopReg />,
+      },
+      {
+        path: "/profiles",
+        element: <Profiles />,
       },
     ],
   },
