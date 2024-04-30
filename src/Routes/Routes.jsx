@@ -14,6 +14,7 @@ import SoopReg from "../components/SpooterRegistra/SoopReg";
 import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
 import ManageAgent from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgent";
 import ManageSpotters from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageSpotters";
+import Profile from "../components/DashBoardComponent/AdminComponents/ManageAllLists/Profile";
 
 export const router = createBrowserRouter([
 
@@ -83,7 +84,12 @@ export const router = createBrowserRouter([
               path:"/dashboard/ManageAllListings/manageSpotters",
               element:<ManageSpotters/>
     
-            }
+            },
+            {
+               path:"src/Layout/Dashboard/Sidebar.jsx",
+               element:<Profile/>
+     
+             }
     ]
 }
 ]);
