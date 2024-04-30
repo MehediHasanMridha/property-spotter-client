@@ -1,13 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ManageAgency = () => {
   const [showName, setShowName] = useState("");
   const [showImagePreview, setShowImagePreview] = useState("");
   const fileInputRef = useRef();
   const [openModal, setOpenModal] = useState(false);
-
+   const[agencyData, setAgencyData] =useState([])
   const handleManageArea = async (e) => {
     e.preventDefault();
     try {
@@ -19,7 +20,8 @@ const ManageAgency = () => {
         formData.append("image", showName);
       }
       const response = await axios.post("http://localhost:5000/agency/add-agency", formData);
-      console.log(response.data);
+      toast.success("added successFully")
+      fetchAgency();
     } catch (error) {
       console.error("Error:", error);
     }
@@ -32,6 +34,38 @@ const ManageAgency = () => {
   };
 
   console.log(showName);
+
+  useEffect(() => {
+    fetchAgency();
+  }, []);
+
+  const fetchAgency = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/agency/agencyData");
+      setAgencyData(response.data);
+    } catch (error) {
+      console.error( error);
+      
+    }
+  }
+
+
+  const handleAgencyDelete= async (id) => {
+    console.log(id);
+    try {
+      await axios.delete(`http://localhost:5000/agency/deleteAgency/${id}`);
+      toast.success("deleted")
+      fetchAgency();
+    } catch (error) {
+      console.error('Error deleting', error);
+      
+    }
+  }
+
+
+
+
+
   return (
     <>
 
@@ -169,24 +203,26 @@ const ManageAgency = () => {
       </div>
       
 
-      {/* card show for remove  */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <Link to="/" className="block border rounded-xl px-2.5 py-2.5 my-2">
-            <div className="rounded-2xl h-44 object-center object-cover overflow-hidden">
-                <img
-                    className="rounded-2xl hover:scale-150 transition-transform duration-300"
-                    src="https://i.ibb.co/0jD7V98/c-7.webp"
-                    alt=""
-                />
-            </div>
-            <h2 className="text-2xl text-secondary font-bold py-1">
-             cityName
-            </h2>
-            <div className="flex justify-between mt-5">
-            <button className="bg-green-500 rounded-md text-white px-4 py-1.5">Edit</button>
-                <button className="bg-red-500 rounded-md text-white px-2 py-1.5">Remove </button>
-            </div>
+     {/* card show for remove  */}
+
+     <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+      {agencyData.map((item, index) => (
+        <Link key={index} to="#" className="block border rounded-xl px-2.5 py-2.5 my-2">
+          <div className="rounded-2xl h-44 object-center object-cover overflow-hidden">
+            <img
+              className="rounded-2xl hover:scale-150 transition-transform duration-300"
+              src={`http://localhost:5000/image/areas/${item.image}`}
+              alt="area"
+            />
+          </div>
+          <h2 className="text-2xl text-secondary font-semibold py-1 my-2">
+            {item.city}
+          </h2>
+          <div className="flex justify-end">
+            <button onClick={()=>handleAgencyDelete(item._id)} className="bg-red-500 rounded-md text-white px-2 py-1.5">Remove </button>
+          </div>
         </Link>
+      ))}
         </div>
     </>
   );

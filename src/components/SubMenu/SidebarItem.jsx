@@ -1,9 +1,11 @@
 /* eslint-disable react/prop-types */
 import { createElement, useState } from "react";
 import * as Lucide from "react-icons/lu";
+import { Link} from "react-router-dom";
 
 export default function SidebarItem({ item }) {
     const [open, setOpen] = useState(false);
+    
     const toggleHandler = (e_) => {
         e_.stopPropagation();
         setOpen(!open);
@@ -51,12 +53,12 @@ export default function SidebarItem({ item }) {
     } else {
         return (
             <div className="sidebar-item plain">
-                <a href={item.path || "#"} className="sidebar-link">
+                <Link to={item.path || "#"} className="sidebar-link">
                     {item.icon && Lucide[item.icon]
                         ? createElement(Lucide[item.icon])
                         : null}
                     {item.title}
-                </a>
+                </Link>
             </div>
         );
     }
