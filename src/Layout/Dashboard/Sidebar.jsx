@@ -1,9 +1,13 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from "prop-types";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-  const role = "Admin";
+  const {user} = useContext(AuthContext)
+  console.log("🚀 ~ Sidebar ~ user:", user?.role)
+  const role = user?.role;
 
   const adminItems = [
     {
@@ -105,44 +109,34 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const agencyItems = [
     {
+      path:"/dashboard",
       title: "Agency",
       icon: "lu/LuTableProperties",
       childrens: [
         {
           title: "Manage Listings",
           icon: "uBuilding",
-          path: "/chatModerate",
+          path: "/dashboard/agency/manageListings",
         },
         {
           title: "Manage listings by agent",
           icon: "uBuilding",
-          path: "/manageAreas",
+          path: "/dashboard/agency/manageListingsByAgent",
         },
         {
           title: "Manage listings by spotter",
           icon: "uBuilding",
-          path: "/manageSearchFilters",
+          path: "/dashboard/agency/manageListingsBySpotter",
         },
         {
           title: "Pending spotted listings",
           icon: "uBuilding",
-          childrens: [
-            {
-              title: "Manage listing by Agency",
-              icon: "uBuilding",
-              path: "/manageListingByAgency",
-            },
-            {
-              title: "Manage listing by Agent",
-              icon: "uBuilding",
-              path: "/manageAreas",
-            },
-          ],
+          path: "/dashboard/agency/pendingSpottedListings",
         },
         {
           title: "Profile",
           icon: "uBuilding",
-          path: "/profile",
+          path: "/dashboard/agency/profile",
         },
       ],
     },
@@ -150,29 +144,30 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
 
   const agentItems = [
     {
+      path:"/dashboard",
       title: "Agent",
       icon: "lu/LuTableProperties",
       childrens: [
         {
-          title: "Manage listings",
+          title: "Manage Listings",
           icon: "uBuilding",
           childrens: [
             {
-              title: " This is only the agents listings",
+              title: "This is only the agents listings",
               icon: "uBuilding",
-              path: "/manageListingByAgency",
+              path: "/dashboard/agent/manageListing",
             },
           ],
         },
         {
-          title: "Pending Spotted listings",
+          title: "Pending Spotted Listings",
           icon: "uBuilding",
-          path: "/Pending Spotted listings",
+          path: "/dashboard/agent/pendingSpottedListings",
         },
         {
           title: "Profile",
           icon: "Luuilding",
-          path: "/profile",
+          path: "/dashboard/agent/profile",
         },
       ],
     },
@@ -197,15 +192,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="overflow-y-auto custom-scroll">
           <nav className="mt-5 px-3">
             <ul>
-              {role === "Admin" &&
+              {role === "admin" &&
                 adminItems.map((item, index) => (
                   <SidebarItem key={index} item={item} />
                 ))}
-              {role === "Agency" &&
+              {role === "agency" &&
                 agencyItems.map((item, index) => (
                   <SidebarItem key={index} item={item} />
                 ))}
-              {role === "Agent" &&
+              {role === "agent" &&
                 agentItems.map((item, index) => (
                   <SidebarItem key={index} item={item} />
                 ))}
