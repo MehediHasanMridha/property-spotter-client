@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +8,7 @@ const ManageArea = () => {
   const [showImagePreview, setShowImagePreview] = useState("");
   const fileInputRef = useRef();
   const [openModal, setOpenModal] = useState(false);
+  const [area, setArea] = useState([])
 
   const handleManageArea = async (e) => {
     e.preventDefault();
@@ -23,6 +24,8 @@ const ManageArea = () => {
       const response = await axios.post("http://localhost:5000/area/add-area", formData);
       if (response.data._id) {
         toast.success('Successfully added areas');
+        setOpenModal(false)
+        fetchArea()
       }
     } catch (error) {
       console.error("Error:", error);
@@ -35,7 +38,36 @@ const ManageArea = () => {
     fileInputRef.current.value = "";
   };
 
-  // console.log(showName);
+
+  useEffect(() => {
+    fetchArea();
+  }, []);
+
+  const fetchArea = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/area/AreasData");
+      setArea(response.data);
+    } catch (error) {
+      console.error( error);
+      
+    }
+  }
+
+  console.log(area);
+
+  const handleAreaDelete = async (id) => {
+    console.log(id);
+    try {
+      await axios.delete(`http://localhost:5000/area/delete/${id}`);
+      toast.success("deleted")
+      fetchArea();
+    } catch (error) {
+      console.error('Error deleting', error);
+      
+    }
+  }
+
+
   return (
     <>
 
@@ -170,24 +202,27 @@ const ManageArea = () => {
       </div>
       
 
+
       {/* card show for remove  */}
+
       <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      <Link to="/" className="block border rounded-xl px-2.5 py-2.5 my-2">
-            <div className="rounded-2xl h-44 object-center object-cover overflow-hidden">
-                <img
-                    className="rounded-2xl hover:scale-150 transition-transform duration-300"
-                    src="https://i.ibb.co/0jD7V98/c-7.webp"
-                    alt=""
-                />
-            </div>
-            <h2 className="text-2xl text-secondary font-bold py-1">
-             cityName
-            </h2>
-            <div className="flex justify-between">
-                <h3> Total Property</h3>
-                <button className="bg-red-500 rounded-md text-white px-2 py-1.5">Remove </button>
-            </div>
+      {area.map((item, index) => (
+        <Link key={index} to="#" className="block border rounded-xl px-2.5 py-2.5 my-2">
+          <div className="rounded-2xl h-44 object-center object-cover overflow-hidden">
+            <img
+              className="rounded-2xl hover:scale-150 transition-transform duration-300"
+              src={`http://localhost:5000/image/areas/${item.image}`}
+              alt="area"
+            />
+          </div>
+          <h2 className="text-2xl text-secondary font-semibold py-1 my-2">
+            {item.city}
+          </h2>
+          <div className="flex justify-end">
+            <button onClick={()=>handleAreaDelete(item._id)} className="bg-red-500 rounded-md text-white px-2 py-1.5">Remove </button>
+          </div>
         </Link>
+      ))}
         </div>
     </>
   );
