@@ -59,13 +59,7 @@ const Login = () => {
                 console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
-                if (userData?.role === "user") {
-                  navigate("/");
-                } else if (userData?.role === "employer") {
-                  navigate("/employer/dashboard");
-                } else if (userData?.role === "admin") {
-                  navigate("/admin/dashboard");
-                }
+                navigate("/dashboard");
               }
             })
             .catch((error) => {
@@ -168,7 +162,6 @@ const Login = () => {
         </button>
       </div>
       <div className="text-center">
-        
         <Link to="/forgot-password" className="link link-primary">
           Forgot Password
         </Link>
