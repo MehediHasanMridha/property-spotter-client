@@ -61,10 +61,10 @@ const Login = () => {
                 localStorage.setItem("access-token", token);
                 if (userData?.role === "user") {
                   navigate("/");
-                } else if (userData?.role === "employer") {
-                  navigate("/employer/dashboard");
-                } else if (userData?.role === "admin") {
-                  navigate("/admin/dashboard");
+                }
+                else{
+                  navigate("/dashboard");
+
                 }
               }
             })
@@ -103,6 +103,10 @@ const Login = () => {
             if (userData?.role === "user") {
               navigate("/");
             }
+            else{
+              navigate("/dashboard");
+
+            }
           })
           .catch((error) => {
             console.error("Error posting user data:", error);
@@ -113,8 +117,8 @@ const Login = () => {
       });
   };
   if (user) {
-    console.log("role", user?.role);
-    if (user?.role == "admin") navigate("/admin/dashboard");
+    if (user?.role === "user") navigate("/");
+    if (user?.role !== "user") navigate("/dashboard");
   }
 
   return (
@@ -168,7 +172,6 @@ const Login = () => {
         </button>
       </div>
       <div className="text-center">
-        
         <Link to="/forgot-password" className="link link-primary">
           Forgot Password
         </Link>

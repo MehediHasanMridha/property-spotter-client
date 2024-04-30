@@ -1,10 +1,13 @@
 /* eslint-disable no-unused-vars */
 import PropTypes from "prop-types";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
+import { useContext } from "react";
+import { AuthContext } from "../../Provider/AuthProvider";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
-
-  const role = "Admin";
+  const {user} = useContext(AuthContext)
+  console.log("🚀 ~ Sidebar ~ user:", user?.role)
+  const role = user?.role;
 
   const adminItems = [
     {
@@ -189,15 +192,15 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <div className="overflow-y-auto custom-scroll">
           <nav className="mt-5 px-3">
             <ul>
-              {role === "Admin" &&
+              {role === "admin" &&
                 adminItems.map((item, index) => (
                   <SidebarItem key={index} item={item} />
                 ))}
-              {role === "Agency" &&
+              {role === "agency" &&
                 agencyItems.map((item, index) => (
                   <SidebarItem key={index} item={item} />
                 ))}
-              {role === "Agent" &&
+              {role === "agent" &&
                 agentItems.map((item, index) => (
                   <SidebarItem key={index} item={item} />
                 ))}

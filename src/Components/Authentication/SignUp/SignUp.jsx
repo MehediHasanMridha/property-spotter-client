@@ -16,9 +16,8 @@ const SignUp = () => {
   const [form] = useForm();
 
   if (user) {
-    console.log("role", user?.role);
-    if (user?.role == "user") navigate("/");
-    if (user?.role == "admin") navigate("/admin/dashboard");
+    if (user?.role === "user") navigate("/");
+    if (user?.role !== "user") navigate("/dashboard");
   }
 
   const onFinish = async (values) => {
@@ -124,11 +123,8 @@ const SignUp = () => {
                 localStorage.setItem("access-token", token);
                 if (userData?.role === "user") {
                   navigate("/");
-                } else if (userData?.role === "employer") {
-                  navigate("/employer/dashboard");
-                } else if (userData?.role === "admin") {
-                  navigate("/admin/dashboard");
                 }
+                navigate("/dashboard");
               }
             })
             .catch((error) => {
@@ -163,7 +159,10 @@ const SignUp = () => {
           })
           .then(() => {
             message.success("Login successful"); // Display success message
-            navigate(from, { replace: true });
+            if (userData?.role === "user") {
+              navigate("/");
+            }
+            navigate("/dashboard");
           })
           .catch((error) => {
             console.error("Error posting user data:", error);
