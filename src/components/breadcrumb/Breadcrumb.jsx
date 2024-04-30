@@ -8,7 +8,7 @@ const Breadcrumb = ({ title }) => {
             className="bg-primary bg-bottom"
             style={{ backgroundImage: `url(${BreadCrumbImage})` }}
         >
-            <div className="flex items-center max-w-6xl mx-auto h-72 px-6 lg:px-0">
+            <div className="flex items-center max-w-6xl mx-auto h-56 px-6 lg:px-0">
                 <div className="space-y-3">
                     <h3 className="text-white text-3xl font-bold">{title}</h3>
                     <h3 className="text-white font-medium"> <Link to={'/'}>Home</Link> <IoIosArrowForward className="inline" size={15}/> {title}</h3>
