@@ -59,7 +59,13 @@ const Login = () => {
                 console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
-                navigate("/dashboard");
+                if (userData?.role === "user") {
+                  navigate("/");
+                }
+                else{
+                  navigate("/dashboard");
+
+                }
               }
             })
             .catch((error) => {
@@ -97,6 +103,10 @@ const Login = () => {
             if (userData?.role === "user") {
               navigate("/");
             }
+            else{
+              navigate("/dashboard");
+
+            }
           })
           .catch((error) => {
             console.error("Error posting user data:", error);
@@ -107,8 +117,8 @@ const Login = () => {
       });
   };
   if (user) {
-    console.log("role", user?.role);
-    if (user?.role == "admin") navigate("/admin/dashboard");
+    if (user?.role === "user") navigate("/");
+    if (user?.role !== "user") navigate("/dashboard");
   }
 
   return (

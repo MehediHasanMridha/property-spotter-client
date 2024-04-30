@@ -295,7 +295,7 @@ const Navbar = () => {
 
               {/* Common items */}
               <li>
-                <Link to="/profile" className="justify-between">
+                <Link to="/profiles" className="justify-between">
                   Profile
                 </Link>
               </li>

@@ -1,13 +1,11 @@
-import React from "react";
 import { useContext, useState } from "react";
 import { MdOutlineDeleteForever, MdOutlineEmail } from "react-icons/md";
 import { LuGraduationCap } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import { FaRegEdit } from "react-icons/fa";
-import { message, Form, Input, Upload, Button } from "antd";
+import {  Form, Input, Upload, Button, message } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { IoMdDownload } from "react-icons/io";
 import { AuthContext } from "../../Provider/AuthProvider";
 
 const Profiles = () => {
@@ -44,7 +42,7 @@ const Profiles = () => {
           message.success("Profile Updated!");
           setUser(response.data.user);
           localStorage.setItem("access-token", response.data.token);
-          //   form.resetFields();
+            form.resetFields();
         } else {
           message.error(response.data.message || "Failed to update profile");
         }
