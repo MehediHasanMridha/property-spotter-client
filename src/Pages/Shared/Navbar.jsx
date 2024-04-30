@@ -2,12 +2,13 @@ import { useEffect, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { LuMenu, LuX } from "react-icons/lu";
 import { Link, NavLink } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Navbar = () => {
-    const [scrollY, setScrollY] = useState(0);
-    const [user, setUser] = useState(false);
+    const [scrollY, setScrollY] = useState(0)
     const [isMenuOpen, setIsMenuOPen] = useState(false);
     const [isHeaderSticky, setIsHeaderSticky] = useState(false);
+    const { user , setUser} = useAuth()
     useEffect(() => {
         const handleScroll = () => {
             return setScrollY(window.scrollY);
@@ -16,6 +17,7 @@ const Navbar = () => {
 
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
+
     return (
         <header
             className={`backdrop-blur-[8px] w-full top-0 ${
@@ -203,7 +205,7 @@ const Navbar = () => {
                                             </div>
                                         </Link>
                                     </li>
-                                    <li>
+                                    <li onClick={()=>setUser(null)}>
                                         <div className="flex items-center gap-2">
                                             {/* <FiLogOut className="text-lg" /> */}
                                             <p>Logout</p>
