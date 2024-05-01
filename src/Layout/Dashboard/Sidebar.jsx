@@ -16,12 +16,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
       icon: "uBuilding", 
       childrens: [
         {
-          title: "Chat moderate (access to all chats and archives)",
+          title: "Chat moderate",
           icon: "uBuilding",
           path: "/chatModerate",
         },
         {
-          title: "Manage areas (add or remove areas like province, city etc",
+          title: "Manage areas",
           icon: "uBuilding",
           path: "/dashboard/manageAreas",
         },
@@ -41,53 +41,17 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
               path: "/dashboard/ManageAllListings/manageListingByAgency",
             },
             {
-              title: "Manage listing by Agent",
+              title: "Manage listing by Spotter",
               icon: "uBuilding",
-              path: "/dashboard/ManageAllListings/manageAreas",
+              path: "/dashboard/ManageAllListings/manageListingBySpotter",
             },
             {
-              title: "Manage listing by Spotter (include the listing status)",
-              icon: "uBuilding",
-              childrens: [
-                {
-                  title: "SOLD",
-                  icon: "uBuilding",
-                  path: "/sold",
-                },
-                {
-                  title: "AVAILABLE",
-                  icon: "uBuilding",
-                  path: "/available",
-                },
-                {
-                  title: "OFFER PENDING",
-                  icon: "uBuilding",
-                  path: "/OFFER PENDING",
-                },
-                {
-                  title: "HOLD",
-                  icon: "uBuilding",
-                  path: "/HOLD",
-                },
-                {
-                  title: "PENDING MANDATE",
-                  icon: "uBuilding",
-                  path: "/PENDINGMANDATE",
-                },
-                {
-                  title: "PENDING CONTACT WITH CLIENT)",
-                  icon: "uBuilding",
-                  path: "/PENDING CONTACT WITH CLIENT",
-                },
-              ],
-            },
-            {
-              title: "Manage Agencies (add remove or edit)",
+              title: "Manage Agencies",
               icon: "uBuilding",
               path: "/dashboard/ManageAllListings/manageAgencies",
             },
             {
-              title: "Manage Agents (add remove or edit)",
+              title: "Manage Agents",
               icon: "uBuilding",
               path: "/dashboard/ManageAllListings/manageAgents",
             },

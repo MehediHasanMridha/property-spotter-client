@@ -24,6 +24,8 @@ import AgencyProfile from "../components/DashBoardComponent/AgencyComponents/Age
 import PendingSpottedLists from "../components/DashBoardComponent/AgencyComponents/PendingSpottedLists";
 import ManageListsBySpotter from "../components/DashBoardComponent/AgencyComponents/ManageListsBySpotter";
 import Profiles from "../components/Profiles/Profiles";
+import ManageListBySpotter from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListBySpotter";
+import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
 
 export const router = createBrowserRouter([
   {
@@ -92,6 +94,14 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/ManageAllListings/manageSpotters",
         element: <ManageSpotters />,
+      },
+      {
+        path: "/dashboard/ManageAllListings/manageListingByAgency",
+        element: <ManageListByAgency/>,
+      },
+      {
+        path: "/dashboard/ManageAllListings/manageListingBySpotter",
+        element:<ManageListBySpotter/>
       },
       {
         path: "/dashboard/ManageAllListings/profile",

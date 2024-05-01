@@ -11,26 +11,55 @@ const ManageAgency = () => {
   const [agencyData, setAgencyData] = useState([]);
   const [updateAgency, setUpdateAgency] = useState(null);
   const [updateOpenModal, setUpdateOpenModal] = useState(false);
+  // const handleManageArea = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("agencyName", e.target.name.value);
+  //     formData.append("ownerEmail", e.target.email.value);
+  //     formData.append("password", e.target.password.value);
+  //     if (showName) {
+  //       formData.append("image", showName);
+  //     }
+  //     const response = await axios.post(
+  //       "http://localhost:5000/agency/add-agency",
+  //       formData
+  //     );
+  //     toast.success("added successFully");
+  //     fetchAgency();
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
   const handleManageArea = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
       formData.append("agencyName", e.target.name.value);
-      formData.append("ownerEmail", e.target.email.value);
+      formData.append("email", e.target.email.value);
       formData.append("password", e.target.password.value);
       if (showName) {
-        formData.append("image", showName);
+        formData.append("images", showName);
       }
       const response = await axios.post(
         "http://localhost:5000/agency/add-agency",
         formData
       );
-      toast.success("added successFully");
-      fetchAgency();
+      if (response.status === 201) {
+        toast.success("Added successfully");
+        fetchAgency();
+      } else if (response.status === 400 && response.data.error === "Email already exists") {
+        toast.error("Email already exists");
+      } else {
+        toast.error("Email already exists");
+      }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Email already exists");
     }
   };
+  
+
 
   const handleClearFile = () => {
     setShowName("");
@@ -270,7 +299,7 @@ const updateAgencyData = async (event) => {
               <col className="w-5" />
             </colgroup>
             <thead>
-              <tr className="bg-primary text-white">
+              <tr className="bg-blue-500 text-white">
                 <th className="px-6 py-2 text-base  text-left">Image</th>
                 <th className="px-6 py-2 text-base  text-left">Agency Name</th>
                 <th className="px-6 py-2 text-base  text-left">Owner Email</th>

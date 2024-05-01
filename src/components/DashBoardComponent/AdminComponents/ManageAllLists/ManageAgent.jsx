@@ -21,6 +21,28 @@ const ManageAgent = () => {
   const handleOrganizationChange = (value) => {
     setSelectedOrganization(value);
   };
+  // const handleManageAgent = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const formData = new FormData();
+  //     formData.append("name", e.target.name.value);
+  //     formData.append("email", e.target.email.value);
+  //     formData.append("password", e.target.password.value);
+  //     formData.append("agencyName", selectedOrganization);
+  //     console.log(formData);
+  //     const response = await axios.post(
+  //       "http://localhost:5000/agent/add-agent",
+  //       formData
+  //     );
+  //     setOpenModal(false);
+  //     toast.success("Added successfully");
+  //     fetchAgent();
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //   }
+  // };
+
   const handleManageAgent = async (e) => {
     e.preventDefault();
     try {
@@ -28,21 +50,37 @@ const ManageAgent = () => {
       formData.append("name", e.target.name.value);
       formData.append("email", e.target.email.value);
       formData.append("password", e.target.password.value);
-      formData.append("agency", selectedOrganization);
-      console.log(formData);
-      const response = await axios.post(
-        "http://localhost:5000/agent/add-agent",
-        formData
+      formData.append("agencyName", selectedOrganization);
+  
+     const name = e.target.name.value
+     const email = e.target.email.value
+     const password = e.target.password.value
+      const agencyName =selectedOrganization 
+
+      const data={
+     name,
+      email,
+      password,
+      agencyName
+      }
+      const response = await axios.post("http://localhost:5000/agent",data
       );
-      setOpenModal(false);
-      toast.success("Added successfully");
-      fetchAgent();
-      console.log(response.data);
+  
+      if (response.status === 201) {
+        setOpenModal(false);
+        toast.success("Added successfully");
+        fetchAgent();
+      } else if (response.status === 400 && response.data.error === "Email already exists") {
+        toast.error("Email already exists");
+      } else {
+        toast.error("Email already exists");
+      }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Email already exists");
     }
   };
-
+  
   console.log(agentData);
 
   useEffect(() => {
@@ -76,7 +114,7 @@ const updateAgentData = async (event) => {
     name: formData.get('name'),
     email: formData.get('email'),
     password: formData.get('password'),
-    agency: formData.get('agency')
+    agencyName: formData.get('agency')
   };
 
   try {

@@ -136,7 +136,10 @@ const Steper = () => {
                             <div className='relative'>
                                 <input onChange={(e) => setName(e.target.value)} type="text" name="name" placeholder='Shimul Zahan ' className='border border-black py-3 px-5 w-full' />
                                 <h1 className='absolute -top-2 left-4 px-1 bg-white text-sm'>Your Name</h1>
+
                             </div>
+                            
+
                             <div className='flex w-full justify-end items-center gap-5 py-10'>
                                 {!isLastStep && name && (
                                     <div onClick={handleButtonClick} className='flex cursor-pointer w-full justify-center items-center gap-2 bg-[#AEB2B4] px-10'>
