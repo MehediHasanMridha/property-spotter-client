@@ -16,7 +16,7 @@ const SignUp = () => {
   const [form] = useForm();
 
   if (user) {
-    if (user?.role === "user") navigate("/");
+    if (user.role === "user" || user.role === "spooter") navigate("/");
     if (user?.role !== "user") navigate("/dashboard");
   }
 
@@ -53,6 +53,7 @@ const SignUp = () => {
         await axios.post(url, data, config);
         message.success("Signup successful");
         form.resetFields();
+        navigate('/loginSignup')
       } catch (error) {
         console.error("Signup failed:", error);
         message.error("Failed to signup. Please try again later.");
@@ -121,10 +122,12 @@ const SignUp = () => {
                 console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
-                if (userData?.role === "user") {
+                if (userData?.role === "user" || userData?.role === "spooter") {
                   navigate("/");
                 }
-                navigate("/dashboard");
+                else{
+                  navigate("/dashboard");
+                }
               }
             })
             .catch((error) => {
@@ -159,10 +162,12 @@ const SignUp = () => {
           })
           .then(() => {
             message.success("Login successful"); // Display success message
-            if (userData?.role === "user") {
+            if (userData?.role === "user" || userData?.role === "spooter") {
               navigate("/");
             }
-            navigate("/dashboard");
+            else{
+              navigate("/dashboard");
+            }
           })
           .catch((error) => {
             console.error("Error posting user data:", error);
