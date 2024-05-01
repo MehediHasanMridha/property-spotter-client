@@ -59,7 +59,7 @@ const Login = () => {
                 console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
-                if (userData?.role === "user") {
+                if (userData?.role === "user" || userData?.role === "spooter") {
                   navigate("/");
                 }
                 else{
@@ -100,7 +100,7 @@ const Login = () => {
           })
           .then(() => {
             message.success("Login successful");
-            if (userData?.role === "user") {
+            if (userData?.role === "user" || userData?.role === "spooter") {
               navigate("/");
             }
             else{
@@ -117,8 +117,8 @@ const Login = () => {
       });
   };
   if (user) {
-    if (user?.role === "user") navigate("/");
-    if (user?.role !== "user") navigate("/dashboard");
+    if (user?.role === "user" || user?.role === "spooter") navigate("/");
+    if (user?.role !== "user" && user?.role !== "spooter") navigate("/dashboard");
   }
 
   return (
