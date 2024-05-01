@@ -1,9 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { message } from "antd";
-import { TbMessage2 } from "react-icons/tb";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const ManageListsBySpotter = () => {
@@ -20,8 +16,6 @@ const ManageListsBySpotter = () => {
       console.error("Error fetching data:", error);
     }
   };
-
-
 
   useEffect(() => {
     fetchAgentData();
