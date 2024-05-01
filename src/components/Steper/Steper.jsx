@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Select from 'react-select';
 import axios from 'axios';
+import { AuthContext } from '../../Provider/AuthProvider';
 
 const colourOptions = [
     { value: 'ocean', label: 'Ocean', color: '#00B8D9' },
@@ -29,6 +30,7 @@ const Steper = () => {
     const [spooPhone, setSpooPhone] = useState('')
     const [selectedAgency, setSelectedAgency] = useState('')
     const [agency, setAgency] = useState([]);
+    const {user} = useContext(AuthContext)
 
     const previousStep = () => {
         setActiveStep(activeStep - 1);
@@ -57,6 +59,8 @@ const Steper = () => {
             console.log('done');
             const data = {
                 spooterName: name,
+                spooterEmail: user?.email,
+                status: "pending",
                 bedroom,
                 bathroom,
                 previousStep,
