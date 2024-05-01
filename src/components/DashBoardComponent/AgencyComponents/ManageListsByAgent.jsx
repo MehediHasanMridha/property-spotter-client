@@ -1,9 +1,5 @@
-import { useContext, useEffect, useState } from "react";
-import { RiDeleteBin6Line } from "react-icons/ri";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import { message } from "antd";
-import { TbMessage2 } from "react-icons/tb";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const ManageListsByAgent = () => {
@@ -12,9 +8,11 @@ const ManageListsByAgent = () => {
   const [AgentPerPage] = useState(6);
   const [listings, setListings] = useState([]);
 
+
   const fetchAgentData = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/allusers/filterby/agent");
+      const response = await axios.get(`http://localhost:5000/allusers/filterby/agent/${user?.name}`);
+      console.log(response.data);
       setListings(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -23,7 +21,7 @@ const ManageListsByAgent = () => {
 
   useEffect(() => {
     fetchAgentData();
-  }, []);
+  }, [user]);
 
   const getBadgeClass = (role) => {
     switch (role) {
@@ -107,9 +105,9 @@ const ManageListsByAgent = () => {
                     <div
                       className={`badge ${getBadgeClass(
                         agent?.agency
-                      )} badge-md text-white`}
+                      )} badge-md text-primary`}
                     >
-                      {agent?.agency}
+                      {agent?.agencyName}
                     </div>
                   </td>
                 </tr>
