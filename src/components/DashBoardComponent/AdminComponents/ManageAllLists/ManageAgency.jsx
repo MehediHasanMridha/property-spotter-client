@@ -270,7 +270,7 @@ const updateAgencyData = async (event) => {
               <col className="w-5" />
             </colgroup>
             <thead>
-              <tr className="bg-blue-500 text-white">
+              <tr className="bg-primary text-white">
                 <th className="px-6 py-2 text-base  text-left">Image</th>
                 <th className="px-6 py-2 text-base  text-left">Agency Name</th>
                 <th className="px-6 py-2 text-base  text-left">Owner Email</th>
