@@ -1,7 +1,10 @@
 
 const AgentProfile = () => {
   return (
-    <div>AgentProfile</div>
+    <>
+      {/* // <div>AgentProfile</div> */}
+      <div>Hello agent profile</div>
+    </>
   )
 }
 
