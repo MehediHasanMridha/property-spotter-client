@@ -13,7 +13,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     {
       path:"/dashboard",
       title: "Admin",
-      icon: "uBuilding",
+      icon: "uBuilding", 
       childrens: [
         {
           title: "Chat moderate (access to all chats and archives)",
