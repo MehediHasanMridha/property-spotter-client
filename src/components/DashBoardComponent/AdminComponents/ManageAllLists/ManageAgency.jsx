@@ -76,7 +76,7 @@ const ManageAgency = () => {
   const fetchAgency = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/agency/agencyData"
+        "http://localhost:5000/allusers"
       );
       setAgencyData(response.data);
     } catch (error) {
@@ -84,6 +84,7 @@ const ManageAgency = () => {
     }
   };
 
+  console.log("agencyData",agencyData);
   const handleAgencyDelete = async (id) => {
     console.log(id);
     try {

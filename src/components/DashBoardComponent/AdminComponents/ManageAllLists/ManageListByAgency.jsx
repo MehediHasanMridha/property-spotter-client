@@ -74,7 +74,7 @@ useEffect(()=>{
         </div>
         <div className="flex justify-center items-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
           <h4 className="text-2xl font-medium">
-            Total Houses:{" "}
+            Total Agency:{" "}
             <span className="text-3xl text-primary font-bold">
               {listingAgency.length}
             </span>
@@ -103,11 +103,11 @@ useEffect(()=>{
                   <td>{house?.houseOwnerName}</td>
                   <td>{house?.houseOwnerEmail}</td>
                   <td>{house?.houseOwnerPhone}</td>
-                  <td>
+                  <td className=''>
                     <div
-                      className={`badge ${getBadgeClass(
+                      className={`px-1 py-1 text-lg rounded-lg ${getBadgeClass(
                         house?.status
-                      )} badge-md text-white`}
+                      )} text-white`}
                     >
                       {house?.status}
                     </div>
@@ -115,10 +115,10 @@ useEffect(()=>{
                   <td>
   
                     <button
-                      className="btn btn-info"
+                      className="btn btn-info text-base"
                       onClick={() => handleDetailsClick(house)}
                     >
-                      All Agency
+                     Agency ({house.agency.length})
                     </button>
                     <dialog
                       id="my_modal_5"
@@ -128,8 +128,9 @@ useEffect(()=>{
                         <h3 className="font-bold text-3xl mb-3">
                         All{" "}
                           <span className="text-primary font-bold">
-                          Agency!
+                          Agency ({house.agency.length})
                           </span>
+                         
                         </h3>
                         <div className="text-center text-xl">
 
