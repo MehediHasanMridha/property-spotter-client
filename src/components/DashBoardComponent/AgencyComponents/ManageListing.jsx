@@ -49,19 +49,25 @@ const ManageListing = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async(id) => {
-      try {
-        const res = await fetch(`http://localhost:5000/house/update/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({status: "approved", agency: [user.name]})
-        })
-        toast.success("Successfully Updated")
-      } catch (error) {
-        console.log(error);
-      }
+    const houseUpdate = async (id) => {
+        try {
+            const res = await fetch(
+                `http://localhost:5000/house/update/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status: "approved",
+                        agency: [user.name],
+                    }),
+                }
+            );
+            toast.success("Successfully Updated");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -82,7 +88,13 @@ const ManageListing = () => {
                     <h4 className="text-2xl font-medium">
                         Total Houses:{" "}
                         <span className="text-3xl text-primary font-bold">
-                            {listings.length}
+                            {
+                                currentJobs.filter((item) =>
+                                    item.agency.some(
+                                        (name) => name === user.name
+                                    )
+                                ).length
+                            }
                         </span>
                     </h4>
                 </div>
@@ -110,7 +122,7 @@ const ManageListing = () => {
                                     (item) =>
                                         item.agency.some(
                                             (name) => name === user.name
-                                        ) && item.status === "pending"
+                                        )
                                 )
                                 .map((house, index) => (
                                     <tr key={house?.jobData?._id}>
@@ -132,16 +144,16 @@ const ManageListing = () => {
                                         <td>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
                                             <div className="flex gap-2">
-                                                <button
-                                                    className="btn btn-info"
+                                                {house.status === "pending" && <button
+                                                    className="btn btn-primary"
                                                     onClick={() =>
                                                         houseUpdate(house._id)
                                                     }
                                                 >
                                                     Approve
-                                                </button>
+                                                </button>}
                                                 <button
-                                                    className="btn btn-info"
+                                                    className="btn btn-primary"
                                                     onClick={() =>
                                                         handleDetailsClick(
                                                             house

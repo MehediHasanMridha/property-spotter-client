@@ -49,19 +49,25 @@ const PendingSpottedLists = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async(id) => {
-      try {
-        const res = await fetch(`http://localhost:5000/house/update/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({status: "approved", agency: [user.name]})
-        })
-        toast.success("Successfully Updated")
-      } catch (error) {
-        console.log(error);
-      }
+    const houseUpdate = async (id) => {
+        try {
+            const res = await fetch(
+                `http://localhost:5000/house/update/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status: "approved",
+                        agency: [user.name],
+                    }),
+                }
+            );
+            toast.success("Successfully Updated");
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -82,7 +88,14 @@ const PendingSpottedLists = () => {
                     <h4 className="text-2xl font-medium">
                         Total Houses:{" "}
                         <span className="text-3xl text-primary font-bold">
-                            {listings.length}
+                            {
+                                currentJobs.filter(
+                                    (item) =>
+                                        item.agency.some(
+                                            (name) => name === user.name
+                                        ) && item.status === "pending"
+                                ).length
+                            }
                         </span>
                     </h4>
                 </div>
@@ -110,7 +123,7 @@ const PendingSpottedLists = () => {
                                     (item) =>
                                         item.agency.some(
                                             (name) => name === user.name
-                                        ) && item.status === "approved"
+                                        ) && item.status === "pending"
                                 )
                                 .map((house, index) => (
                                     <tr key={house?.jobData?._id}>
