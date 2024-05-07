@@ -16,7 +16,8 @@ const ManageAgent = () => {
   const [agentData, setAgentData] = useState([]);
   const [selectedOrganization, setSelectedOrganization] = useState([]);
   const [updateOpenModal, setUpdateOpenModal] = useState(false);
-  const [updateData, setUpdateData]=useState(null)
+  const [updateData, setUpdateData] = useState(null);
+  const [allAgency, setAllAgency] = useState([]);
   //getAllAgent
   const handleOrganizationChange = (value) => {
     setSelectedOrganization(value);
@@ -51,26 +52,28 @@ const ManageAgent = () => {
       formData.append("email", e.target.email.value);
       formData.append("password", e.target.password.value);
       formData.append("agencyName", selectedOrganization);
-  
-     const name = e.target.name.value
-     const email = e.target.email.value
-     const password = e.target.password.value
-      const agencyName =selectedOrganization 
 
-      const data={
-     name,
-      email,
-      password,
-      agencyName
-      }
-      const response = await axios.post("http://localhost:5000/agent",data
-      );
-  
+      const name = e.target.name.value;
+      const email = e.target.email.value;
+      const password = e.target.password.value;
+      const agencyName = selectedOrganization;
+
+      const data = {
+        name,
+        email,
+        password,
+        agencyName,
+      };
+      const response = await axios.post("http://localhost:5000/agent", data);
+
       if (response.status === 201) {
         setOpenModal(false);
         toast.success("Added successfully");
         fetchAgent();
-      } else if (response.status === 400 && response.data.error === "Email already exists") {
+      } else if (
+        response.status === 400 &&
+        response.data.error === "Email already exists"
+      ) {
         toast.error("Email already exists");
       } else {
         toast.error("Email already exists");
@@ -80,7 +83,7 @@ const ManageAgent = () => {
       toast.error("Email already exists");
     }
   };
-  
+
   console.log(agentData);
 
   useEffect(() => {
@@ -89,67 +92,72 @@ const ManageAgent = () => {
 
   const fetchAgent = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/agent/agentData");
+      const response = await axios.get("http://localhost:5000/allusers");
       setAgentData(response.data);
+      setAllAgency(response.data.filter((item) => item.role === "agency"));
     } catch (error) {
       console.error(error);
     }
   };
 
+  const agentDataFiltered = agentData.filter((item) => item.role === "agent");
+
+  // console.log("agentDataFiltered", agentDataFiltered);
   //update Agent
- const editAgentData=(id, item)=>{
-  setUpdateData(item)
-  setUpdateOpenModal(true)
- }
-
-
-//  console.log("hhhhhhhhhhhhhhhh",updateData);
-
-const updateAgentData = async (event) => {
-  event.preventDefault();
-  
-  const formData = new FormData(event.target);
-
-  const updatedCode = {
-    name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password'),
-    agencyName: formData.get('agency')
+  const editAgentData = (id, item) => {
+    setUpdateData(item);
+    setUpdateOpenModal(true);
   };
 
-  try {
-    const id =updateData._id
-    const response = await axios.patch(`http://localhost:5000/agent/update/${id}`, updatedCode);
-     fetchAgent()
-     toast.success("updated")
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
+  //  console.log("hhhhhhhhhhhhhhhh",updateData);
 
-// const updateAgentData = async (event) => {
-//   event.preventDefault();
-  
-//   const formData = new FormData(event.target);
+  const updateAgentData = async (event) => {
+    event.preventDefault();
 
-//   const updatedData = {
-//     name: formData.get('name'),
-//     email: formData.get('email'),
-//     password: formData.get('password'),
-//     agency: formData.get('agency')
-//   };
+    const formData = new FormData(event.target);
 
-//   try {
-//     await axios.patch('YOUR_API_ENDPOINT', updatedData);
+    const updatedCode = {
+      name: formData.get("name"),
+      email: formData.get("email"),
+      password: formData.get("password"),
+      agencyName: formData.get("agency"),
+    };
 
-//     // If the request succeeds, this line will be executed
-//     console.log('Agent data updated successfully!');
-//   } catch (error) {
-//     // Handle errors here
-//     console.error('Failed to update agent data:', error);
-//   }
-// };
+    try {
+      const id = updateData._id;
+      const response = await axios.patch(
+        `http://localhost:5000/agent/update/${id}`,
+        updatedCode
+      );
+      fetchAgent();
+      toast.success("updated");
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
+  // const updateAgentData = async (event) => {
+  //   event.preventDefault();
+
+  //   const formData = new FormData(event.target);
+
+  //   const updatedData = {
+  //     name: formData.get('name'),
+  //     email: formData.get('email'),
+  //     password: formData.get('password'),
+  //     agency: formData.get('agency')
+  //   };
+
+  //   try {
+  //     await axios.patch('YOUR_API_ENDPOINT', updatedData);
+
+  //     // If the request succeeds, this line will be executed
+  //     console.log('Agent data updated successfully!');
+  //   } catch (error) {
+  //     // Handle errors here
+  //     console.error('Failed to update agent data:', error);
+  //   }
+  // };
 
   //deleteAgent
   const handleAgentDelete = async (id) => {
@@ -243,7 +251,7 @@ const updateAgentData = async (event) => {
                   </h1>
                 </div>
                 <div className="mt-6 relative">
-                  <label className="block text-sm z-50 font-medium absolute -top-3 px-2 bg-white left-3 text-gray-700">
+                  <label className="block text-sm z-50 font-medium absolute -top-3 px-2 bg-white left-3 text-black">
                     Select Organization
                   </label>
                   <Select
@@ -251,7 +259,10 @@ const updateAgentData = async (event) => {
                     isMulti
                     name="colors"
                     className="w-full"
-                    options={colourOptions}
+                    options={allAgency.map((item) => ({
+                      value: item.agencyName,
+                      label: item.name,
+                    }))}
                     onChange={handleOrganizationChange}
                   />
                 </div>
@@ -289,7 +300,7 @@ const updateAgentData = async (event) => {
               </tr>
             </thead>
             <tbody className="border-b">
-              {agentData.map((item, index) => (
+              {agentDataFiltered.map((item, index) => (
                 <tr
                   key={index}
                   className="hover:bg-gray-50 transition duration-300"
@@ -299,7 +310,7 @@ const updateAgentData = async (event) => {
                     {item?.email}
                   </td>
                   <td className="py-4 px-6 border-b text-base">
-                    {item?.agency}
+                    {item?.agencyName}
                   </td>
                   <td className="py-4 px-6 border-b text-base flex gap-5">
                     <button>
@@ -311,7 +322,7 @@ const updateAgentData = async (event) => {
                           Edit Info
                         </button>
                         <div
-                          onClick={() =>setUpdateOpenModal(false)}
+                          onClick={() => setUpdateOpenModal(false)}
                           className={`fixed z-[100] flex items-center justify-center ${
                             updateOpenModal
                               ? "opacity-1 visible"
@@ -327,7 +338,7 @@ const updateAgentData = async (event) => {
                             }`}
                           >
                             <form
-                             onSubmit={updateAgentData}
+                              onSubmit={updateAgentData}
                               className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10 h-96 overflow-y-scroll"
                             >
                               <svg
@@ -385,17 +396,25 @@ const updateAgentData = async (event) => {
                                     Password
                                   </h1>
                                 </div>
-                              <div>  <select
-                                   name="agency"
-                                   className="w-full px-4 py-3 rounded-md border text-black">
-                                    {agentData && agentData?.map((info) => (
-                                      
-                                                            <option key={info._id} defaultValue={updateData ? updateData.agency : ""}>
-                                                                {info.agency}
-                                                            </option>
-                                                        ))}
-
-                                                    </select></div>
+                                <div>
+                                  {" "}
+                                  <select
+                                    name="agency"
+                                    className="w-full px-4 py-3 rounded-md border text-black"
+                                  >
+                                    {agentData &&
+                                      agentData?.map((info) => (
+                                        <option
+                                          key={info._id}
+                                          defaultValue={
+                                            updateData ? updateData.agency : ""
+                                          }
+                                        >
+                                          {info.agency}
+                                        </option>
+                                      ))}
+                                  </select>
+                                </div>
                                 {/* Submit button */}
                                 <button
                                   type="submit"

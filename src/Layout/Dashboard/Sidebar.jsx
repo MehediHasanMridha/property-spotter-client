@@ -115,13 +115,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         {
           title: "Manage Listings",
           icon: "uBuilding",
-          childrens: [
-            {
-              title: "This is only the agents listings",
-              icon: "uBuilding",
-              path: "/dashboard/agent/manageListing",
-            },
-          ],
+          path:"/dashboard/agent/manageListing"
         },
         {
           title: "Pending Spotted Listings",

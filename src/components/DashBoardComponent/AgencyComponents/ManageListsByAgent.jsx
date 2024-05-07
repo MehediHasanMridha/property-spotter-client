@@ -64,7 +64,7 @@ const ManageListsByAgent = () => {
           <h4 className="text-2xl font-medium">
             Total Agent:
             <span className="text-3xl text-primary font-bold">
-              {listings.length}
+              {currentJobs.length}
             </span>
           </h4>
         </div>
