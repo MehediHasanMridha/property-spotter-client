@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 const ManageAgency = () => {
@@ -11,26 +10,37 @@ const ManageAgency = () => {
   const [agencyData, setAgencyData] = useState([]);
   const [updateAgency, setUpdateAgency] = useState(null);
   const [updateOpenModal, setUpdateOpenModal] = useState(false);
+  const [showAgent, setShowAgent] =useState('')
+
   const handleManageArea = async (e) => {
     e.preventDefault();
     try {
       const formData = new FormData();
       formData.append("agencyName", e.target.name.value);
-      formData.append("ownerEmail", e.target.email.value);
+      formData.append("email", e.target.email.value);
       formData.append("password", e.target.password.value);
       if (showName) {
-        formData.append("image", showName);
+        formData.append("images", showName);
       }
       const response = await axios.post(
         "http://localhost:5000/agency/add-agency",
         formData
       );
-      toast.success("added successFully");
-      fetchAgency();
+      if (response.status === 201) {
+        toast.success("Added successfully");
+        fetchAgency();
+      } else if (response.status === 400 && response.data.error === "Email already exists") {
+        toast.error("Email already exists");
+      } else {
+        toast.error("Email already exists");
+      }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("Email already exists");
     }
   };
+  
+
 
   const handleClearFile = () => {
     setShowName("");
@@ -47,7 +57,7 @@ const ManageAgency = () => {
   const fetchAgency = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:5000/agency/agencyData"
+        "http://localhost:5000/allusers"
       );
       setAgencyData(response.data);
     } catch (error) {
@@ -55,6 +65,20 @@ const ManageAgency = () => {
     }
   };
 
+  const agencyDataFiltered = agencyData.filter((item) => item.role === 'agency');
+
+  // console.log("agencyDataFiltered",agencyDataFiltered);
+  const handleViewAgent = (name) => {
+     console.log(name);
+    const agentData =agencyData.find((agent) => agent.agencyName=== name.role);
+    document.getElementById("my_modal_5").showModal();
+    console.log("agentDatyyyyyyyyyyyy",agentData);
+    setShowAgent(agentData)
+  };
+
+
+
+  // console.log("agencyData",agencyData);
   const handleAgencyDelete = async (id) => {
     console.log(id);
     try {
@@ -278,7 +302,7 @@ const updateAgencyData = async (event) => {
               </tr>
             </thead>
             <tbody className="border-b">
-              {agencyData.map((item, index) => (
+              {agencyDataFiltered.map((item, index) => (
                 <tr
                   key={index}
                   className="hover:bg-gray-50 transition duration-300"
@@ -297,7 +321,7 @@ const updateAgencyData = async (event) => {
                       <div className="mx-auto flex items-center justify-end">
                         <button
                           onClick={() => editAgencyData(item._id, item)}
-                          className="rounded-md bg-green-500 py-3 px-10 text-white">
+                          className="rounded-md bg-green-500 py-3 px-5 text-white">
                           Edit Info
                         </button>
                         <div
@@ -458,6 +482,51 @@ const updateAgencyData = async (event) => {
                         </div>
                       </div>
                     </button>
+   
+                       <div className="flex gap-2">
+     
+                                                <button
+                                                    className="btn btn-info"
+                                                    onClick={() => handleViewAgent(item.agencyName)}
+                                                >
+                                                   View Agent
+                                                </button>
+                                            </div>
+                                            <dialog
+                                                id="my_modal_5"
+                                                className="modal modal-bottom sm:modal-middle"
+                                            >
+                                                <div className="modal-box">
+                                                    <h3 className="font-bold text-3xl mb-3">
+                                                        Agent{" "}
+                                                        <span className="text-primary font-bold">
+                                                            Details!
+                                                        </span>
+                                                    </h3>
+                                                    <div className="text-center text-xl">
+                                                        <h1>
+                                                            <span className="font-semibold">
+                                                                Agent Name:
+                                                            </span>{" "}
+                                                            <span className="text-primary font-bold text-2xl">
+                                                                {
+                                                                    showAgent?.name
+                                                                }
+                                                            </span>
+                                                        </h1>
+                                                    </div>
+                                                    <div className="modal-action">
+                                                        <form method="dialog">
+                                                            <button className="btn btn-error">
+                                                                Close
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </dialog>
+
+
+    
                     <button
                       onClick={() => handleAgencyDelete(item._id)}
                       className="bg-red-500 rounded-md text-white px-2 py-1.5"
