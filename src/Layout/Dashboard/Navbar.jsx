@@ -1,17 +1,19 @@
 import PropTypes from "prop-types";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { HiOutlineSearch } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../Provider/AuthProvider";
 // import useAuth from "../../hooks/useAuth";
 
 const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
     const navigate = useNavigate()
-    const {user, logout}= true
+    const {user, logOut}= useContext(AuthContext)
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const handleLogout = async()=>{
-        await logout()
-        navigate('/login')
-    }
+    const handleLogout = () => {
+        logOut()
+          .then(() => {})
+          .catch((error) => console.log(error));
+      };
     return (
         <header className="flex items-center justify-between px-6 py-3 ">
             <div className="flex items-center">
@@ -57,7 +59,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     >
                         <img
                             className="object-cover w-full h-full"
-                            src={user?.image}
+                            src={user?.photoURL}
                             alt="Your avatar"
                         />
                     </button>
@@ -75,7 +77,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                         }`}
                     >
                         <Link
-                            to="/profile"
+                            to="/profiles"
                             className="block px-4 py-2 text-sm text-slate-400 hover:bg-primary hover:text-white w-full"
                         >
                             Profile

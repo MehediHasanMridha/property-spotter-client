@@ -105,7 +105,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/ManageAllListings/profile",
-        element: <Profile />,
+        element: <Profiles />,
       },
 
       //Agency Components--------------------------
@@ -127,14 +127,14 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/agency/profile",
-        element: <AgencyProfile />,
+        element: <Profiles />,
       },
 
       //Agent Components-----------------------
-      // {
-      //   path: "/dashboard/agent/profile",
-      //   element: <AgentProfile />,
-      // },
+      {
+        path: "/dashboard/agent/profile",
+        element: <Profiles />,
+      },
       {
         path: "/dashboard/agent/pendingSpottedListings",
         element: <PendingSpottedLIst />,

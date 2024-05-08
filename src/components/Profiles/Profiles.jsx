@@ -3,11 +3,11 @@ import { MdOutlineDeleteForever, MdOutlineEmail } from "react-icons/md";
 import { LuGraduationCap } from "react-icons/lu";
 import { SlLocationPin } from "react-icons/sl";
 import { FaRegEdit } from "react-icons/fa";
-import {  Form, Input, Upload, Button, message } from "antd";
+import {  Form, Input, Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { AuthContext } from "../../Provider/AuthProvider";
-
+import { toast } from "react-toastify";
 const Profiles = () => {
   const { user, setUser, logOut } = useContext(AuthContext);
   const [fileList, setFileList] = useState([]);
@@ -17,13 +17,12 @@ const Profiles = () => {
   const onFinish = async (values) => {
     console.log("🚀 ~ onFinish ~ values:", values);
     try {
-      const { name, location, studies, about, newPassword } = values || {};
+      const { name, location, about, newPassword } = values || {};
 
       const data = new FormData();
       data.append("name", name || user?.name);
       data.append("password", newPassword);
       data.append("location", location || user?.location);
-      data.append("studies", studies || user?.studies);
       data.append("about",  about || user?.about);
       data.append("role", user?.role);
       data.append("oldPass", user?.password);
@@ -39,20 +38,20 @@ const Profiles = () => {
         const response = await axios.put(url, data, config);
         console.log("🚀 ~ onFinish ~ response:", response);
         if (response.data.user) {
-          message.success("Profile Updated!");
+          toast.success("Profile Updated!");
           setUser(response.data.user);
           localStorage.setItem("access-token", response.data.token);
             form.resetFields();
         } else {
-          message.error(response.data.message || "Failed to update profile");
+          toast.error(response.data.toast || "Failed to update profile");
         }
       } catch (error) {
         console.error("Update failed:", error);
-        message.error("Failed to update. Please try again later.");
+        toast.error("Failed to update. Please try again later.");
       }
     } catch (error) {
       console.error("Profile update failed:", error);
-      message.error("Failed to update profile. Please try again later.");
+      toast.error("Failed to update profile. Please try again later.");
     }
   };
 
@@ -67,15 +66,15 @@ const Profiles = () => {
         const { data } = response;
         console.log("🚀 ~ .then ~ response:", response);
         if (data.message) {
-          message.success("Profile deleted successfully");
+          toast.success("Profile deleted successfully");
           logOut();
         } else {
-          message.error("Failed to delete user");
+          toast.error("Failed to delete user");
         }
       })
       .catch((error) => {
         console.error("Error deleting user:", error);
-        message.error("An error occurred while deleting user");
+        toast.error("An error occurred while deleting user");
       });
   };
 
@@ -155,13 +154,7 @@ const Profiles = () => {
                         >
                           <Input />
                         </Form.Item>
-                        <Form.Item
-                          label="Education"
-                          name="studies"
-                          initialValue={user?.studies}
-                        >
-                          <Input />
-                        </Form.Item>
+  
                         <Form.Item
                           name="user_image"
                           valuePropName="fileList"
@@ -206,11 +199,6 @@ const Profiles = () => {
               <div className="flex gap-2 items-center">
                 <MdOutlineEmail className="text-2xl pt-1" />
                 <p>{user?.email}</p>
-              </div>
-              <div className="flex gap-2 items-center capitalize">
-                <LuGraduationCap className="text-2xl pt-1" />
-                {user?.studies && <p>{user?.studies}</p>}
-                {!user?.studies && <p>N/A</p>}
               </div>
               <div className="flex gap-2 items-center capitalize">
                 <SlLocationPin className="text-2xl pt-1" />
