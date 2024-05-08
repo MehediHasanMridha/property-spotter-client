@@ -9,10 +9,8 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
     const navigate = useNavigate();
     const { user, logOut } = useContext(AuthContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const handleLogout = () => {
-        logOut()
-            .then(() => {})
-            .catch((error) => console.log(error));
+    const handleLogout =  async () => {
+        await logOut()
         navigate("/");
     };
     return (
