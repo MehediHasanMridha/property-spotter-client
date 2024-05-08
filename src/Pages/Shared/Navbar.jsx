@@ -8,14 +8,13 @@ const Navbar = () => {
   const { user, logOut, loading } = useContext(AuthContext);
   const [scrollY, setScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOPen] = useState(false);
-  console.log("🚀 ~ Navbar ~ user:", user);
 
   const handleLogOut = () => {
     logOut()
       .then(() => {})
       .catch((error) => console.log(error));
   };
-
+  console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       return setScrollY(window.scrollY);
@@ -163,10 +162,10 @@ const Navbar = () => {
             </ul>
             <div className="hidden md:block">
               {user ? (
-                <div className="dropdown pt-1 dropdown-end">
+                <div className="dropdown cursor-pointer pt-1 dropdown-end">
                   <div className="avatar" tabIndex={0}>
                     <div className="w-8 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                      <img src={user?.photoURL} alt="" />
+                      <img src={user?.photoURL || "https://i.ibb.co/wNXrMXd/images.png"} alt="" />
                     </div>
                   </div>
                   <ul

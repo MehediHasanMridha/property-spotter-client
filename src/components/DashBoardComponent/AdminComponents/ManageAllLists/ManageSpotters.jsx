@@ -6,10 +6,10 @@ const ManageSpotters = () => {
     const [spotterData, setSpotterData] = useState(null);
     const [openEditModal, setEditModal] = useState(false);
     const [openListModal, setListModal] = useState(false);
-    const [tableData, setTableData] = useState([])
+    const [tableData, setTableData] = useState([]);
 
     useEffect(() => {
-        fetch("http://localhost:5000/all-spotters/")
+        fetch("http://localhost:5000/spotters")
             .then((res) => res.json())
             .then((data) => setSpotters(data));
     });
@@ -19,36 +19,62 @@ const ManageSpotters = () => {
     };
     const handleListModal = (spotter) => {
         setListModal(true);
-        const name = spotter.name.toLowerCase()
-        fetch(`http://localhost:5000/all-list/${name}`)
+        const email = spotter?.email;
+        fetch(`http://localhost:5000/all-list/${email}`)
             .then((res) => res.json())
             .then((data) => setTableData(data));
-        console.log(tableData);
     };
     const closeListModal = () => {
         setListModal(false);
-        setTableData([])
+        setTableData([]);
     };
+
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const name = e.target.name.value;
-        const email = e.target.email.value;
-        const password = e.target.email.value;
+        const formData = new FormData();
+        formData.append("name", e.target.name.value);
+        formData.append("email", e.target.email.value);
+        formData.append("password", e.target.password.value);
+        formData.append("images", e.target.files[0]);
+        console.log(e.target.files[0]);
         const res = await fetch(
-            `http://localhost:5000/edit-spotter/${spotterData._id}`,
+            `http://localhost:5000/update/${spotterData.email}`,
             {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ name, email, password }),
+                method: "PUT",
+                body: formData,
             }
         );
         setEditModal(false);
         setSpotterData(null);
         toast.success("Successfully updated");
     };
+    const [PayoutModal, setPayoutModal] = useState(false);
+    const [PayoutModalData, setPayoutModalData] = useState([]);
+    const handlePayoutModal = (spotter) => {
+        setPayoutModal(true);
+        const email = spotter?.email;
+        fetch(`http://localhost:5000/all-list/${email}`)
+            .then((res) => res.json())
+            .then((data) => setPayoutModalData(data));
+    };
+    const closePayoutModal = () => {
+        setPayoutModal(false);
+        setPayoutModalData([]);
+    };
 
+    const [AllocatePayoutModal, setAllocatePayoutModal] = useState(false);
+    const [AllocatePayoutModalData, setAllocatePayoutModalData] = useState([]);
+    const handleAllocatePayoutModal = (spotter) => {
+        setAllocatePayoutModal(true);
+        const email = spotter?.email;
+        fetch(`http://localhost:5000/all-list/${email}`)
+            .then((res) => res.json())
+            .then((data) => setAllocatePayoutModalData(data));
+    };
+    const closeAllocatePayoutModal = () => {
+        setAllocatePayoutModal(false);
+        setAllocatePayoutModalData([]);
+    };
     return (
         <div>
             <div className="overflow-x-auto ">
@@ -173,6 +199,13 @@ const ManageSpotters = () => {
                                                                 Password
                                                             </h1>
                                                         </div>
+                                                        <div className="relative">
+                                                            <input
+                                                                type="file"
+                                                                name="images"
+                                                                className="file-input file-input-bordered w-full"
+                                                            />
+                                                        </div>
                                                         {/* Submit button */}
                                                         <button
                                                             type="submit"
@@ -185,7 +218,9 @@ const ManageSpotters = () => {
                                             </div>
                                         </div>
                                         <button
-                                            onClick={() => handleListModal(spotter)}
+                                            onClick={() =>
+                                                handleListModal(spotter)
+                                            }
                                             className="bg-green-500 text-sm text-white  px-3 py-2"
                                         >
                                             View Lists
@@ -212,40 +247,230 @@ const ManageSpotters = () => {
                                                     <thead>
                                                         <tr className="bg-primary text-white">
                                                             <th className="py-3 px-6 text-left border-b">
-                                                            Owner Name
+                                                                Owner Name
                                                             </th>
                                                             <th className="py-3 px-6 text-left border-b">
-                                                            Bathroom
+                                                                Bathroom
                                                             </th>
                                                             <th className="py-3 px-6 text-left border-b">
-                                                            Bedroom
+                                                                Bedroom
                                                             </th>
                                                             <th className="py-3 px-6 text-left border-b">
-                                                            Sell Time
+                                                                Sell Time
                                                             </th>
                                                             <th className="py-3 px-6 text-left border-b">
-                                                            Status
+                                                                Status
                                                             </th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        {tableData.map(item=>(<tr>
-                                                            <td className="py-4 px-6 border-b">{item.houseOwnerName}</td>
-                                                            <td className="py-4 px-6 border-b">{item.bathroom}</td>
-                                                            <td className="py-4 px-6 border-b">{item.bedroom}</td>
-                                                            <td className="py-4 px-6 border-b">{item.sellTime}</td>
-                                                            <td className="py-4 px-6 border-b">{item.status}</td>
-                                                        </tr>))}
+                                                        {tableData.map(
+                                                            (item) => (
+                                                                <tr>
+                                                                    <td className="py-4 px-6 border-b">
+                                                                        {
+                                                                            item.houseOwnerName
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-4 px-6 border-b">
+                                                                        {
+                                                                            item.bathroom
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-4 px-6 border-b">
+                                                                        {
+                                                                            item.bedroom
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-4 px-6 border-b">
+                                                                        {
+                                                                            item.sellTime
+                                                                        }
+                                                                    </td>
+                                                                    <td className="py-4 px-6 border-b">
+                                                                        {
+                                                                            item.status
+                                                                        }
+                                                                    </td>
+                                                                </tr>
+                                                            )
+                                                        )}
                                                     </tbody>
                                                 </table>
                                             </div>
                                         </div>
-                                        <button className="bg-amber-500 text-sm text-white  px-3 py-2">
+                                        <button
+                                            onClick={() =>
+                                                handlePayoutModal(spotter)
+                                            }
+                                            className="bg-amber-500 text-sm text-white  px-3 py-2"
+                                        >
                                             Payout
                                         </button>
-                                        <button className="bg-primary text-sm text-white  px-3 py-2">
+                                        <div
+                                            onClick={() => closePayoutModal()}
+                                            className={`fixed z-[100] flex items-center justify-center ${
+                                                PayoutModal
+                                                    ? "opacity-1 visible"
+                                                    : "invisible opacity-0"
+                                            } inset-0 h-full w-full bg-black/20 backdrop-blur-sm duration-100`}
+                                        >
+                                            <div
+                                                onClick={(e_) =>
+                                                    e_.stopPropagation()
+                                                }
+                                                className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[750px] ${
+                                                    PayoutModal
+                                                        ? "opacity-1 translate-y-0 duration-300"
+                                                        : "-translate-y-20 opacity-0 duration-150"
+                                                }`}
+                                            >
+                                                <table className="min-w-[90%] shadow-md  border mx-auto border-gray-100  my-6">
+                                                    <thead>
+                                                        <tr className="bg-primary text-white">
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Owner Name
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Bathroom
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Bedroom
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Sell Time
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Status
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {PayoutModalData?.filter(
+                                                            (data) =>
+                                                                data.status ==
+                                                                "sold"
+                                                        ).map((item) => (
+                                                            <tr>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.houseOwnerName
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.bathroom
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.bedroom
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.sellTime
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.status
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <button
+                                            onClick={() =>
+                                                handleAllocatePayoutModal(
+                                                    spotter
+                                                )
+                                            }
+                                            className="bg-primary text-sm text-white  px-3 py-2"
+                                        >
                                             Allocate a payout
                                         </button>
+                                        <div
+                                            onClick={() =>
+                                                closeAllocatePayoutModal()
+                                            }
+                                            className={`fixed z-[100] flex items-center justify-center ${
+                                                AllocatePayoutModal
+                                                    ? "opacity-1 visible"
+                                                    : "invisible opacity-0"
+                                            } inset-0 h-full w-full bg-black/20 backdrop-blur-sm duration-100`}
+                                        >
+                                            <div
+                                                onClick={(e_) =>
+                                                    e_.stopPropagation()
+                                                }
+                                                className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[750px] ${
+                                                    AllocatePayoutModal
+                                                        ? "opacity-1 translate-y-0 duration-300"
+                                                        : "-translate-y-20 opacity-0 duration-150"
+                                                }`}
+                                            >
+                                                <table className="min-w-[90%] shadow-md  border mx-auto border-gray-100  my-6">
+                                                    <thead>
+                                                        <tr className="bg-primary text-white">
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Owner Name
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Bathroom
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Bedroom
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Sell Time
+                                                            </th>
+                                                            <th className="py-3 px-6 text-left border-b">
+                                                                Status
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {AllocatePayoutModalData?.filter(
+                                                            (data) =>
+                                                                data.status ==
+                                                                "pending mandate"
+                                                        ).map((item) => (
+                                                            <tr>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.houseOwnerName
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.bathroom
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.bedroom
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.sellTime
+                                                                    }
+                                                                </td>
+                                                                <td className="py-4 px-6 border-b">
+                                                                    {
+                                                                        item.status
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
                                     </div>
                                 </td>
                             </tr>

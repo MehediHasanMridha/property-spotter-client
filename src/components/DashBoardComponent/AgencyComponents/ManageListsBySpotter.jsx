@@ -36,6 +36,16 @@ const ManageListsBySpotter = () => {
                 return "badge-accent";
             case "pending":
                 return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
             default:
                 return "";
         }
@@ -49,19 +59,27 @@ const ManageListsBySpotter = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async(id) => {
-      try {
-        const res = await fetch(`http://localhost:5000/house/update/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({status: "approved", agency: [user.name]})
-        })
-        toast.success("Successfully Updated")
-      } catch (error) {
-        console.log(error);
-      }
+    const houseUpdate = async (e, id) => {
+        try {
+            const value = e.target.innerText.toLowerCase();
+            const res = await fetch(
+                `http://localhost:5000/house/update/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status: value,
+                        agency: [user.name],
+                    }),
+                }
+            );
+            toast.success(`Successfully ${value}`);
+            fetchListingData();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -82,14 +100,14 @@ const ManageListsBySpotter = () => {
                     <h4 className="text-2xl font-medium">
                         Total Houses:{" "}
                         <span className="text-3xl text-primary font-bold">
-                            {currentJobs
-                                .filter(
+                            {
+                                currentJobs.filter(
                                     (item) =>
                                         item.agency.some(
                                             (name) => name === user.name
-                                        ) && item.status === "pending"
-                                )
-                                .length}
+                                        )
+                                ).length
+                            }
                         </span>
                     </h4>
                 </div>
@@ -104,34 +122,27 @@ const ManageListsBySpotter = () => {
                                 <th>No.</th>
                                 <th>Spooter Name</th>
                                 <th>Spooter Email</th>
-                                <th>Owner Name</th>
-                                <th>Owner Email</th>
-                                <th>House Phone</th>
                                 <th>Status</th>
                                 <th>Details</th>
                             </tr>
                         </thead>
                         <tbody className="text-center">
                             {currentJobs
-                                .filter(
-                                    (item) =>
-                                        item.agency.some(
-                                            (name) => name === user.name
-                                        ) && item.status === "pending"
+                                .filter((item) =>
+                                    item.agency.some(
+                                        (name) => name === user.name
+                                    )
                                 )
                                 .map((house, index) => (
                                     <tr key={house?.jobData?._id}>
                                         <td>{index + 1}</td>
                                         <td>{house?.spooterName}</td>
                                         <td>{house?.spooterEmail}</td>
-                                        <td>{house?.houseOwnerName}</td>
-                                        <td>{house?.houseOwnerEmail}</td>
-                                        <td>{house?.houseOwnerPhone}</td>
                                         <td>
                                             <div
                                                 className={`badge ${getBadgeClass(
                                                     house?.status
-                                                )} badge-md text-white`}
+                                                )} badge-md text-white text-nowrap`}
                                             >
                                                 {house?.status}
                                             </div>
@@ -139,16 +150,88 @@ const ManageListsBySpotter = () => {
                                         <td>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
                                             <div className="flex gap-2">
+                                                <details className="dropdown">
+                                                    <summary className="m-1 btn btn-primary">
+                                                        Action
+                                                    </summary>
+                                                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Approved
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Sold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Hold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING MANDATE
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Pending
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING CONTACT
+                                                                WITH CLIENT
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                </details>
                                                 <button
-                                                    className="btn btn-info"
-                                                    onClick={() =>
-                                                        houseUpdate(house._id)
-                                                    }
-                                                >
-                                                    Approve
-                                                </button>
-                                                <button
-                                                    className="btn btn-info"
+                                                    className="btn btn-primary"
                                                     onClick={() =>
                                                         handleDetailsClick(
                                                             house

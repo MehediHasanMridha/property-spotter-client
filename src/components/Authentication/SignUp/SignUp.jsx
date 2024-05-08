@@ -1,11 +1,10 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
-import { FaFacebook, FaGoogle } from "react-icons/fa";
-import axios from "axios";
-import { Button, Form, Input, message, Upload } from "antd";
-import { AuthContext } from "../../../Provider/AuthProvider";
 import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Upload, message } from "antd";
+import axios from "axios";
+import React, { useContext, useState } from "react";
+import { FaFacebook, FaGoogle } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../Provider/AuthProvider";
 const { useForm } = Form;
 
 const SignUp = () => {
@@ -19,7 +18,7 @@ const SignUp = () => {
     if (user.role === "user" || user.role === "spooter") navigate("/");
     if (user?.role !== "user") navigate("/dashboard");
   }
-
+  
   const onFinish = async (values) => {
     try {
       const { name, email, password, confirmPassword } = values;
@@ -49,6 +48,7 @@ const SignUp = () => {
         },
       };
       const url = "http://localhost:5000/signup";
+      console.log(data);
       try {
         await axios.post(url, data, config);
         message.success("Signup successful");

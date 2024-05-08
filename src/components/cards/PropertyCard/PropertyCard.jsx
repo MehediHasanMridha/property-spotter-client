@@ -9,7 +9,7 @@ const PropertyCard = () => {
             <Slider />
             <div className="px-3 py-2.5">
                 <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
-                    <span class="text-primary text-2xl">
+                    <span className="text-primary text-2xl">
                         <svg
                             width="18"
                             height="18"
