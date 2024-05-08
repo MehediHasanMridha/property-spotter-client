@@ -29,27 +29,6 @@ const ManageAgent = () => {
   const handleOrganizationChange = (value) => {
     setSelectedOrganization(value);
   };
-  // const handleManageAgent = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("name", e.target.name.value);
-  //     formData.append("email", e.target.email.value);
-  //     formData.append("password", e.target.password.value);
-  //     formData.append("agencyName", selectedOrganization);
-  //     console.log(formData);
-  //     const response = await axios.post(
-  //       "http://localhost:5000/agent/add-agent",
-  //       formData
-  //     );
-  //     setOpenModal(false);
-  //     toast.success("Added successfully");
-  //     fetchAgent();
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
 
   const handleManageAgent = async (e) => {
     e.preventDefault();
@@ -104,6 +83,9 @@ const ManageAgent = () => {
       console.error(error);
     }
   };
+
+
+  console.log("allAgency",allAgency);
 
   const agentDataFiltered = agentData.filter(
     (agents) => agents.role === "agent"
@@ -202,7 +184,7 @@ const ManageAgent = () => {
                 : "-translate-y-20 opacity-0 duration-150"
             }`}
           >
-            <form
+            <form enctype="multipart/form-data"
               onSubmit={handleManageAgent}
               className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10 h-96 overflow-y-scroll"
             >
@@ -269,7 +251,7 @@ const ManageAgent = () => {
                     className="w-full"
                     options={allAgency.map((agents) => ({
                       value: agents.agencyName,
-                      label: agents.name,
+                      label: agents.agencyName,
                     }))}
                     onChange={handleOrganizationChange}
                   />
