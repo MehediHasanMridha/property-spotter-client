@@ -6,16 +6,17 @@ import { AuthContext } from "../../Provider/AuthProvider";
 // import useAuth from "../../hooks/useAuth";
 
 const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
-    const navigate = useNavigate()
-    const {user, logOut}= useContext(AuthContext)
+    const navigate = useNavigate();
+    const { user, logOut } = useContext(AuthContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const handleLogout = () => {
         logOut()
-          .then(() => {})
-          .catch((error) => console.log(error));
-      };
+            .then(() => {})
+            .catch((error) => console.log(error));
+        navigate("/");
+    };
     return (
-        <header className="flex items-center justify-between px-6 py-3 ">
+        <header className="flex items-center border-b  justify-between px-6 py-3 ">
             <div className="flex items-center">
                 <button
                     onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -44,7 +45,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     />
 
                     <input
-                        className="w-32 pl-10 border dark:border-slate-800 dark:bg-body pr-4 focus:outline-none rounded form-input sm:w-64 focus:border-primary px-1.5 py-1.5"
+                        className="w-32 pl-10 border pr-4 focus:outline-none rounded form-input sm:w-64 focus:border-primary px-1.5 py-1.5"
                         type="text"
                         placeholder="Search"
                     />
