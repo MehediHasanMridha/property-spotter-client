@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
 import { useContext } from "react";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { Link } from "react-router-dom";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
   const {user} = useContext(AuthContext)
@@ -143,9 +144,9 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
           }`}
       >
         <div className="flex items-center justify-center border-b border-slate-800 py-3">
-          <h3 className="text-xl text-white font-semibold">
+          <Link to="/"><h3 className="text-xl text-white font-semibold">
             Property<span className="text-primary"> Spotted</span>
-          </h3>
+          </h3></Link>
         </div>
         <div className="overflow-y-auto custom-scroll">
           <nav className="mt-5 px-3">
