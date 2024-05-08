@@ -27,7 +27,25 @@ const Steper = () => {
     const [selectedAgency, setSelectedAgency] = useState("");
     const [agency, setAgency] = useState([]);
     const { user } = useContext(AuthContext);
+    const [allAgency, setAllAgency] = useState([]);
 
+    useEffect(() => {
+        fetchAgent();
+      }, []);
+    
+      const fetchAgent = async () => {
+        try {
+          const response = await axios.get("http://localhost:5000/allusers");
+          setAllAgency(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+      };
+    
+    
+      const agencyNames = allAgency.map(agent => agent.agencyName);
+console.log("agencyNames: ", agencyNames);
+const options = agencyNames.map(name => ({ value: name, label: name }));
     const previousStep = () => {
         setActiveStep(activeStep - 1);
         setAccess(false);
@@ -50,41 +68,79 @@ const Steper = () => {
 
     console.log(selectedAgency);
 
+    // const handleButtonClick = async () => {
+    //     if (isLastStep) {
+    //         console.log("done");
+    //         const data = {
+    //             spooterName: name,
+    //             spooterEmail: user?.email,
+    //             status: "pending",
+    //             bedroom,
+    //             address,
+    //             image,
+    //             propertyType: property,
+    //             bathroom,
+    //             previousStep,
+    //             sellTime,
+    //             houseOwnerName: spooName,
+    //             houseOwnerEmail: spooEmail,
+    //             houseOwnerPhone: spooPhone,
+    //             agency:
+    //                 selectedAgency === "Yes"
+    //                     ? agency
+    //                     : ["first", "second", "all"],
+    //         };
+    //         console.log("data",data);
+    //         const res = await axios.post(
+    //             "http://localhost:5000/house/add",
+    //             data
+    //         );
+    //         console.log(res.data);
+    //         if (res.data._id) {
+    //             toast.success("Form submitted successfully", data);
+    //         }
+    //     } else {
+    //         nextStep();
+    //     }
+    // };
+
     const handleButtonClick = async () => {
         if (isLastStep) {
             console.log("done");
-            const data = {
-                spooterName: name,
-                spooterEmail: user?.email,
-                status: "pending",
-                bedroom,
-                address,
-                image,
-                bathroom,
-                previousStep,
-                sellTime,
-                houseOwnerName: spooName,
-                houseOwnerEmail: spooEmail,
-                houseOwnerPhone: spooPhone,
-                agency:
-                    selectedAgency === "Yes"
-                        ? agency
-                        : ["first", "second", "all"],
-            };
-            console.log(data);
-            const res = await axios.post(
-                "http://localhost:5000/house/add",
-                data
-            );
-            console.log(res.data);
-            if (res.data._id) {
-                toast.success("Form submitted successfully", data);
+            const formData = new FormData();
+            formData.append('spooterName', name);
+            formData.append('spooterEmail', user?.email);
+            formData.append('status', 'pending');
+            formData.append('bedroom', bedroom);
+            formData.append('address', address);
+            formData.append('image', image); 
+            formData.append('propertyType', property);
+            formData.append('bathroom', bathroom);
+            formData.append('previousStep', previousStep);
+            formData.append('sellTime', sellTime);
+            formData.append('houseOwnerName', spooName);
+            formData.append('houseOwnerEmail', spooEmail);
+            formData.append('houseOwnerPhone', spooPhone);
+            formData.append('agency', selectedAgency === "Yes" ? agency : ["first", "second", "all"]);
+    
+            try {
+                const res = await axios.post("http://localhost:5000/house/add", formData, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                });
+                console.log(res.data);
+                if (res.data._id) {
+                    toast.success("Form submitted successfully", data);
+                }
+            } catch (error) {
+                console.error('Error submitting form:', error);
             }
         } else {
             nextStep();
         }
     };
-
+    console.log(image);
     useEffect(() => {
         fetch("http://localhost:5000/agency/agencyData")
             .then((res) => res.json())
@@ -301,6 +357,7 @@ const Steper = () => {
                                     </div>
                                     <input
                                         type="file"
+                                        name="image"
                                         className="file-input file-input-bordered"
                                         onChange={(e) =>
                                             setImage(e.target.files[0])
@@ -509,13 +566,13 @@ const Steper = () => {
                                         Select Organization
                                     </label>
                                     <Select
-                                        defaultValue={[]}
-                                        isMulti
-                                        name="agency"
-                                        options={agencyList}
-                                        className=""
-                                        classNamePrefix="select"
-                                        onChange={handleAgencySelect}
+                                       defaultValue={options} // Set default value to display selected agencies
+                                       isMulti
+                                       name="agency"
+                                       options={options} // Set options with value and label properties
+                                       className=""
+                                       classNamePrefix="select"
+                                       onChange={handleAgencySelect}
                                     />
                                 </div>
                             )}
