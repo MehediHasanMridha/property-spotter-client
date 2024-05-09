@@ -23,6 +23,7 @@ import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
+import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 
 export const router = createBrowserRouter([
   {
@@ -70,6 +71,10 @@ export const router = createBrowserRouter([
       {
         path: "/profiles",
         element: <Profiles />,
+      },
+      {
+        path: "/otp",
+        element: <OtpUI />,
       },
     ],
   },

@@ -36,18 +36,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     </svg>
                 </button>
 
-                <div className="relative mx-4 lg:mx-0">
-                    <HiOutlineSearch
-                        fontSize={20}
-                        className="text-gray-400 absolute top-1/2 left-3 -translate-y-1/2"
-                    />
-
-                    <input
-                        className="w-32 pl-10 border pr-4 focus:outline-none rounded form-input sm:w-64 focus:border-primary px-1.5 py-1.5"
-                        type="text"
-                        placeholder="Search"
-                    />
-                </div>
+                
             </div>
 
             <div className="flex items-center">

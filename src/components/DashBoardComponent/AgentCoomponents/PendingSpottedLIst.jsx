@@ -87,15 +87,10 @@ const PendingSpottedLIst = () => {
               </div>
               <div className="flex justify-center items-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                   <h4 className="text-2xl font-medium">
-                      Total Houses:{" "}
+                      Total Houses:
                       <span className="text-3xl text-primary font-bold">
                           {
-                              currentJobs.filter(
-                                  (item) =>
-                                      item.agency.some(
-                                          (name) => name === user.name
-                                      ) && item.status === "pending"
-                              ).length
+                              listings.length
                           }
                       </span>
                   </h4>
