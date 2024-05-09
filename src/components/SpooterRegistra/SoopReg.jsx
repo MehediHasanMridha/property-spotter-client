@@ -4,7 +4,7 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
-import { Button, Form, Input, message, Upload } from "antd";
+import { Button, Checkbox, Form, Input, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { AuthContext } from "../../Provider/AuthProvider";
 const { useForm } = Form;
@@ -17,13 +17,18 @@ const SoopReg = () => {
   const [form] = useForm();
 
   if (user) {
-    if (user?.role === "user" || user?.role === "spooter") navigate("/");
+    if (user?.role === "user" || user?.role === "spotter") navigate("/");
     if (user?.role !== "user") navigate("/dashboard");
   }
 
   const onFinish = async (values) => {
     try {
-      const { name, email, password, confirmPassword } = values;
+      const { name, email, password, confirmPassword, remember } = values;
+
+      if (remember != true) {
+        setError("Please agree to the terms and conditions.");
+        return;
+      }
 
       // Validate password
       if (!/(?=.*[A-Z]).*[a-z]/.test(password)) {
@@ -40,9 +45,10 @@ const SoopReg = () => {
       const data = new FormData();
       data.append("name", name);
       data.append("email", email);
-      data.append("role", "spooter");
+      data.append("role", "spotter");
       data.append("password", confirmPassword);
       data.append("images", fileList[0].originFileObj);
+      data.append("termsAndcondition", remember);
 
       const config = {
         headers: {
@@ -54,7 +60,7 @@ const SoopReg = () => {
         await axios.post(url, data, config);
         message.success("Spooter Registration Successfull!");
         form.resetFields();
-        navigate("/loginSignup");
+        navigate("/otp");
       } catch (error) {
         console.error("Signup failed:", error);
         message.error("Failed to signup. Please try again later.");
@@ -101,7 +107,7 @@ const SoopReg = () => {
           const userData = {
             name: person?.displayName,
             email: person?.email,
-            role: "spooter",
+            role: "spotter",
             password: "",
             photoURL: person?.photoURL,
           };
@@ -123,11 +129,10 @@ const SoopReg = () => {
                 console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
-                if (userData?.role === "user" || userData?.role === "spooter") {
+                if (userData?.role === "user" || userData?.role === "spotter") {
                   navigate("/");
-                }
-                else{
-                    navigate("/dashboard");
+                } else {
+                  navigate("/dashboard");
                 }
               }
             })
@@ -151,7 +156,7 @@ const SoopReg = () => {
           email: user.email,
           password: "",
           photoURL: user?.photoURL,
-          role: "spooter",
+          role: "spotter",
         };
         console.log(saveUser);
 
@@ -163,11 +168,10 @@ const SoopReg = () => {
           })
           .then(() => {
             message.success("Login successful"); // Display success message
-            if (userData?.role === "user" || userData?.role === "spooter") {
+            if (userData?.role === "user" || userData?.role === "spotter") {
               navigate("/");
-            }
-            else{
-                navigate("/dashboard");
+            } else {
+              navigate("/dashboard");
             }
           })
           .catch((error) => {
@@ -270,6 +274,22 @@ const SoopReg = () => {
                     Click to upload Image
                   </Button>
                 </Upload>
+              </Form.Item>
+              <Form.Item
+                name="remember"
+                valuePropName="false"
+                required
+                wrapperCol={{
+                  offset: 0,
+                  span: 16,
+                }}
+              >
+                <Checkbox
+                  si
+                  className="font-medium text-lg text-blue-600 underline"
+                >
+                  terms of use & all other policies
+                </Checkbox>
               </Form.Item>
               <Form.Item>
                 <Button

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { message } from "antd";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const handleForgotPassword = async (event) => {
@@ -12,13 +12,13 @@ const ForgotPassword = () => {
         `http://localhost:5000/forgot-password/${email}`
       );
       if (response.data.Status === "Success") {
-        message.success("Password reset link sent successfully.");
+        toast.success("Password reset link sent successfully.");
       } else {
-        message.error("User does not exist.");
+        toast.error("User does not exist.");
       }
     } catch (error) {
       console.error("Error sending forgot password request:", error);
-      message.error("An error occurred. Please try again later.");
+      toast.error("An error occurred. Please try again later.");
     }
   };
 

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { message } from "antd";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const ResetPassword = () => {
   const navigate = useNavigate();
@@ -16,14 +16,14 @@ const ResetPassword = () => {
         password: password,
       });
       if (response.data.Status === "Success") {
-        message.success("Password reset successful.");
+        toast.success("Password reset successful.");
         navigate("/loginSignup");
       } else {
-        message.error("Error resetting password.");
+        toast.error("Error resetting password.");
       }
     } catch (error) {
       console.error("Error resetting password:", error);
-      message.error("An error occurred. Please try again later.");
+      toast.error("An error occurred. Please try again later.");
     }
   };
 
