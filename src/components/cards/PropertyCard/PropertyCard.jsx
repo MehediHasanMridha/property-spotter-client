@@ -3,14 +3,14 @@ import { LuBedDouble } from "react-icons/lu";
 
 const PropertyCard = ({item}) => {
 
-    console.log("itemmmmmm",item.image);
+    console.log("item?mmmmm",item?.image);
 
 
     return (
         <div className="bg-white shadow rounded-xl">
-            <img src={item.image} alt="" />
+            <img src={item?.image} alt="" />
             <div className="px-3 py-2.5">
-                <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
+                <h3 className="flex item?s-center text-sm text-gray-500 uppercase font-semibold gap-2">
                     <span className="text-primary text-2xl">
                         <svg
                             width="18"
@@ -30,19 +30,19 @@ const PropertyCard = ({item}) => {
                             ></path>
                         </svg>
                     </span>{" "}
-                    {item.address}
+                    {item?.address}
                 </h3>
                 <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 uppercase">
-                {item.propertyType}
+                {item?.propertyType}
                 </h2>
                 <ul className="flex justify-between text-gray-700">
                     <li className="space-x-2">
                         <LuBedDouble className="inline" />
-                        <span>Bed:{item.bedroom}</span>
+                        <span>Bed:{item?.bedroom}</span>
                     </li>
                     <li className="space-x-2">
                         <LiaToiletSolid className="inline" />
-                        <span>Births:{item.bathroom}</span>
+                        <span>Births:{item?.bathroom}</span>
                     </li>
                 </ul>
             </div>
