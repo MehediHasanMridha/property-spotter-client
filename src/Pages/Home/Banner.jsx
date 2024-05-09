@@ -32,12 +32,11 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                     </button>
                 </div>
                 <div
-                    className={`absolute ${
-                        search ? "" : "hidden"
-                    } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
+                    className={`absolute ${search ? "" : "hidden"
+                        } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
                 >
                     <ul>
-                        {mainData.filter(filterData).map((item, idx) => (
+                        {mainData && mainData?.filter(filterData).map((item, idx) => (
                             <li key={idx}>
                                 <a
                                     href="#reduceprice"

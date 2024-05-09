@@ -3,8 +3,8 @@ import Container from "../../components/Container/Container";
 import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
 
-const ReducedPrice = ({ mainData, filterData}) => {
-    // console.log(listings);
+const ReducedPrice = ({ mainData, filterData }) => {
+    console.log(mainData);
     return (
         <section className="bg-white py-10 px-6 md:px-0" id="reduceprice">
             <SectionTitle
@@ -13,7 +13,7 @@ const ReducedPrice = ({ mainData, filterData}) => {
             />
             <Container>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10">
-                    {mainData.filter(filterData).slice(0, 6).map((item) => (
+                    {mainData && mainData?.filter(filterData).slice(0, 6).map((item) => (
                         <PropertyCard key={item._id} item={item} />
                     ))}
                 </div>
