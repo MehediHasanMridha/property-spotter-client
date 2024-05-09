@@ -5,6 +5,9 @@ import { LuBedDouble } from "react-icons/lu";
 import BannerImage from "../../assets/images/banner.svg";
 
 const Banner = ({ search, setSearch, mainData, filterData }) => {
+
+    console.log(mainData, 'from banner');
+
     return (
         <div
             className="flex justify-center items-center bg-primary bg-no-repeat bg-bottom w-full h-[550px]"

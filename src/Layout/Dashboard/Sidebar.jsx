@@ -58,6 +58,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 },
             ],
         },
+        {
+            title: "Message",
+            icon: "uBuilding",
+            path: "/dashboard/message",
+        },
     ];
 
     const agencyItems = [
@@ -86,6 +91,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             icon: "uBuilding",
             path: "/dashboard/agency/profile",
         },
+        {
+            title: "Message",
+            icon: "uBuilding",
+            path: "/dashboard/message",
+        },
     ];
 
     const agentItems = [
@@ -104,22 +114,25 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             icon: "Luuilding",
             path: "/dashboard/agent/profile",
         },
+        {
+            title: "Message",
+            icon: "uBuilding",
+            path: "/dashboard/message",
+        },
     ];
 
     return (
         <>
             <div
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className={`fixed inset-0 z-20 transition-opacity  bg-black opacity-50 lg:hidden ${
-                    sidebarOpen ? "block" : "hidden"
-                }`}
+                className={`fixed inset-0 z-20 transition-opacity  bg-black opacity-50 lg:hidden ${sidebarOpen ? "block" : "hidden"
+                    }`}
             ></div>
             <div
-                className={`fixed inset-y-0 left-0 z-30 w-80 flex flex-col border dark:border-slate-800 bg-[#0c1427] min-h-screen transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${
-                    sidebarOpen
-                        ? "translate-x-0 ease-out"
-                        : "-translate-x-full ease-in"
-                }`}
+                className={`fixed inset-y-0 left-0 z-30 w-80 flex flex-col border dark:border-slate-800 bg-[#0c1427] min-h-screen transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${sidebarOpen
+                    ? "translate-x-0 ease-out"
+                    : "-translate-x-full ease-in"
+                    }`}
             >
                 <div className="flex items-center justify-center border-b border-slate-800 py-4">
                     <Link to="/">
