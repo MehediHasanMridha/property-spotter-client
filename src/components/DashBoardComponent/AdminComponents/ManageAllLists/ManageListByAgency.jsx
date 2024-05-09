@@ -42,6 +42,10 @@ useEffect(()=>{
         return "badge-accent";
       case "pending":
         return "badge-warning";
+        case "sold":
+          return "badge-success";
+          case "hold":
+          return "badge-info";
       default:
         return "";
     }

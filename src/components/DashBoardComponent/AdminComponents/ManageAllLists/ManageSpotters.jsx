@@ -109,8 +109,8 @@ const ManageSpotters = () => {
                         <thead>
                             <tr className="font-semibold text-base text-center">
                                 <th>Image</th>
-                                <th>Spooter Name</th>
-                                <th>Spooter Email</th>
+                                <th>Spotter Name</th>
+                                <th>Spotter Email</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

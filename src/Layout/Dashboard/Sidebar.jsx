@@ -11,23 +11,18 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const role = user?.role;
 
     const adminItems = [
+        // {
+        //     title: "Chat moderate",
+        //     icon: "uBuilding",
+        //     path: "/chatModerate",
+        // },
         {
-            title: "Chat moderate",
-            icon: "uBuilding",
-            path: "/chatModerate",
-        },
-        {
-            title: "Manage areas",
+            title: "Manage Areas",
             icon: "uBuilding",
             path: "/dashboard/manageAreas",
         },
         {
-            title: "Manage search filters",
-            icon: "uBuilding",
-            path: "/dashboard/manageSearchFilters",
-        },
-        {
-            title: "Manage all listings",
+            title: "Manage All Listings",
             icon: "uBuilding",
             path: "/dashboard/ManageAllListings",
             childrens: [
