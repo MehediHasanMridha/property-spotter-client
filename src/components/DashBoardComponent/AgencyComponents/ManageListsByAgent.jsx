@@ -17,10 +17,11 @@ const ManageListsByAgent = () => {
     const [openCreateModal, setOpenCreateModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [editAgentData, setEditAgentData] = useState(null)
+    
     const fetchAgentData = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/allusers/filterby/agent/${user?.email}`
+                `http://localhost:5000/allusers/filterby/agent/${user?.name}`
             );
             console.log(response.data);
             setListings(response.data);
