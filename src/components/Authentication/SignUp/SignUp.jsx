@@ -1,5 +1,5 @@
 import { UploadOutlined } from "@ant-design/icons";
-import { Button, Form, Input, Upload, message } from "antd";
+import { Button, Checkbox, Form, Input, Upload, message } from "antd";
 import axios from "axios";
 import React, { useContext, useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
@@ -15,13 +15,19 @@ const SignUp = () => {
   const [form] = useForm();
 
   if (user) {
-    if (user.role === "user" || user.role === "spooter") navigate("/");
+    if (user.role === "user" || user.role === "spotter") navigate("/");
     if (user?.role !== "user") navigate("/dashboard");
   }
-  
+
   const onFinish = async (values) => {
     try {
-      const { name, email, password, confirmPassword } = values;
+      const { name, email, password, confirmPassword, remember } =
+        values;
+      console.log("🚀 ~ onFinish ~ termsAndcondition:", remember);
+      if (remember != true) {
+        setError("Please agree to the terms and conditions.");
+        return;
+      }
 
       // Validate password
       if (!/(?=.*[A-Z]).*[a-z]/.test(password)) {
@@ -41,6 +47,7 @@ const SignUp = () => {
       data.append("role", "user");
       data.append("password", confirmPassword);
       data.append("images", fileList[0].originFileObj);
+      data.append("termsAndcondition", remember);
 
       const config = {
         headers: {
@@ -53,7 +60,7 @@ const SignUp = () => {
         await axios.post(url, data, config);
         message.success("Signup successful");
         form.resetFields();
-        navigate('/loginSignup')
+        navigate("/otp");
       } catch (error) {
         console.error("Signup failed:", error);
         message.error("Failed to signup. Please try again later.");
@@ -122,10 +129,9 @@ const SignUp = () => {
                 console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
-                if (userData?.role === "user" || userData?.role === "spooter") {
+                if (userData?.role === "user" || userData?.role === "spotter") {
                   navigate("/");
-                }
-                else{
+                } else {
                   navigate("/dashboard");
                 }
               }
@@ -162,10 +168,9 @@ const SignUp = () => {
           })
           .then(() => {
             message.success("Login successful"); // Display success message
-            if (userData?.role === "user" || userData?.role === "spooter") {
+            if (userData?.role === "user" || userData?.role === "spotter") {
               navigate("/");
-            }
-            else{
+            } else {
               navigate("/dashboard");
             }
           })
@@ -182,7 +187,7 @@ const SignUp = () => {
       <Form
         form={form}
         name="property_signup"
-        initialValues={{ remember: true }}
+        initialValues={{ remember: false }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
       >
@@ -237,6 +242,19 @@ const SignUp = () => {
               Click to upload Image
             </Button>
           </Upload>
+        </Form.Item>
+        <Form.Item
+          name="remember"
+          valuePropName="checked"
+          wrapperCol={{
+            offset: 0,
+            span: 16,
+          }}
+          required
+        >
+          <Checkbox si className="font-medium text-lg text-blue-600 underline">
+            terms of use & all other policies
+          </Checkbox>
         </Form.Item>
         <Form.Item>
           <Button

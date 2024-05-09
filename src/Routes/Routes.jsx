@@ -26,6 +26,7 @@ import ManageListsBySpotter from "../components/DashBoardComponent/AgencyCompone
 import Profiles from "../components/Profiles/Profiles";
 import ManageListBySpotter from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListBySpotter";
 import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
+import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
       {
         path: "/profiles",
         element: <Profiles />,
+      },
+      {
+        path: "/otp",
+        element: <OtpUI />,
       },
     ],
   },
