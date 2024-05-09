@@ -12,7 +12,7 @@ const PropertyCard = ({item}) => {
 
     return (
         <div className="bg-white shadow rounded-xl">
-            <img src={item.image} alt="" />
+            <img src={item.image} alt="" className="rounded-lg h-56" />
             <div className="px-3 py-2.5">
                 <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
                     <span className="text-primary text-2xl">
@@ -50,9 +50,6 @@ const PropertyCard = ({item}) => {
                     </li>
                 </ul>
                 <div className="flex justify-between items-center pt-6 pb-3">
-                    <h3 className="text-primary/80 text-lg font-bold">
-                        $9554.00
-                    </h3>
                     <Link to={"/"} className="text-primary">
                         <svg
                             width="24"
