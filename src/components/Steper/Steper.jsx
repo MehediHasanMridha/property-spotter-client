@@ -253,6 +253,7 @@ const Steper = () => {
                                     type="text"
                                     name="name"
                                     placeholder="Enter your name"
+                                    required
                                     className="border border-black py-3 px-5 w-full"
                                 />
                                 <h1 className="absolute -top-2 left-4 px-1 bg-white text-sm">
@@ -293,6 +294,7 @@ const Steper = () => {
                                         onChange={(e) =>
                                             setProperty(e.target.value)
                                         }
+                                        required
                                         className="select select-bordered"
                                         defaultValue={"Pick one"}
                                     >
@@ -324,6 +326,7 @@ const Steper = () => {
                                         </span>
                                     </div>
                                     <select
+                                    required
                                         value={bedroom}
                                         onChange={(e) =>
                                             setBedroom(e.target.value)
@@ -351,6 +354,7 @@ const Steper = () => {
                                     </div>
                                     <input
                                         type="text"
+                                        required
                                         className="input input-bordered"
                                         placeholder="Enter Address"
                                         value={address}
@@ -369,6 +373,7 @@ const Steper = () => {
                                     </div>
                                     <input
                                         type="file"
+                                        required
                                         name="image"
                                         className="file-input file-input-bordered"
                                         onChange={(e) =>
@@ -386,6 +391,7 @@ const Steper = () => {
                                     </div>
                                     <select
                                         value={bathroom}
+                                        required
                                         onChange={(e) =>
                                             setBathroom(e.target.value)
                                         }
@@ -417,6 +423,7 @@ const Steper = () => {
                                 {!isLastStep &&
                                     property &&
                                     bedroom &&
+                                    image && 
                                     bathroom && (
                                         <button
                                             onClick={handleButtonClick}
@@ -504,6 +511,7 @@ const Steper = () => {
                                     }
                                     type="text"
                                     name="name"
+                                    required
                                     placeholder="John Doe"
                                     className="border border-black py-3 px-5 w-full"
                                 />
@@ -518,6 +526,7 @@ const Steper = () => {
                                     }
                                     type="email"
                                     name="email"
+                                    required
                                     placeholder="shimul@gmail.com "
                                     className="border border-black py-3 px-5 w-full"
                                 />
@@ -531,6 +540,7 @@ const Steper = () => {
                                         setSpooPhone(e.target.value)
                                     }
                                     type="number"
+                                    required
                                     name="mobile"
                                     placeholder="123456789"
                                     className="border border-black py-3 px-5 w-full"

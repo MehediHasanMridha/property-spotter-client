@@ -7,6 +7,7 @@ import Home from "../Pages/Home/Home";
 import ResidentialPage from "../Pages/Residential/Residential";
 import SellPage from "../Pages/Sell/Sell";
 import LoginSignUp from "../components/Authentication/LoginSignUp";
+import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
 import ManageAgent from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgent";
 import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
@@ -23,7 +24,6 @@ import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
-import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 
 export const router = createBrowserRouter([
   {
@@ -32,6 +32,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
+        loader: ()=> fetch("http://localhost:5000/house/houseData"),
         element: <Home />,
       },
       {
