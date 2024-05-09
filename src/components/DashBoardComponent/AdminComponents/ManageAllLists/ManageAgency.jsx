@@ -330,7 +330,7 @@ const ManageAgency = () => {
             <h4 className="text-2xl font-medium">
               Total Agency:{" "}
               <span className="text-3xl text-primary font-bold">
-                {currentAgency.length}
+                {agencyDataFiltered.length}
               </span>
             </h4>
           </div>
@@ -353,7 +353,7 @@ const ManageAgency = () => {
                 </tr>
               </thead>
               <tbody className="text-center">
-                {agencyDataFiltered.map((agencys, index) => (
+                {currentAgency.map((agencys, index) => (
                   <tr key={agencys?._id}>
                     <td>{index + 1}</td>
                     <td>
