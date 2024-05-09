@@ -2,7 +2,10 @@ import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
 
 const PropertyCard = ({item}) => {
-    
+
+    console.log("itemmmmmm",item.image);
+
+
     return (
         <div className="bg-white shadow rounded-xl">
             <img src={item.image} alt="" />
