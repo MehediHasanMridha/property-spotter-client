@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 import { useLoaderData } from "react-router-dom";
@@ -11,19 +11,13 @@ const CommercialPage = () => {
     const [locationValue, setLocationValue] = useState("");
     const [filteredData, setFilteredData] = useState([]);
     const commercialData = useLoaderData();
-    // useEffect(() => {
-    //     fetchData();
-    // }, []);
-    // const fetchData = async () => {
-    //     try {
-    //         const res = await fetch("http://localhost:5000/house/houseData");
-    //         const data = await res.json();
-    //         setCommercialData(data);
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
-    console.log(search);
+    
+    const filterData = (item) => {
+        const searchMatch = item.propertyType.toLowerCase().includes(search.toLowerCase());
+        const locationMatch = item.address.toLowerCase().includes(locationValue.toLowerCase());
+        return (searchMatch && locationMatch) || (search === "" && locationValue === "");
+    };
+    
     return (
         <div>
             <Breadcrumb title={"Commercial"} />
@@ -50,7 +44,7 @@ const CommercialPage = () => {
                                 type="text"
                                 name="location"
                                 id="location"
-                                onChange={(e) => setSearch(e.target.value)}
+                                onChange={(e) => setLocationValue(e.target.value)}
                                 placeholder="Enter Location.."
                             />
                             <CiLocationOn
@@ -67,17 +61,7 @@ const CommercialPage = () => {
                     <div className="px-6 py-5 md:w-3/4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
                             {commercialData
-                                ?.filter((item) => {
-                                    if (search === "") {
-                                        return item;
-                                    } else if (
-                                        item.propertyType
-                                            .toLowerCase()
-                                            .includes(search.toLowerCase())
-                                    ) {
-                                        return item;
-                                    }
-                                })
+                                ?.filter(filterData)
                                 .map((item, idx) => (
                                     <PropertyCard key={idx} item={item} />
                                 ))}
