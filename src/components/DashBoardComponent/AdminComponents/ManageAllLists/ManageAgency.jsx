@@ -78,7 +78,6 @@ const ManageAgency = () => {
     console.log("agentData", agentData);
     setShowAgent(agentData);
   };
-
   // console.log("agencyData",agencyData);
   const handleAgencyDelete = async (email) => {
     try {
@@ -89,7 +88,6 @@ const ManageAgency = () => {
       console.error("Error deleting", error);
     }
   };
-
   //update Agent
   const editAgencyData = (id, agencys) => {
     setUpdateAgency(agencys);
