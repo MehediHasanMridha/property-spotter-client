@@ -1,18 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import { GrUserManager } from "react-icons/gr";
 import { LuMenu, LuX } from "react-icons/lu";
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 
 const Navbar = () => {
   const { user, logOut, loading } = useContext(AuthContext);
   const [scrollY, setScrollY] = useState(0);
   const [isMenuOpen, setIsMenuOPen] = useState(false);
-
-  const handleLogOut = () => {
-    logOut()
-      .then(() => {})
-      .catch((error) => console.log(error));
+  const navigate = useNavigate()
+  const handleLogOut = async () => {
+    await logOut()
+    navigate('/')
   };
   // console.log(user);
   useEffect(() => {

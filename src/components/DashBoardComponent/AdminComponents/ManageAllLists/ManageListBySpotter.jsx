@@ -3,16 +3,15 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../Provider/AuthProvider";
 
-
 const ManageListBySpotter = () => {
-  const { user } = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1);
     const [HousePerPage] = useState(6);
     const [listings, setListings] = useState([]);
     const [selectedHouse, setSelectedHouse] = useState(null);
     useEffect(() => {
-      fetchListingData();
-  }, []);
+        fetchListingData();
+    }, []);
 
     const fetchListingData = async () => {
         try {
@@ -29,7 +28,6 @@ const ManageListBySpotter = () => {
         document.getElementById("my_modal_5").showModal();
         setSelectedHouse(house);
     };
-console.log(listings);
 
     const getBadgeClass = (role) => {
         switch (role) {
@@ -37,6 +35,16 @@ console.log(listings);
                 return "badge-accent";
             case "pending":
                 return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
             default:
                 return "";
         }
@@ -50,19 +58,27 @@ console.log(listings);
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async(id) => {
-      try {
-        const res = await fetch(`http://localhost:5000/house/update/${id}`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({status: "approved", agency: [user.name]})
-        })
-        toast.success("Successfully Updated")
-      } catch (error) {
-        console.log(error);
-      }
+    const houseUpdate = async (e, id) => {
+        try {
+            const value = e.target.innerText.toLowerCase();
+            const res = await fetch(
+                `http://localhost:5000/house/update/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status: value,
+                        agency: [user.name],
+                    }),
+                }
+            );
+            toast.success(`Successfully ${value}`);
+            fetchListingData();
+        } catch (error) {
+            console.log(error);
+        }
     };
 
     return (
@@ -107,122 +123,188 @@ console.log(listings);
                         </thead>
                         <tbody className="text-center">
                             {currentJobs.map((house, index) => (
-                                    <tr key={house?.jobData?._id}>
-                                        <td>{index + 1}</td>
-                                        <td>{house?.spooterName}</td>
-                                        <td>{house?.spooterEmail}</td>
-                                        <td>{house?.houseOwnerName}</td>
-                                        <td>{house?.houseOwnerEmail}</td>
-                                        <td>{house?.houseOwnerPhone}</td>
-                                        <td>
-                                            <div
-                                                className={`px-1 py-1 text-lg rounded-lg  ${getBadgeClass(
-                                                    house?.status
-                                                )} text-white`}
-                                            >
-                                                {house?.status}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {/* Open the modal using document.getElementById('ID').showModal() method */}
-                                            <div className="flex gap-2">
-                                                <button
-                                                    className="btn btn-info"
-                                                    onClick={() =>
-                                                        houseUpdate(house._id)
-                                                    }
-                                                >
-                                                    Approve
-                                                </button>
-                                                <button
-                                                    className="btn btn-info"
-                                                    onClick={() =>
-                                                        handleDetailsClick(
-                                                            house
-                                                        )
-                                                    }
-                                                >
-                                                    Details
-                                                </button>
-                                            </div>
-                                            <dialog
-                                                id="my_modal_5"
-                                                className="modal modal-bottom sm:modal-middle"
-                                            >
-                                                <div className="modal-box">
-                                                    <h3 className="font-bold text-3xl mb-3">
-                                                        House{" "}
-                                                        <span className="text-primary font-bold">
-                                                            Details!
-                                                        </span>
-                                                    </h3>
-                                                    <div className="text-center text-xl">
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Bedroom:
-                                                            </span>{" "}
-                                                            <span className="text-primary font-bold text-2xl">
-                                                                {
-                                                                    selectedHouse?.bedroom
-                                                                }
-                                                            </span>
-                                                        </h1>
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Bathroom:
-                                                            </span>{" "}
-                                                            <span className="text-primary font-bold text-2xl">
-                                                                {
-                                                                    selectedHouse?.bathroom
-                                                                }
-                                                            </span>
-                                                        </h1>
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Sell Time:
-                                                            </span>{" "}
-                                                            <span className="text-primary font-bold text-2xl">
-                                                                {
-                                                                    selectedHouse?.sellTime
-                                                                }
-                                                            </span>
-                                                        </h1>
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Agency:
-                                                            </span>
-                                                            {selectedHouse?.agency.map(
-                                                                (
-                                                                    agencyItem,
-                                                                    index
-                                                                ) => (
-                                                                    <span
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        className="text-primary font-bold text-2xl ml-2"
-                                                                    >
-                                                                        {
-                                                                            agencyItem
-                                                                        }
-                                                                        ,
-                                                                    </span>
+                                <tr key={house?.jobData?._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{house?.spooterName}</td>
+                                    <td>{house?.spooterEmail}</td>
+                                    <td>{house?.houseOwnerName}</td>
+                                    <td>{house?.houseOwnerEmail}</td>
+                                    <td>{house?.houseOwnerPhone}</td>
+                                    <td>
+                                        <div
+                                            className={`px-1 py-1 text-lg rounded-lg  ${getBadgeClass(
+                                                house?.status
+                                            )} text-white`}
+                                        >
+                                            {house?.status}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {/* Open the modal using document.getElementById('ID').showModal() method */}
+                                        <div className="flex gap-2">
+                                            <details className="dropdown">
+                                                <summary className="m-1 btn btn-primary">
+                                                    Action
+                                                </summary>
+                                                <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
                                                                 )
-                                                            )}
-                                                        </h1>
-                                                    </div>
-                                                    <div className="modal-action">
-                                                        <form method="dialog">
-                                                            <button className="btn btn-error">
-                                                                Close
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                                            }
+                                                        >
+                                                            Approved
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Sold
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Hold
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            PENDING MANDATE
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Pending
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            PENDING CONTACT WITH
+                                                            CLIENT
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </details>
+                                            <button
+                                                className="btn btn-info"
+                                                onClick={() =>
+                                                    handleDetailsClick(house)
+                                                }
+                                            >
+                                                Details
+                                            </button>
+                                        </div>
+                                        <dialog
+                                            id="my_modal_5"
+                                            className="modal modal-bottom sm:modal-middle"
+                                        >
+                                            <div className="modal-box">
+                                                <h3 className="font-bold text-3xl mb-3">
+                                                    House{" "}
+                                                    <span className="text-primary font-bold">
+                                                        Details!
+                                                    </span>
+                                                </h3>
+                                                <div className="text-center text-xl">
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Bedroom:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.bedroom
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Bathroom:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.bathroom
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Sell Time:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.sellTime
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Agency:
+                                                        </span>
+                                                        {selectedHouse?.agency.map(
+                                                            (
+                                                                agencyItem,
+                                                                index
+                                                            ) => (
+                                                                <span
+                                                                    key={index}
+                                                                    className="text-primary font-bold text-2xl ml-2"
+                                                                >
+                                                                    {agencyItem}
+                                                                    ,
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </h1>
                                                 </div>
-                                            </dialog>
-                                        </td>
-                                    </tr>
-                                ))}
+                                                <div className="modal-action">
+                                                    <form method="dialog">
+                                                        <button className="btn btn-error">
+                                                            Close
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </dialog>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
@@ -269,4 +351,4 @@ console.log(listings);
         </div>
     );
 };
-export default ManageListBySpotter
+export default ManageListBySpotter;
