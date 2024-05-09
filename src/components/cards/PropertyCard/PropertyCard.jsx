@@ -1,9 +1,6 @@
 import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
-import Slider from "../PropertyCard/Slider";
-import { useEffect, useState } from "react";
-import axios from "axios";
 
 const PropertyCard = ({item}) => {
 
@@ -50,6 +47,9 @@ const PropertyCard = ({item}) => {
                     </li>
                 </ul>
                 <div className="flex justify-between items-center pt-6 pb-3">
+                    <h3 className="text-primary/80 text-lg font-bold">
+                        $9554.00
+                    </h3>
                     <Link to={"/"} className="text-primary">
                         <svg
                             width="24"

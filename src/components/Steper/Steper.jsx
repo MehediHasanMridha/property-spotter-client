@@ -31,30 +31,28 @@ const Steper = () => {
 
     useEffect(() => {
         fetchAgent();
-      }, []);
-    
-      const fetchAgent = async () => {
+    }, []);
+
+    const fetchAgent = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/allusers");
-          setAllAgency(response.data);
+            const response = await axios.get("http://localhost:5000/allusers");
+            setAllAgency(response.data);
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      };
-    
-    
-  // Options for React Select component
-  const options = allAgency.map((agency) => ({
-    value: agency.agencyName,
-    label: agency.agencyName,
-}));
+    };
 
-// Handle selection of agencies
-const handleAgencySelect = (selectedOptions) => {
-    const selectedValues = selectedOptions.map((option) => option.value);
-    setSelectedAgencies(selectedValues);
-};
+    // Options for React Select component
+    const options = allAgency.map((agency) => ({
+        value: agency.agencyName,
+        label: agency.agencyName,
+    }));
 
+    // Handle selection of agencies
+    const handleAgencySelect = (selectedOptions) => {
+        const selectedValues = selectedOptions.map((option) => option.value);
+        setSelectedAgencies(selectedValues);
+    };
 
     const previousStep = () => {
         setActiveStep(activeStep - 1);
@@ -67,7 +65,6 @@ const handleAgencySelect = (selectedOptions) => {
     };
 
     console.log(spooEmail, spooName);
-
 
     const isLastStep = activeStep === 4;
 
@@ -113,36 +110,40 @@ const handleAgencySelect = (selectedOptions) => {
         if (isLastStep) {
             console.log("done");
             const formData = new FormData();
-            formData.append('spooterName', name);
-            formData.append('spooterEmail', user?.email);
-            formData.append('status', 'pending');
-            formData.append('bedroom', bedroom);
-            formData.append('address', address);
-            formData.append('image', image); 
-            formData.append('propertyType', property);
-            formData.append('bathroom', bathroom);
-            formData.append('previousStep', previousStep);
-            formData.append('sellTime', sellTime);
-            formData.append('houseOwnerName', spooName);
-            formData.append('houseOwnerEmail', spooEmail);
-            formData.append('houseOwnerPhone', spooPhone);
+            formData.append("spooterName", name);
+            formData.append("spooterEmail", user?.email);
+            formData.append("status", "pending");
+            formData.append("bedroom", bedroom);
+            formData.append("address", address);
+            formData.append("image", image);
+            formData.append("propertyType", property);
+            formData.append("bathroom", bathroom);
+            formData.append("previousStep", previousStep);
+            formData.append("sellTime", sellTime);
+            formData.append("houseOwnerName", spooName);
+            formData.append("houseOwnerEmail", spooEmail);
+            formData.append("houseOwnerPhone", spooPhone);
             selectedAgencies.forEach((agency) => {
-                formData.append('agency', agency);
+                formData.append("agency", agency);
             });
-    
+
             try {
-                const res = await axios.post("http://localhost:5000/house/add", formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
+                const res = await axios.post(
+                    "http://localhost:5000/house/add",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
                     }
-                });
+                );
                 toast.success("Form submitted successfully");
                 console.log(res.data);
                 if (res.data._id) {
                     toast.success("Form submitted successfully", data);
                 }
             } catch (error) {
-                console.error('Error submitting form:', error);
+                console.error("Error submitting form:", error);
             }
         } else {
             nextStep();
@@ -161,7 +162,7 @@ const handleAgencySelect = (selectedOptions) => {
                 )
             );
     }, []);
-    
+
     return (
         <div className="max-w-3xl mx-auto rounded-lg">
             <div className="py-10">
@@ -304,6 +305,9 @@ const handleAgencySelect = (selectedOptions) => {
                                         </option>
                                         <option value={"townhouse"}>
                                             Townhouse
+                                        </option>
+                                        <option value={"residential"}>
+                                            Residential
                                         </option>
                                         <option value={"farm"}>Farm</option>
                                         <option value={"commercial property"}>
@@ -574,14 +578,16 @@ const handleAgencySelect = (selectedOptions) => {
                                         Select Organization
                                     </label>
                                     <Select
-                isMulti
-                options={options}
-                onChange={handleAgencySelect}
-                value={selectedAgencies.map((agency) => ({
-                    value: agency,
-                    label: agency,
-                }))}
-            />
+                                        isMulti
+                                        options={options}
+                                        onChange={handleAgencySelect}
+                                        value={selectedAgencies.map(
+                                            (agency) => ({
+                                                value: agency,
+                                                label: agency,
+                                            })
+                                        )}
+                                    />
                                 </div>
                             )}
                             <div className="flex justify-between items-center gap-5 py-10">

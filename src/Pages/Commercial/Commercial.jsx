@@ -1,11 +1,29 @@
-import { BiBuildingHouse } from "react-icons/bi";
+import { useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
+import { useLoaderData } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
 
 const CommercialPage = () => {
+    const [search, setSearch] = useState("");
+    const [locationValue, setLocationValue] = useState("");
+    const [filteredData, setFilteredData] = useState([]);
+    const commercialData = useLoaderData();
+    // useEffect(() => {
+    //     fetchData();
+    // }, []);
+    // const fetchData = async () => {
+    //     try {
+    //         const res = await fetch("http://localhost:5000/house/houseData");
+    //         const data = await res.json();
+    //         setCommercialData(data);
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
+    console.log(search);
     return (
         <div>
             <Breadcrumb title={"Commercial"} />
@@ -18,6 +36,7 @@ const CommercialPage = () => {
                                 type="search"
                                 name="search"
                                 id="search"
+                                onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search Here ..."
                             />
                             <IoSearch
@@ -31,26 +50,10 @@ const CommercialPage = () => {
                                 type="text"
                                 name="location"
                                 id="location"
+                                onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Enter Location.."
                             />
                             <CiLocationOn
-                                className="absolute top-3 left-2 text-primary"
-                                size={20}
-                            />
-                        </div>
-                        <div className="relative">
-                            <select
-                                className="bg-primary/10 text-sm outline-none rounded-lg px-10 py-2.5 w-full"
-                                type="text"
-                                name="location"
-                                id="location"
-                                defaultValue={"default"}
-                            >
-                                <option value="default">Select Type</option>
-                                <option value="commercial">Commercial</option>
-                                <option value="residential">Residential</option>
-                            </select>
-                            <BiBuildingHouse
                                 className="absolute top-3 left-2 text-primary"
                                 size={20}
                             />
@@ -63,9 +66,21 @@ const CommercialPage = () => {
                     </div>
                     <div className="px-6 py-5 md:w-3/4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
-                            {Array.from({ length: 6 }, (_, idx) => (
-                                <PropertyCard key={idx} />
-                            ))}
+                            {commercialData
+                                ?.filter((item) => {
+                                    if (search === "") {
+                                        return item;
+                                    } else if (
+                                        item.propertyType
+                                            .toLowerCase()
+                                            .includes(search.toLowerCase())
+                                    ) {
+                                        return item;
+                                    }
+                                })
+                                .map((item, idx) => (
+                                    <PropertyCard key={idx} item={item} />
+                                ))}
                         </div>
                     </div>
                 </div>

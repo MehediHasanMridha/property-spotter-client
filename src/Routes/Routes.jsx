@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import Dashboard from "../Layout/Dashboard/Dashboard";
 import Main from "../Layout/Main";
 import BuyPage from "../Pages/Buy/Buy";
 import CommercialPage from "../Pages/Commercial/Commercial";
@@ -6,26 +7,22 @@ import Home from "../Pages/Home/Home";
 import ResidentialPage from "../Pages/Residential/Residential";
 import SellPage from "../Pages/Sell/Sell";
 import LoginSignUp from "../components/Authentication/LoginSignUp";
-import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
-import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
-import Dashboard from "../Layout/Dashboard/Dashboard";
-import ManageArea from "../components/DashBoardComponent/AdminComponents/ManageArea/ManageArea";
-import SoopReg from "../components/SpooterRegistra/SoopReg";
 import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
 import ManageAgent from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgent";
+import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
+import ManageListBySpotter from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListBySpotter";
 import ManageSpotters from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageSpotters";
-import Profile from "../components/DashBoardComponent/AdminComponents/ManageAllLists/Profile";
-import AgentProfile from "../components/DashBoardComponent/AgentCoomponents/AgentProfile";
-import PendingSpottedLIst from "../components/DashBoardComponent/AgentCoomponents/PendingSpottedLIst";
-import ManageLIstings from "../components/DashBoardComponent/AgentCoomponents/ManageLIstings";
+import ManageArea from "../components/DashBoardComponent/AdminComponents/ManageArea/ManageArea";
 import ManageListing from "../components/DashBoardComponent/AgencyComponents/ManageListing";
 import ManageListsByAgent from "../components/DashBoardComponent/AgencyComponents/ManageListsByAgent";
-import AgencyProfile from "../components/DashBoardComponent/AgencyComponents/AgencyProfile";
-import PendingSpottedLists from "../components/DashBoardComponent/AgencyComponents/PendingSpottedLists";
 import ManageListsBySpotter from "../components/DashBoardComponent/AgencyComponents/ManageListsBySpotter";
+import PendingSpottedLists from "../components/DashBoardComponent/AgencyComponents/PendingSpottedLists";
+import ManageLIstings from "../components/DashBoardComponent/AgentCoomponents/ManageLIstings";
+import PendingSpottedLIst from "../components/DashBoardComponent/AgentCoomponents/PendingSpottedLIst";
+import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
+import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Profiles from "../components/Profiles/Profiles";
-import ManageListBySpotter from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListBySpotter";
-import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
+import SoopReg from "../components/SpooterRegistra/SoopReg";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +47,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/commercial",
+        loader: ()=> fetch("http://localhost:5000/house/houseData"),
         element: <CommercialPage />,
       },
       {
