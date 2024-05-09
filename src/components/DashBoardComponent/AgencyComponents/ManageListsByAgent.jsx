@@ -71,8 +71,8 @@ const ManageListsByAgent = () => {
         formData.append("password", e.target.password.value);
         formData.append("role", "agent");
         formData.append("images", showName);
-        formData.append("agencyBy", user?.email);
-
+        formData.append("agencyName", user?.name);
+        
         try {
             const res = await fetch("http://localhost:5000/signup", {
                 method: "POST",
@@ -477,7 +477,7 @@ const ManageListsByAgent = () => {
                                     type="text"
                                     name="name"
                                     placeholder="Name"
-                                    value={editAgentData?.name}
+                                    defaultValue={editAgentData?.name}
                                     className="border border-black py-3 px-5 w-full"
                                 />
                                 <h1 className="absolute -top-2 left-4 px-1 bg-white text-sm">
@@ -489,7 +489,7 @@ const ManageListsByAgent = () => {
                                     type="text"
                                     name="email"
                                     placeholder="Email"
-                                    value={editAgentData?.email}
+                                    defaultValue={editAgentData?.email}
                                     className="border border-black py-3 px-5 w-full"
                                 />
                                 <h1 className="absolute -top-2 left-4 px-1 bg-white text-sm">
