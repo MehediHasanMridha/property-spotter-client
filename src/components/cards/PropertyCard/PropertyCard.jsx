@@ -7,7 +7,7 @@ import axios from "axios";
 
 const PropertyCard = ({item}) => {
 
-    console.log(item);
+    console.log("itemmmmmm",item.image);
 
 
     return (
