@@ -12,7 +12,7 @@ const Steper = () => {
     const [selectedOptionSelector, setSelectedOptionSelector] = useState("");
     const [access, setAccess] = useState(false);
     const [agencyList, setAgencyList] = useState([]);
-
+    const [selectedAgencies, setSelectedAgencies] = useState([]);
     const [title, setTitle] = useState("");
     const [name, setName] = useState(null);
     const [property, setProperty] = useState("");
@@ -31,21 +31,29 @@ const Steper = () => {
 
     useEffect(() => {
         fetchAgent();
-      }, []);
-    
-      const fetchAgent = async () => {
+    }, []);
+
+    const fetchAgent = async () => {
         try {
-          const response = await axios.get("http://localhost:5000/allusers");
-          setAllAgency(response.data);
+            const response = await axios.get("http://localhost:5000/allusers");
+            setAllAgency(response.data);
         } catch (error) {
-          console.error(error);
+            console.error(error);
         }
-      };
-    
-    
-      const agencyNames = allAgency.map(agent => agent.agencyName);
-console.log("agencyNames: ", agencyNames);
-const options = agencyNames.map(name => ({ value: name, label: name }));
+    };
+
+    // Options for React Select component
+    const options = allAgency.map((agency) => ({
+        value: agency.agencyName,
+        label: agency.agencyName,
+    }));
+
+    // Handle selection of agencies
+    const handleAgencySelect = (selectedOptions) => {
+        const selectedValues = selectedOptions.map((option) => option.value);
+        setSelectedAgencies(selectedValues);
+    };
+
     const previousStep = () => {
         setActiveStep(activeStep - 1);
         setAccess(false);
@@ -57,12 +65,6 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
     };
 
     console.log(spooEmail, spooName);
-
-    const handleAgencySelect = (selectedOptions) => {
-        const selectedValues = selectedOptions.map((option) => option.value);
-        console.log(selectedValues);
-        setAgency(selectedValues);
-    };
 
     const isLastStep = activeStep === 4;
 
@@ -108,33 +110,40 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
         if (isLastStep) {
             console.log("done");
             const formData = new FormData();
-            formData.append('spooterName', name);
-            formData.append('spooterEmail', user?.email);
-            formData.append('status', 'pending');
-            formData.append('bedroom', bedroom);
-            formData.append('address', address);
-            formData.append('image', image); 
-            formData.append('propertyType', property);
-            formData.append('bathroom', bathroom);
-            formData.append('previousStep', previousStep);
-            formData.append('sellTime', sellTime);
-            formData.append('houseOwnerName', spooName);
-            formData.append('houseOwnerEmail', spooEmail);
-            formData.append('houseOwnerPhone', spooPhone);
-            formData.append('agency', selectedAgency === "Yes" ? agency : ["first", "second", "all"]);
-    
+            formData.append("spooterName", name);
+            formData.append("spooterEmail", user?.email);
+            formData.append("status", "pending");
+            formData.append("bedroom", bedroom);
+            formData.append("address", address);
+            formData.append("image", image);
+            formData.append("propertyType", property);
+            formData.append("bathroom", bathroom);
+            formData.append("previousStep", previousStep);
+            formData.append("sellTime", sellTime);
+            formData.append("houseOwnerName", spooName);
+            formData.append("houseOwnerEmail", spooEmail);
+            formData.append("houseOwnerPhone", spooPhone);
+            selectedAgencies.forEach((agency) => {
+                formData.append("agency", agency);
+            });
+
             try {
-                const res = await axios.post("http://localhost:5000/house/add", formData, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data'
+                const res = await axios.post(
+                    "http://localhost:5000/house/add",
+                    formData,
+                    {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
                     }
-                });
+                );
+                toast.success("Form submitted successfully");
                 console.log(res.data);
                 if (res.data._id) {
                     toast.success("Form submitted successfully", data);
                 }
             } catch (error) {
-                console.error('Error submitting form:', error);
+                console.error("Error submitting form:", error);
             }
         } else {
             nextStep();
@@ -153,7 +162,7 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                 )
             );
     }, []);
-    
+
     return (
         <div className="max-w-3xl mx-auto rounded-lg">
             <div className="py-10">
@@ -165,7 +174,7 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                             <span
                                 className={`absolute -bottom-[1.75rem] start-0 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
                                     activeStep === 1
-                                        ? "bg-[#5D656A] text-white"
+                                        ? "bg-blue-500 text-white"
                                         : "bg-white"
                                 }`}
                             >
@@ -184,7 +193,7 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                             <span
                                 className={`absolute -bottom-[1.75rem] -ml-10  border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
                                     activeStep === 2
-                                        ? "bg-[#5D656A] text-white"
+                                        ? "bg-blue-500 text-white"
                                         : "bg-white"
                                 }`}
                             >
@@ -202,7 +211,7 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                             <span
                                 className={`absolute -bottom-[1.75rem] ml-16 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
                                     activeStep === 3
-                                        ? "bg-[#5D656A] text-white"
+                                        ? "bg-blue-500  text-white"
                                         : "bg-white"
                                 }`}
                             >
@@ -218,12 +227,12 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                             <span
                                 className={`absolute -bottom-[1.75rem] end-0 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
                                     activeStep === 4
-                                        ? "bg-[#5D656A] text-white"
+                                        ? "bg-blue-500 text-white"
                                         : "bg-white"
                                 }`}
                             >
                                 {activeStep === 5 ? (
-                                    <IoIosCheckmarkCircle className="h-6 w-6 text-[#5D656A]" />
+                                    <IoIosCheckmarkCircle className="h-6 w-6 text-white" />
                                 ) : (
                                     <h1>4</h1>
                                 )}
@@ -296,6 +305,9 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                                         </option>
                                         <option value={"townhouse"}>
                                             Townhouse
+                                        </option>
+                                        <option value={"residential"}>
+                                            Residential
                                         </option>
                                         <option value={"farm"}>Farm</option>
                                         <option value={"commercial property"}>
@@ -566,13 +578,15 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                                         Select Organization
                                     </label>
                                     <Select
-                                       defaultValue={options} // Set default value to display selected agencies
-                                       isMulti
-                                       name="agency"
-                                       options={options} // Set options with value and label properties
-                                       className=""
-                                       classNamePrefix="select"
-                                       onChange={handleAgencySelect}
+                                        isMulti
+                                        options={options}
+                                        onChange={handleAgencySelect}
+                                        value={selectedAgencies.map(
+                                            (agency) => ({
+                                                value: agency,
+                                                label: agency,
+                                            })
+                                        )}
                                     />
                                 </div>
                             )}
@@ -593,7 +607,7 @@ const options = agencyNames.map(name => ({ value: name, label: name }));
                                             selectedAgency !== null) && (
                                             <button
                                                 onClick={handleButtonClick}
-                                                className="bg-[#AEB2B4] px-10 text-white py-2 rounded "
+                                                className="bg-blue-500 px-10 text-white py-2 rounded "
                                             >
                                                 Active
                                             </button>

@@ -33,6 +33,7 @@ const ManageAgency = () => {
       if (response.status === 201) {
         toast.success("Added successfully");
         fetchAgency();
+        setOpenModal(false)
       } else if (
         response.status === 400 &&
         response.data.error === "Email already exists"
@@ -124,6 +125,7 @@ const ManageAgency = () => {
       } else {
         toast.error(response.data.message || "Failed to update profile");
       }
+      
     } catch (error) {
       console.error("Update failed:", error);
       toast.error("Failed to update. Please try again later.");
