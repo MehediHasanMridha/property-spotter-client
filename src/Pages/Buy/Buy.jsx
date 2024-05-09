@@ -1,7 +1,6 @@
 import { BiBuildingHouse } from "react-icons/bi";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
-import Container from "../../components/Container/Container";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -149,8 +148,8 @@ const BuyPage = () => {
             </button>
           </div>
                 </div>
-            </Container>
-        </div>
+
+   
     );
 };
 
