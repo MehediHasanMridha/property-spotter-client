@@ -43,6 +43,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/residential",
+        loader: ()=> fetch("http://localhost:5000/house/houseData"),
         element: <ResidentialPage />,
       },
       {
