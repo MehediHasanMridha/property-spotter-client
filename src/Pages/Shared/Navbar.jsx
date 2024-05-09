@@ -14,7 +14,7 @@ const Navbar = () => {
       .then(() => {})
       .catch((error) => console.log(error));
   };
-  console.log(user);
+  // console.log(user);
   useEffect(() => {
     const handleScroll = () => {
       return setScrollY(window.scrollY);

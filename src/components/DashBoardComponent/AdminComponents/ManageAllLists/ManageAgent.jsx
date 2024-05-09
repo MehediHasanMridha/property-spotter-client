@@ -184,7 +184,7 @@ const ManageAgent = () => {
                 : "-translate-y-20 opacity-0 duration-150"
             }`}
           >
-            <form enctype="multipart/form-data"
+            <form 
               onSubmit={handleManageAgent}
               className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10 h-96 overflow-y-scroll"
             >

@@ -1,8 +1,28 @@
+import { useEffect, useState } from "react";
 import Container from "../../components/Container/Container";
 import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
+import axios from "axios";
 
 const ReducedPrice = () => {
+    const [listings, setListings] = useState([]);
+ 
+    useEffect(() => {
+      fetchListingData();
+  }, []);
+
+    const fetchListingData = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:5000/house/houseData"
+            );
+            setListings(response.data);
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        }
+    };
+
+    // console.log(listings);
     return (
         <section className="bg-white py-10 px-6 md:px-0">
             <SectionTitle
@@ -11,9 +31,13 @@ const ReducedPrice = () => {
             />
             <Container>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10">
-                    {Array.from({ length: 6 }, (_, idx) => (
-                        <PropertyCard key={idx} />
-                    ))}
+                 {
+                    listings.map((item)=>
+                        <PropertyCard key={item._id} item={item}/>
+                    )
+                    }
+                       
+                   
                 </div>
             </Container>
         </section>
