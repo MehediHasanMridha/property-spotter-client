@@ -2,14 +2,20 @@ import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import Slider from "../PropertyCard/Slider";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
-const PropertyCard = () => {
+const PropertyCard = ({item}) => {
+
+    console.log(item);
+
+
     return (
         <div className="bg-white shadow rounded-xl">
-            <Slider />
+            <img src={item.image} alt="" />
             <div className="px-3 py-2.5">
                 <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
-                    <span class="text-primary text-2xl">
+                    <span className="text-primary text-2xl">
                         <svg
                             width="18"
                             height="18"
@@ -28,23 +34,19 @@ const PropertyCard = () => {
                             ></path>
                         </svg>
                     </span>{" "}
-                    Dhaka, Bangladesh
+                    {item.address}
                 </h3>
-                <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3">
-                    Merrick in Spring Way
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 uppercase">
+                {item.propertyType}
                 </h2>
                 <ul className="flex justify-between text-gray-700">
                     <li className="space-x-2">
                         <LuBedDouble className="inline" />
-                        <span>Bed: 04</span>
+                        <span>Bed:{item.bedroom}</span>
                     </li>
                     <li className="space-x-2">
                         <LiaToiletSolid className="inline" />
-                        <span>Births: 01</span>
-                    </li>
-                    <li className="space-x-2">
-                        <LuBedDouble className="inline" />
-                        <span>Rooms: 04</span>
+                        <span>Births:{item.bathroom}</span>
                     </li>
                 </ul>
                 <div className="flex justify-between items-center pt-6 pb-3">
