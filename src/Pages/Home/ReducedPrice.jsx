@@ -13,7 +13,7 @@ const ReducedPrice = ({ mainData, filterData}) => {
             />
             <Container>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10">
-                    {mainData.slice(0, 6).filter(filterData).map((item) => (
+                    {mainData.filter(filterData).slice(0, 6).map((item) => (
                         <PropertyCard key={item._id} item={item} />
                     ))}
                 </div>
