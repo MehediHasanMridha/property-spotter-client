@@ -2,6 +2,7 @@ import { PiHouseLight } from "react-icons/pi";
 
 import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
+import { Link } from "react-router-dom";
 import BannerImage from "../../assets/images/banner.svg";
 
 const Banner = ({ search, setSearch, mainData, filterData }) => {
@@ -40,8 +41,8 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                         {mainData.length > 0 &&
                             mainData.filter(filterData).map((item, idx) => (
                                 <li key={idx}>
-                                    <a
-                                        href="#reduceprice"
+                                    <Link
+                                        to={`/property-details/${item._id}`}
                                         className="flex justify-between items-center gap-3 py-2 px-5"
                                     >
                                         <img
@@ -62,7 +63,7 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                                                 Births:{item.bathroom}
                                             </h3>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                     </ul>
