@@ -1,5 +1,5 @@
-import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../../Provider/AuthProvider';
 const stringToColor = (str) => {
   let hash = 0;
@@ -119,7 +119,7 @@ useEffect(()=>{
                   <td>
   
                     <button
-                      className="btn btn-info text-base"
+                      className="btn btn-info whitespace-nowrap text-base"
                       onClick={() => handleDetailsClick(house)}
                     >
                      Agency ({house.agency.length})

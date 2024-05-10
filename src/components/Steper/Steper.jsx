@@ -8,7 +8,7 @@ import { AuthContext } from "../../Provider/AuthProvider";
 
 const Steper = () => {
     const [activeStep, setActiveStep] = useState(1);
-    const [selectedOption, setSelectedOption] = useState("");
+    const [description, setDescription] = useState("");
     const [selectedOptionSelector, setSelectedOptionSelector] = useState("");
     const [access, setAccess] = useState(false);
     const [agencyList, setAgencyList] = useState([]);
@@ -64,57 +64,20 @@ const Steper = () => {
         setAccess(false);
     };
 
-    console.log(spooEmail, spooName);
+    console.log(selectedAgencies);
 
     const isLastStep = activeStep === 4;
-
-    console.log(selectedAgency);
-
-    // const handleButtonClick = async () => {
-    //     if (isLastStep) {
-    //         console.log("done");
-    //         const data = {
-    //             spooterName: name,
-    //             spooterEmail: user?.email,
-    //             status: "pending",
-    //             bedroom,
-    //             address,
-    //             image,
-    //             propertyType: property,
-    //             bathroom,
-    //             previousStep,
-    //             sellTime,
-    //             houseOwnerName: spooName,
-    //             houseOwnerEmail: spooEmail,
-    //             houseOwnerPhone: spooPhone,
-    //             agency:
-    //                 selectedAgency === "Yes"
-    //                     ? agency
-    //                     : ["first", "second", "all"],
-    //         };
-    //         console.log("data",data);
-    //         const res = await axios.post(
-    //             "http://localhost:5000/house/add",
-    //             data
-    //         );
-    //         console.log(res.data);
-    //         if (res.data._id) {
-    //             toast.success("Form submitted successfully", data);
-    //         }
-    //     } else {
-    //         nextStep();
-    //     }
-    // };
-
+    
     const handleButtonClick = async () => {
         if (isLastStep) {
             console.log("done");
             const formData = new FormData();
             formData.append("spooterName", name);
             formData.append("spooterEmail", user?.email);
-            formData.append("status", "pending");
+            formData.append("status", "offer pending");
             formData.append("bedroom", bedroom);
             formData.append("address", address);
+            formData.append("description", description);
             formData.append("image", image);
             formData.append("propertyType", property);
             formData.append("bathroom", bathroom);
@@ -123,9 +86,13 @@ const Steper = () => {
             formData.append("houseOwnerName", spooName);
             formData.append("houseOwnerEmail", spooEmail);
             formData.append("houseOwnerPhone", spooPhone);
-            selectedAgencies.forEach((agency) => {
-                formData.append("agency", agency);
-            });
+            if (selectedAgencies > 0) {
+                selectedAgencies.forEach((agency) => {
+                    formData.append("agency", agency);
+                });
+            } else {
+                formData.append("agency", ["admin"])
+            }
 
             try {
                 const res = await axios.post(
@@ -138,10 +105,6 @@ const Steper = () => {
                     }
                 );
                 toast.success("Form submitted successfully");
-                console.log(res.data);
-                if (res.data._id) {
-                    toast.success("Form submitted successfully", data);
-                }
             } catch (error) {
                 console.error("Error submitting form:", error);
             }
@@ -326,7 +289,7 @@ const Steper = () => {
                                         </span>
                                     </div>
                                     <select
-                                    required
+                                        required
                                         value={bedroom}
                                         onChange={(e) =>
                                             setBedroom(e.target.value)
@@ -362,6 +325,25 @@ const Steper = () => {
                                             setAddress(e.target.value)
                                         }
                                     />
+                                </label>
+                            </div>
+                            <div>
+                                <label className="form-control w-[400px]">
+                                    <div className="label">
+                                        <span className="label-text">
+                                            Description
+                                        </span>
+                                    </div>
+                                    <textarea
+                                        type="text"
+                                        required
+                                        className="textarea textarea-bordered"
+                                        placeholder="Enter Description"
+                                        value={description}
+                                        onChange={(e) =>
+                                            setDescription(e.target.value)
+                                        }
+                                    ></textarea>
                                 </label>
                             </div>
                             <div>
@@ -423,7 +405,8 @@ const Steper = () => {
                                 {!isLastStep &&
                                     property &&
                                     bedroom &&
-                                    image && 
+                                    image &&
+                                    description &&
                                     bathroom && (
                                         <button
                                             onClick={handleButtonClick}
