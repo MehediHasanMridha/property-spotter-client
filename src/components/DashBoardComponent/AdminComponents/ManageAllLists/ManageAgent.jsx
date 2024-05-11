@@ -56,16 +56,23 @@ const ManageAgent = () => {
         fetchAgentData();
     }, [user]);
 
+
     const getBadgeClass = (role) => {
         switch (role) {
-            case "blue":
-                return "badge-primary";
-            case "red":
-                return "badge-error";
-            case "purple":
-                return "badge-info";
-            case "orange":
+            case "approved":
+                return "badge-accent";
+            case "pending":
                 return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
             default:
                 return "";
         }

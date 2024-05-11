@@ -27,6 +27,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             path: "/dashboard/ManageAllListings",
             childrens: [
                 {
+                    title: "Manage listings by Admin",
+                    icon: "uBuilding",
+                    path: "/dashboard/ManageAllListings/manageListingByAdmin",
+                },
+                {
                     title: "Manage listing by Agency",
                     icon: "uBuilding",
                     path: "/dashboard/ManageAllListings/manageListingByAgency",

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../Provider/AuthProvider";
 
-const ManageListBySpotter = () => {
+const ManageListByAdmin = () => {
     const { user } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1);
     const [HousePerPage] = useState(6);
@@ -16,7 +16,7 @@ const ManageListBySpotter = () => {
     const fetchListingData = async () => {
         try {
             const response = await axios.get(
-                "http://localhost:5000/house/houseData"
+                "http://localhost:5000/house/houseDataByAdmin"
             );
             setListings(response.data);
         } catch (error) {
@@ -70,7 +70,9 @@ const ManageListBySpotter = () => {
                     },
                     body: JSON.stringify({
                         status: value,
-                        agency: [user.name],
+                        agencyName: user.name,
+                        agencyEmail: user.email,
+                        agencyImage: user.photoURL,
                     }),
                 }
             );
@@ -132,7 +134,7 @@ const ManageListBySpotter = () => {
                                     <td>{house?.houseOwnerPhone}</td>
                                     <td>
                                         <div
-                                            className={`px-1 py-1 text-lg rounded-lg  ${getBadgeClass(
+                                            className={`px-2 py-1 capitalize text-lg rounded-lg  ${getBadgeClass(
                                                 house?.status
                                             )} text-white`}
                                         >
@@ -142,7 +144,7 @@ const ManageListBySpotter = () => {
                                     <td>
                                         {/* Open the modal using document.getElementById('ID').showModal() method */}
                                         <div className="flex gap-2">
-                                            {/* <details className="dropdown">
+                                            <details className="dropdown">
                                                 <summary className="m-1 btn btn-primary">
                                                     Action
                                                 </summary>
@@ -233,7 +235,7 @@ const ManageListBySpotter = () => {
                                                         </button>
                                                     </li>
                                                 </ul>
-                                            </details> */}
+                                            </details>
                                             <button
                                                 className="btn btn-info"
                                                 onClick={() =>
@@ -363,4 +365,4 @@ const ManageListBySpotter = () => {
         </div>
     );
 };
-export default ManageListBySpotter;
+export default ManageListByAdmin;

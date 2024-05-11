@@ -59,6 +59,10 @@ const ManageSpottedListings = () => {
         fetchData();
     }, [user?.email]);
 
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
+      
     if (loading) {
         return <Loading />;
     }

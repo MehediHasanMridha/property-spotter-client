@@ -1,23 +1,24 @@
+import { useEffect } from "react";
 import {
-    FaFacebook,
-    FaLinkedin,
     FaRegCalendarAlt,
-    FaTag,
-    FaTwitter,
+    FaTag
 } from "react-icons/fa";
 import { LuBedDouble } from "react-icons/lu";
+import { MdOutlineTimer } from "react-icons/md";
 import { useLoaderData } from "react-router-dom";
 
 const PropertyDetails = () => {
     const propertyData = useLoaderData();
-    console.log(propertyData);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     return (
         <div className="max-w-screen-2xl mx-auto">
             <div className=" w-[80%] mx-auto my-28">
                 {/* Detais part */}
                 <img
                     className="w-full rounded-3xl md:h-[600px] h-[400px]"
-                    src={propertyData.image}
+                    src={propertyData?.image}
                     alt=""
                 />
                 <div>
@@ -25,7 +26,7 @@ const PropertyDetails = () => {
                         <p className=" text-xl flex items-center justify-center gap-2">
                             <FaRegCalendarAlt className=" text-primary"></FaRegCalendarAlt>
                             <span className=" hover:text-primary uppercase text-sm">
-                                {propertyData.sellTime}
+                                {new Date(propertyData?.createAt).toDateString()}
                             </span>
                         </p>
                         <p className=" md:text-xl flex justify-center items-center gap-2">
@@ -49,7 +50,7 @@ const PropertyDetails = () => {
                                 </svg>
                             </span>
                             <span className=" hover:text-primary uppercase text-xs md:text-base">
-                                {propertyData.address}
+                                {propertyData?.address}
                             </span>
                         </p>
                     </div>
@@ -61,13 +62,13 @@ const PropertyDetails = () => {
                             <span className="text-3xl font-extrabold">
                                 ApartmentTypes:{" "}
                                 <span className="capitalize">
-                                    {propertyData.propertyType}
+                                    {propertyData?.propertyType}
                                 </span>
                             </span>
                         </h4>
                     </div>
                     <p className="my-5 space-y-2 font-bold text-3xl ">Details :</p>
-                    <div className=" border flex md:flex-row flex-col items-center gap-8 py-10 px-7">
+                    <div className="bg-white rounded-3xl border flex md:flex-row flex-col items-center gap-8 py-10 px-7">
                         <button>
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
@@ -87,15 +88,15 @@ const PropertyDetails = () => {
                             </svg>
                         </button>
                         <p className="mt-3 space-y-2">
-                            {propertyData.description}
+                            {propertyData?.description}
                         </p>
                     </div>
-                    <div className=" border flex md:flex-row flex-col justify-between items-center gap-8 py-6 px-5 mt-7">
+                    <div className=" border flex md:flex-row flex-col bg-white rounded-3xl justify-between items-center gap-8 py-6 px-5 mt-7">
                         <div className=" flex items-center gap-1 text-xl">
                             <LuBedDouble></LuBedDouble>
                             <h4>
                                 <span className=" font-bold">
-                                    Bed Room: {propertyData.bedroom}
+                                    Bed Room: {propertyData?.bedroom}
                                 </span>
                             </h4>
                         </div>
@@ -103,48 +104,33 @@ const PropertyDetails = () => {
                             <LuBedDouble></LuBedDouble>
                             <h4>
                                 <span className=" font-bold">
-                                    Bathroom: {propertyData.bathroom}
+                                    Bathroom: {propertyData?.bathroom}
+                                </span>
+                            </h4>
+                        </div>
+                        <div className=" flex items-center gap-1 text-xl">
+                            <MdOutlineTimer></MdOutlineTimer>
+                            <h4>
+                                <span className=" font-bold">
+                                    Sell Time: {propertyData?.sellTime}
                                 </span>
                             </h4>
                         </div>
                     </div>
                 </div>
-                <div className="border flex md:flex-row flex-col justify-start items-center gap-8 py-6 px-5 my-7">
+                <div className="bg-white rounded-3xl border flex md:flex-row flex-col justify-start items-center gap-8 py-6 px-5 my-7">
                     <img
                         className="h-40 w-40 rounded-full"
-                        src="https://homeid-elementor-demo7.g5plus.net/wp-content/uploads/2020/10/single-property-06.jpg"
+                        src={propertyData?.agencyImage}
                         alt=""
                     />
                     <div>
                         <h2 className="text-xs lg:text-3xl font-bold ">
-                            AgencyName
+                            {propertyData?.agencyName}
                         </h2>
                         <p className=" leading-8 text-xs lg:text-xl text-gray-400 mt-2">
-                            Email:
+                            Email: {propertyData?.agencyEmail}
                         </p>
-                        <div className=" flex items-center gap-5 lg:text-xl text-xs">
-                            <a
-                                target="blank"
-                                href="https://www.facebook.com/roknujjamansajib"
-                                className=" hover:bg-orange-700  rounded-full hover:text-white p-2"
-                            >
-                                <FaFacebook></FaFacebook>
-                            </a>
-                            <a
-                                target="blank"
-                                href="https://twitter.com/Roknuzzaman5546"
-                                className="hover:bg-orange-700  rounded-full hover:text-white p-2"
-                            >
-                                <FaTwitter></FaTwitter>
-                            </a>
-                            <a
-                                target="blank"
-                                href="https://www.linkedin.com/in/roknuzzaman-sojib-b794552a3/"
-                                className="hover:bg-orange-700  rounded-full hover:text-white p-2"
-                            >
-                                <FaLinkedin></FaLinkedin>
-                            </a>
-                        </div>
                     </div>
                 </div>
             </div>

@@ -35,21 +35,28 @@ useEffect(()=>{
     }
   };
 
-  console.log(selectedHouse);
+
   const getBadgeClass = (role) => {
     switch (role) {
-      case "approved":
-        return "badge-accent";
-      case "pending":
-        return "badge-warning";
+        case "approved":
+            return "badge-accent";
+        case "pending":
+            return "badge-warning";
+        case "offer pending":
+            return "badge-warning";
+        case "pending mandate":
+            return "badge-warning";
+        case "hold":
+            return "badge-warning";
+        case "available":
+            return "badge-success";
         case "sold":
-          return "badge-success";
-          case "hold":
-          return "badge-info";
-      default:
-        return "";
+            return "badge-success";
+        default:
+            return "";
     }
-  };
+};
+
   const handleDetailsClick = (house) => {
     document.getElementById("my_modal_5").showModal();
     setSelectedHouse(house);

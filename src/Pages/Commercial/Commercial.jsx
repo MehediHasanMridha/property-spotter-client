@@ -33,7 +33,9 @@ const CommercialPage = () => {
             (search === "" && locationValue === "")
         );
     };
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     return (
         <div>
             <Breadcrumb title={"Commercial"} />
