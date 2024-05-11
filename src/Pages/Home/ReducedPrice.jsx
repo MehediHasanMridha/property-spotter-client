@@ -11,7 +11,7 @@ const ReducedPrice = ({ mainData, filterData }) => {
                 heading={"Reduced Price"}
                 subheading={"Exploring Reduced Property Lists"}
             />
-            {mainData && (
+            {mainData.length > 0 && (
                 <Container>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-10">
                         {mainData

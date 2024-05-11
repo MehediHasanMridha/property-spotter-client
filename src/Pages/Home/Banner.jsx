@@ -2,6 +2,7 @@ import { PiHouseLight } from "react-icons/pi";
 
 import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
+import { Link } from "react-router-dom";
 import BannerImage from "../../assets/images/banner.svg";
 
 const Banner = ({ search, setSearch, mainData, filterData }) => {
@@ -39,6 +40,7 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                         } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
                 >
                     <ul>
+<<<<<<< HEAD
                         {mainData && mainData?.filter(filterData).map((item, idx) => (
                             <li key={idx}>
                                 <a
@@ -57,15 +59,36 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                                         <h3 className="font-medium">
                                             <LuBedDouble className="inline" />{" "}
                                             Bed:{item.bedroom}
+=======
+                        {mainData.length > 0 &&
+                            mainData.filter(filterData).map((item, idx) => (
+                                <li key={idx}>
+                                    <Link
+                                        to={`/property-details/${item._id}`}
+                                        className="flex justify-between items-center gap-3 py-2 px-5"
+                                    >
+                                        <img
+                                            src={item.image}
+                                            className="w-12 h-12 rounded-md"
+                                            alt=""
+                                        />
+                                        <h3 className="text-lg font-medium">
+                                            {item.address}
+>>>>>>> b82eb358b0cadbc9fc006066d4bf36167ac79b1e
                                         </h3>
-                                        <h3 className="font-medium">
-                                            <LiaToiletSolid className="inline" />{" "}
-                                            Births:{item.bathroom}
-                                        </h3>
-                                    </div>
-                                </a>
-                            </li>
-                        ))}
+                                        <div className="flex flex-col ml-auto">
+                                            <h3 className="font-medium">
+                                                <LuBedDouble className="inline" />{" "}
+                                                Bed:{item.bedroom}
+                                            </h3>
+                                            <h3 className="font-medium">
+                                                <LiaToiletSolid className="inline" />{" "}
+                                                Births:{item.bathroom}
+                                            </h3>
+                                        </div>
+                                    </Link>
+                                </li>
+                            ))}
                     </ul>
                 </div>
             </div>

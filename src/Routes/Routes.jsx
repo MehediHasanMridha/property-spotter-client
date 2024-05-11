@@ -4,8 +4,13 @@ import Main from "../Layout/Main";
 import BuyPage from "../Pages/Buy/Buy";
 import CommercialPage from "../Pages/Commercial/Commercial";
 import Home from "../Pages/Home/Home";
+import ManageSpottedListings from "../Pages/ManageSpottedListings/ManageSpottedListings";
+import PaidOutListings from "../Pages/PaidOutListings/PaidOutListings";
+import PropertyDetails from "../Pages/PropertyDetails/PropertyDetails";
 import ResidentialPage from "../Pages/Residential/Residential";
 import SellPage from "../Pages/Sell/Sell";
+import SuccessfulListings from "../Pages/SuccessfulListings/SuccessfulListings";
+import UnsuccessfulListings from "../Pages/UnsuccessfulListings/UnsuccessfulListings";
 import LoginSignUp from "../components/Authentication/LoginSignUp";
 import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
@@ -24,7 +29,7 @@ import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
-import Chat from "../MessageComponents/Chat";
+import PrivateRouter from "./PrivateRouter";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +38,6 @@ export const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        loader: () => fetch("http://localhost:5000/house/houseData"),
         element: <Home />,
       },
       {
@@ -42,7 +46,7 @@ export const router = createBrowserRouter([
       },
       {
         path: "/sell",
-        element: <SellPage />,
+        element: <PrivateRouter><SellPage /></PrivateRouter>,
       },
       {
         path: "/residential",
@@ -77,6 +81,27 @@ export const router = createBrowserRouter([
       {
         path: "/otp",
         element: <OtpUI />,
+      },
+      {
+        path: '/property-details/:id',
+        loader: ({params})=> fetch(`http://localhost:5000/house/single-house-data/${params.id}`),
+        element: <PropertyDetails/>
+      },
+      {
+        path: "/manage-spotted-listings",
+        element: <PrivateRouter><ManageSpottedListings/></PrivateRouter>
+      },
+      {
+        path: "/successful-listings",
+        element: <PrivateRouter><SuccessfulListings/></PrivateRouter>
+      },
+      {
+        path: "/unsuccessful-listings",
+        element: <PrivateRouter><UnsuccessfulListings/></PrivateRouter>
+      },
+      {
+        path: "/paid-out-listings",
+        element: <PrivateRouter><PaidOutListings/></PrivateRouter>
       },
     ],
   },

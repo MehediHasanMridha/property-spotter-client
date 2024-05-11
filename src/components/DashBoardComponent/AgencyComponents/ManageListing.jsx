@@ -113,7 +113,7 @@ const ManageListing = () => {
             </div>
             <div className="shadow-2xl border-2 border-primary p-5 rounded-md">
                 <div className="flex justify-between"></div>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto overflow-y-scroll">
                     <table className="table w-full">
                         {/* head */}
                         <thead>
@@ -130,7 +130,7 @@ const ManageListing = () => {
                             {currentJobs
                                 .filter((item) =>
                                     item.agency.some(
-                                        (name) => name === user.name || name === "all"
+                                        (name) => name === user.name
                                     )
                                 )
                                 .map((house, index) => (
