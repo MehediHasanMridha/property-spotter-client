@@ -27,7 +27,7 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
 
     const fetchData = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/message/get-message/${reciever._id}/${currentUser?._id}`);
+            const res = await axios.get(`http://localhost:5001/api/get-message/${reciever._id}/${currentUser?._id}`);
             console.log(res?.data);
             setMessages(res.data);
             setHasMessages(res.data.length > 0);
@@ -64,7 +64,7 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
                 },
                 time: new Date(),
             })
-            await axios.post('http://localhost:5000/message/send-message', {
+            await axios.post('http://localhost:5001/api/send-message', {
                 senderId: currentUser._id,
                 recieverId: reciever._id,
                 text: {
@@ -94,7 +94,7 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
         formData.append('recieverId', reciever._id);
         formData.append('image', event.target.files[0]);
         try {
-            const res = await axios.post('http://localhost:5000/api/messages/message', formData);
+            const res = await axios.post('http://localhost:5001/api/messages/message', formData);
             if (res.data?.text?.image) {
                 // send data to the socket io
                 socket.current.emit('send-message', {
@@ -114,12 +114,12 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
 
 
     return (
-        <div className='p-4 flex flex-col h-[85vh]'>
+        <div className='p-4 flex flex-col h-[70vh]'>
             <div className='shadow-lg rounded-xl flex justify-between items-center'>
                 <div className='p-2 text-xl relative font-medium flex justify-start items-center gap-2 rounded-lg'>
                     <img src={reciever?.photoURL} alt="" className='w-12 h-12 rounded-full' />
                     <div className='ml-2'>
-                        <h1 className='text-base font-bold text-white'>{reciever?.name}</h1>
+                        <h1 className='text-black'>{reciever?.name}</h1>
                         {onlineUsers.some(user => user.userId === reciever._id) ? (
                             <div className="flex items-center">
                                 <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
