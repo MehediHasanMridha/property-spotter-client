@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import Main from "../Layout/Main";
+import Chat from "../MessageComponents/Chat";
 import BuyPage from "../Pages/Buy/Buy";
 import CommercialPage from "../Pages/Commercial/Commercial";
 import Home from "../Pages/Home/Home";
