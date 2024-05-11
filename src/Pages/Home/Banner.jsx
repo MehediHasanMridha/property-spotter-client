@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import BannerImage from "../../assets/images/banner.svg";
 
 const Banner = ({ search, setSearch, mainData, filterData }) => {
+
+    console.log(mainData, 'from banner');
+
     return (
         <div
             className="flex justify-center items-center bg-primary bg-no-repeat bg-bottom w-full h-[550px]"
@@ -33,11 +36,30 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                     </button>
                 </div>
                 <div
-                    className={`absolute ${
-                        search ? "" : "hidden"
-                    } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
+                    className={`absolute ${search ? "" : "hidden"
+                        } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
                 >
                     <ul>
+<<<<<<< HEAD
+                        {mainData && mainData?.filter(filterData).map((item, idx) => (
+                            <li key={idx}>
+                                <a
+                                    href="#reduceprice"
+                                    className="flex justify-between items-center gap-3 py-2 px-5"
+                                >
+                                    <img
+                                        src={item.image}
+                                        className="w-12 h-12 rounded-md"
+                                        alt=""
+                                    />
+                                    <h3 className="text-lg font-medium">
+                                        {item.address}
+                                    </h3>
+                                    <div className="flex flex-col ml-auto">
+                                        <h3 className="font-medium">
+                                            <LuBedDouble className="inline" />{" "}
+                                            Bed:{item.bedroom}
+=======
                         {mainData.length > 0 &&
                             mainData.filter(filterData).map((item, idx) => (
                                 <li key={idx}>
@@ -52,6 +74,7 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                                         />
                                         <h3 className="text-lg font-medium">
                                             {item.address}
+>>>>>>> b82eb358b0cadbc9fc006066d4bf36167ac79b1e
                                         </h3>
                                         <div className="flex flex-col ml-auto">
                                             <h3 className="font-medium">

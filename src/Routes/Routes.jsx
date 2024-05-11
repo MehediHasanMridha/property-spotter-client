@@ -129,11 +129,11 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/ManageAllListings/manageListingByAgency",
-        element: <ManageListByAgency/>,
+        element: <ManageListByAgency />,
       },
       {
         path: "/dashboard/ManageAllListings/manageListingBySpotter",
-        element:<ManageListBySpotter/>
+        element: <ManageListBySpotter />
       },
       {
         path: "/dashboard/ManageAllListings/manageListingByAdmin",
@@ -142,6 +142,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/ManageAllListings/profile",
         element: <Profiles />,
+      },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
       },
 
       //Agency Components--------------------------
