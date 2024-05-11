@@ -16,7 +16,7 @@ const BuyPage = () => {
     const fetchArea = async () => {
         try {
             const response = await axios.get(
-                "http://localhost:5000/house/houseData"
+                "http://localhost:5000/house/houseAvailableData"
             );
             setArea(response.data);
         } catch (error) {
@@ -30,6 +30,9 @@ const BuyPage = () => {
 
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     return (
         <div>
             <Breadcrumb title={"Buy"} />

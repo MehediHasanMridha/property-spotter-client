@@ -15,6 +15,7 @@ import LoginSignUp from "../components/Authentication/LoginSignUp";
 import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
 import ManageAgent from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgent";
+import ManageListByAdmin from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAdmin";
 import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
 import ManageListBySpotter from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListBySpotter";
 import ManageSpotters from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageSpotters";
@@ -50,12 +51,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/residential",
-        loader: ()=> fetch("http://localhost:5000/house/houseData"),
+        loader: ()=> fetch("http://localhost:5000/house/houseAvailableData"),
         element: <ResidentialPage />,
       },
       {
         path: "/commercial",
-        loader: ()=> fetch("http://localhost:5000/house/houseData"),
+        loader: ()=> fetch("http://localhost:5000/house/houseAvailableData"),
         element: <CommercialPage />,
       },
       {
@@ -133,6 +134,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/ManageAllListings/manageListingBySpotter",
         element:<ManageListBySpotter/>
+      },
+      {
+        path: "/dashboard/ManageAllListings/manageListingByAdmin",
+        element: <ManageListByAdmin />,
       },
       {
         path: "/dashboard/ManageAllListings/profile",

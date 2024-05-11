@@ -10,11 +10,12 @@ const ManageListings = () => {
     const [HousePerPage] = useState(6);
     const [listings, setListings] = useState([]);
     const [selectedHouse, setSelectedHouse] = useState(null);
-    
+
     const fetchListingData = async () => {
         if (user) {
             try {
                 const url = `http://localhost:5000/house/listings-by-agency-agent/${user?.agencyName}`;
+                console.log(url);
                 const response = await axios.get(url);
                 setListings(response.data);
             } catch (error) {
@@ -73,7 +74,9 @@ const ManageListings = () => {
                     },
                     body: JSON.stringify({
                         status: value,
-                        agency: [user.name],
+                        agencyName: user.name,
+                        agencyEmail: user.email,
+                        agencyImage: user.photoURL,
                     }),
                 }
             );
@@ -133,9 +136,9 @@ const ManageListings = () => {
                                     <td>{house?.houseOwnerPhone}</td>
                                     <td>
                                         <div
-                                            className={`badge ${getBadgeClass(
+                                            className={`px-2 py-1 capitalize text-lg rounded-lg  ${getBadgeClass(
                                                 house?.status
-                                            )} badge-md text-white text-nowrap`}
+                                            )} text-white`}
                                         >
                                             {house?.status}
                                         </div>

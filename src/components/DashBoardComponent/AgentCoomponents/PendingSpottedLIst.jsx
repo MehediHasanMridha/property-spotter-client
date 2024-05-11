@@ -31,16 +31,27 @@ const PendingSpottedLIst = () => {
       fetchListingData();
   }, []);
 
+
   const getBadgeClass = (role) => {
-      switch (role) {
-          case "approved":
-              return "badge-accent";
-          case "pending":
-              return "badge-warning";
-          default:
-              return "";
-      }
-  };
+    switch (role) {
+        case "approved":
+            return "badge-accent";
+        case "pending":
+            return "badge-warning";
+        case "offer pending":
+            return "badge-warning";
+        case "pending mandate":
+            return "badge-warning";
+        case "hold":
+            return "badge-warning";
+        case "available":
+            return "badge-success";
+        case "sold":
+            return "badge-success";
+        default:
+            return "";
+    }
+};
 
   // Logic for pagination
   const indexOfLastFlat = currentPage * HousePerPage;
