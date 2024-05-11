@@ -3,7 +3,7 @@ import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
 const PropertyCard = ({ item }) => {
-    
+
     return (
         <div className="bg-white shadow rounded-xl">
             <Link to={`/property-details/${item._id}`}>

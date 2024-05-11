@@ -50,12 +50,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/residential",
-        loader: ()=> fetch("http://localhost:5000/house/houseData"),
+        loader: () => fetch("http://localhost:5000/house/houseData"),
         element: <ResidentialPage />,
       },
       {
         path: "/commercial",
-        loader: ()=> fetch("http://localhost:5000/house/houseData"),
+        loader: () => fetch("http://localhost:5000/house/houseData"),
         element: <CommercialPage />,
       },
       {
@@ -128,15 +128,19 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/ManageAllListings/manageListingByAgency",
-        element: <ManageListByAgency/>,
+        element: <ManageListByAgency />,
       },
       {
         path: "/dashboard/ManageAllListings/manageListingBySpotter",
-        element:<ManageListBySpotter/>
+        element: <ManageListBySpotter />
       },
       {
         path: "/dashboard/ManageAllListings/profile",
         element: <Profiles />,
+      },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
       },
 
       //Agency Components--------------------------
