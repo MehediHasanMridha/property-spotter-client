@@ -14,7 +14,7 @@ const ManageListings = () => {
     const fetchListingData = async () => {
         if (user) {
             try {
-                const url = `http://localhost:5000/house/listings-by-agency-agent/${user?.agencyName}`;
+                const url = `http://localhost:5000/house/houseDataByAgent/${user?.name}`;
                 console.log(url);
                 const response = await axios.get(url);
                 setListings(response.data);
