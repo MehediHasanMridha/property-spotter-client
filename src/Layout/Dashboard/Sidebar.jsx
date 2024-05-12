@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
+import logo from "../../assets/logo/logo.png";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const { user } = useContext(AuthContext);
@@ -143,7 +144,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                     <Link to="/">
                         <h3 className="text-xl text-white font-semibold">
                             Property
-                            <span className="text-primary"> Spotted</span>
+                            <span className="text-primary"> Spotter</span>
                         </h3>
                     </Link>
                 </div>

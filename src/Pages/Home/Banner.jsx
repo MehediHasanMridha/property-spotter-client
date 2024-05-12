@@ -18,7 +18,7 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                 <h3 className="text-2xl md:text-5xl font-bold text-white py-3">
                     Find Property for Sale
                 </h3>
-                <div className="relative">
+                <div className="relative m-2 w-[90%] sm:w-full lg:m-0">
                     <PiHouseLight
                         className="absolute left-2 top-3.5 text-gray-600"
                         size={28}
