@@ -2,7 +2,11 @@ import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
 
-const PropertyCard = ({ item }) => {
+const PropertyCard = ({item}) => {
+
+    console.log("item?mmmmm",item?.image);
+
+
     return (
         <div className=" bg-white shadow rounded-xl">
             <Link to={`/property-details/${item._id}`}>
