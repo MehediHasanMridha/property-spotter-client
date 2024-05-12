@@ -13,7 +13,7 @@ const Home = () => {
     }, [search]);
 
     const fetchData = async () => {
-        const res = await fetch("http://localhost:5000/house/houseData");
+        const res = await fetch("http://localhost:5000/house/houseAvailableData");
         const data = await res.json();
         setMainData(data);
     };
@@ -26,7 +26,9 @@ const Home = () => {
             .includes(search.toLowerCase());
         return searchMatch || locationMatch;
     };
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     return (
         <main>
             <Banner
