@@ -123,7 +123,7 @@ const PendingSpottedLIst = () => {
                           </tr>
                       </thead>
                       <tbody className="text-center">
-                          {currentJobs.map((house, index) => (
+                          {currentJobs.filter(item=>item.status === 'pending').map((house, index) => (
                                   <tr key={house?.jobData?._id}>
                                       <td>{index + 1}</td>
                                       <td>{house?.spooterName}</td>
