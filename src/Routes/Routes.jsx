@@ -32,7 +32,7 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
 import PrivateRouter from "./PrivateRouter";
-import Chat from "../MessageComponents/Chat";
+// import Chat from "../MessageComponents/Chat";
 
 export const router = createBrowserRouter([
   {
@@ -53,12 +53,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/residential",
-        loader: ()=> fetch("http://localhost:5000/house/houseAvailableData"),
+        loader: () => fetch("http://localhost:5000/house/houseAvailableData"),
         element: <ResidentialPage />,
       },
       {
         path: "/commercial",
-        loader: ()=> fetch("http://localhost:5000/house/houseAvailableData"),
+        loader: () => fetch("http://localhost:5000/house/houseAvailableData"),
         element: <CommercialPage />,
       },
       {
