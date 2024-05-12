@@ -15,6 +15,7 @@ const Chat = () => {
 
     const getUsers = async () => {
         const res = await axios.get('http://localhost:5000/allusers');
+        console.log(res.data);
         setUsers(res.data);
     }
 
@@ -41,15 +42,23 @@ const Chat = () => {
     }, [])
 
     const allUsers = users?.filter(u => u?._id !== user?._id)
-    console.log(allUsers);
+    const admins = users?.filter(u => u?._id !== user?._id && u?.role === 'admin')
+    const agency = users?.filter(u => u?._id !== user?._id && u?.role === 'agency')
+    const agents = users?.filter(u => u?._id !== user?._id && u?.role === 'agent')
+    console.log(user);
+
+    const agentOfAgency = users?.filter(u => u?._id !== user?._id && u?.role === 'agent' && u?.agencyName === user?.name);
+    const agencyOfAgent = users?.filter(u => u?._id !== user?._id && u?.role === 'agency' && u?.name === user?.agencyName);
+
+    console.log(agencyOfAgent);
 
 
     return (
-        <div className='bg-black max-h-[85vh]'>
+        <div className='bg-slate-900 max-h-[85vh]'>
             <div className='h-[85vh] overflow-y-scroll'>
-                <div className="grid grid-cols-1 gap-2 lg:grid-cols-5 lg:gap-1">
-                    <div className="rounded-lg  p-2">
-                        <li className='p-2 mb-10 my-2 text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                <div className="grid gap-2 grid-cols-7 lg:gap-1">
+                    <div className="rounded-lg col-span-2 p-2">
+                        <li className='p-2 mb-10 my-1 text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
                             <img src={user?.photoURL} alt="" className='w-12 h-12 rounded-full' />
                             <div className='text-white'>
                                 <h1 className='text-base font-bold capitalize '>{user?.name}</h1>
@@ -57,30 +66,147 @@ const Chat = () => {
                             </div>
                         </li>
                         <div className='overflow-y-scroll h-[70vh]'>
+                            <div>
+                                <h1 className='text-2xl font-bold text-white'>Admins Here</h1>
+                                {
+                                    admins && admins.map((chat, idx) =>
+                                        <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                            <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                            <div>
+                                                <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                    <div className="flex items-center">
+                                                        <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                        <p className="text-sm text-green-700">Online</p>
+                                                    </div>
+                                                ) : (
+                                                    <div className="flex items-center">
+                                                        <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                        <p className="text-sm text-red-500">Offline</p>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </li>
+                                    )
+                                }
+                            </div>
                             {
-                                allUsers && allUsers.map((chat, idx) =>
-                                    <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
-                                        <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
-                                        <div>
-                                            <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
-                                            {onlineUsers.some(user => user.userId === chat._id) ? (
-                                                <div className="flex items-center">
-                                                    <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
-                                                    <p className="text-sm text-green-700">Online</p>
-                                                </div>
-                                            ) : (
-                                                <div className="flex items-center">
-                                                    <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
-                                                    <p className="text-sm text-red-500">Offline</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </li>
-                                )
+                                user?.role === 'admin' &&
+                                <>
+                                    <div>
+                                        <h1 className='text-2xl font-bold text-white'>Agency Here</h1>
+                                        {
+                                            agency && agency.map((chat, idx) =>
+                                                <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                                    <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                                    <div>
+                                                        <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                        {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                                <p className="text-sm text-green-700">Online</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                                <p className="text-sm text-red-500">Offline</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </div>
+                                    <div>
+                                        <h1 className='text-2xl font-bold text-white'>Agents Here</h1>
+                                        {
+                                            agents && agents.map((chat, idx) =>
+                                                <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                                    <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                                    <div>
+                                                        <div className='flex justify-between w-full items-center gap-2'>
+                                                            <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                            <h1 className='text-[10px] capitalize text-white'>-({chat.agencyName})</h1>
+                                                        </div>
+                                                        {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                                <p className="text-sm text-green-700">Online</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                                <p className="text-sm text-red-500">Offline</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </div>
+                                </>
+                            }
+                            {
+                                user?.role === 'agency' &&
+                                <>
+                                    <div>
+                                        <h1 className='text-2xl font-bold text-white'>Your Agents Here</h1>
+                                        {
+                                            agentOfAgency && agentOfAgency.map((chat, idx) =>
+                                                <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                                    <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                                    <div>
+                                                        <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                        {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                                <p className="text-sm text-green-700">Online</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                                <p className="text-sm text-red-500">Offline</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </div>
+                                </>
+                            }
+                            {
+                                user?.role === 'agent' &&
+                                <>
+                                    <div>
+                                        <h1 className='text-2xl font-bold text-white'>Your Agency Here</h1>
+                                        {
+                                            agencyOfAgent && agencyOfAgent.map((chat, idx) =>
+                                                <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                                    <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                                    <div>
+                                                        <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                        {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                                <p className="text-sm text-green-700">Online</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                                <p className="text-sm text-red-500">Offline</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </div>
+                                </>
                             }
                         </div>
                     </div>
-                    <div className="rounded-lg lg:col-span-4">
+                    <div className="rounded-lg lg:col-span-5">
                         <Message socket={socket} reciever={reciever} currentUser={user} onlineUsers={onlineUsers} />
                     </div>
                 </div>

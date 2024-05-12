@@ -10,7 +10,7 @@ import "./index.css";
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <AuthProvider>
-      <RouterProvider router={router} fallbackElement={Loading}/>
+      <RouterProvider router={router} fallbackElement={Loading} />
     </AuthProvider>
     <ToastContainer />
   </React.StrictMode>
