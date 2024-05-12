@@ -32,7 +32,7 @@ const BuyPage = () => {
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
     return (
         <div>
             <Breadcrumb title={"Buy"} />
@@ -44,11 +44,23 @@ const BuyPage = () => {
                             className="bg-white shadow rounded-xl"
                         >
                             <Link to={`/property-details/${item._id}`}>
-                                <img
-                                    src={item.image}
-                                    alt=""
-                                    className="rounded-lg h-56"
-                                />
+                                <div className="relative">
+                                    <img
+                                        src={item.image}
+                                        alt=""
+                                        className="rounded-lg h-56 mx-auto mt-2"
+                                    />
+                                    <div className="absolute flex flex-col justify-center items-center right-3.5 gap-2 bottom-2">
+                                        <img
+                                            className="w-12 h-12 rounded-full"
+                                            src={item.agencyImage}
+                                            alt=""
+                                        />
+                                        <h3 className="bg-blue-100/60 px-2 rounded-md py-0.5 text-primary">
+                                            {item.agencyName}
+                                        </h3>
+                                    </div>
+                                </div>
                                 <div className="px-3 py-2.5">
                                     <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
                                         <span className="text-primary text-2xl">
