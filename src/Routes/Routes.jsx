@@ -32,6 +32,7 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
 import PrivateRouter from "./PrivateRouter";
+// import Chat from "../MessageComponents/Chat";
 
 export const router = createBrowserRouter([
   {
@@ -52,12 +53,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/residential",
-        loader: ()=> fetch("http://localhost:5000/house/houseAvailableData"),
+        loader: () => fetch("http://localhost:5000/house/houseAvailableData"),
         element: <ResidentialPage />,
       },
       {
         path: "/commercial",
-        loader: ()=> fetch("http://localhost:5000/house/houseAvailableData"),
+        loader: () => fetch("http://localhost:5000/house/houseAvailableData"),
         element: <CommercialPage />,
       },
       {
@@ -86,24 +87,24 @@ export const router = createBrowserRouter([
       },
       {
         path: '/property-details/:id',
-        loader: ({params})=> fetch(`http://localhost:5000/house/single-house-data/${params.id}`),
-        element: <PropertyDetails/>
+        loader: ({ params }) => fetch(`http://localhost:5000/house/single-house-data/${params.id}`),
+        element: <PropertyDetails />
       },
       {
         path: "/manage-spotted-listings",
-        element: <PrivateRouter><ManageSpottedListings/></PrivateRouter>
+        element: <PrivateRouter><ManageSpottedListings /></PrivateRouter>
       },
       {
         path: "/successful-listings",
-        element: <PrivateRouter><SuccessfulListings/></PrivateRouter>
+        element: <PrivateRouter><SuccessfulListings /></PrivateRouter>
       },
       {
         path: "/unsuccessful-listings",
-        element: <PrivateRouter><UnsuccessfulListings/></PrivateRouter>
+        element: <PrivateRouter><UnsuccessfulListings /></PrivateRouter>
       },
       {
         path: "/paid-out-listings",
-        element: <PrivateRouter><PaidOutListings/></PrivateRouter>
+        element: <PrivateRouter><PaidOutListings /></PrivateRouter>
       },
     ],
   },
@@ -170,6 +171,10 @@ export const router = createBrowserRouter([
         path: "/dashboard/agency/profile",
         element: <Profiles />,
       },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
+      },
 
       //Agent Components-----------------------
       {
@@ -183,6 +188,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/agent/manageListing",
         element: <ManageLIstings />,
+      },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
       },
     ],
   },
