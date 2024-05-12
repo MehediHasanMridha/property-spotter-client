@@ -32,6 +32,7 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
 import PrivateRouter from "./PrivateRouter";
+import AboutUs from "../Pages/AboutUs";
 // import Chat from "../MessageComponents/Chat";
 
 export const router = createBrowserRouter([
@@ -46,6 +47,10 @@ export const router = createBrowserRouter([
       {
         path: "/buy",
         element: <BuyPage />,
+      },
+      {
+        path: "/about-us",
+        element: <AboutUs />,
       },
       {
         path: "/sell",

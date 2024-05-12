@@ -54,7 +54,7 @@ const PropertyCard = ({item}) => {
                         </li>
                         <li className="space-x-2">
                             <LiaToiletSolid className="inline" />
-                            <span>Births:{item.bathroom}</span>
+                            <span>Baths:{item.bathroom}</span>
                         </li>
                     </ul>
                 </div>

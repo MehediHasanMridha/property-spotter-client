@@ -38,7 +38,7 @@ const Home = () => {
                 filterData={filterData}
             />
             <Places />
-            <AdvertisesProperty />
+            {/* <AdvertisesProperty /> */}
             <ReducedPrice mainData={mainData} filterData={filterData} />
             {/* <Steper /> */}
         </main>

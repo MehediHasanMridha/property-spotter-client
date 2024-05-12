@@ -3,6 +3,7 @@ import Container from "../../components/Container/Container";
 import PlacesCard from "../../components/cards/PlacesCard/PlacesCard";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
 import axios from "axios";
+import AdvertisesProperty from "./AdvertisesProperty";
 
 const Places = () => {
 
@@ -34,6 +35,7 @@ const Places = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
     return (
+      <>
         <section className="bg-white py-10 px-6 md:px-0">
             <SectionTitle
                 heading={"Provinces and Cities"}
@@ -84,6 +86,8 @@ const Places = () => {
             </button>
           </div>
         </section>
+        <AdvertisesProperty/>
+      </>
     );
 };
 
