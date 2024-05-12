@@ -10,11 +10,12 @@ const ManageSpotters = () => {
     const [imagePath, setImagePath] = useState("")
     const [tableData, setTableData] = useState([]);
     const { user } = useContext(AuthContext);
+    console.log(spotters);
     useEffect(() => {
         fetch("http://localhost:5000/spotters")
             .then((res) => res.json())
             .then((data) => setSpotters(data));
-    });
+    },[]);
     const handleEditModal = (spotter) => {
         setEditModal(true);
         setSpotterData(spotter);
@@ -121,7 +122,7 @@ const ManageSpotters = () => {
                                     className="hover:bg-gray-50 transition duration-300"
                                 >
                                     <td className="py-4 px-6 border-b">
-                                        <img src={spotter?.photoURL} alt="" />
+                                        <img className="mask mask-squircle w-12 h-12" src={spotter?.photoURL} alt="" />
                                     </td>
                                     <td className="py-4 px-6 border-b">
                                         {spotter?.name}

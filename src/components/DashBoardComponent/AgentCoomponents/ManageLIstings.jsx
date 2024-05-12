@@ -2,207 +2,358 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import Loading from "../../Loader/Loading";
 
+const ManageListings = () => {
+    const { user, loading } = useContext(AuthContext);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [HousePerPage] = useState(6);
+    const [listings, setListings] = useState([]);
+    const [selectedHouse, setSelectedHouse] = useState(null);
 
-const ManageLIstings = () => {
-  const [openModal, setOpenModal] = useState(false);
-  const [agentData, setAgentData] = useState([]);
-  const [selectedOrganization, setSelectedOrganization] = useState([]);
-  const [updateOpenModal, setUpdateOpenModal] = useState(false);
-  const [updateData, setUpdateData]=useState(null)
-  //getAllAgent
-  const handleOrganizationChange = (value) => {
-    setSelectedOrganization(value);
-  };
-  // const handleManageAgent = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const formData = new FormData();
-  //     formData.append("name", e.target.name.value);
-  //     formData.append("email", e.target.email.value);
-  //     formData.append("password", e.target.password.value);
-  //     formData.append("agencyName", selectedOrganization);
-  //     console.log(formData);
-  //     const response = await axios.post(
-  //       "http://localhost:5000/agent/add-agent",
-  //       formData
-  //     );
-  //     setOpenModal(false);
-  //     toast.success("Added successfully");
-  //     fetchAgent();
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  // };
+    const fetchListingData = async () => {
+        if (user) {
+            try {
+                const url = `http://localhost:5000/house/listings-by-agency-agent/${user?.agencyName}`;
+                console.log(url);
+                const response = await axios.get(url);
+                setListings(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    };
 
-  const handleManageAgent = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("name", e.target.name.value);
-      formData.append("email", e.target.email.value);
-      formData.append("password", e.target.password.value);
-      formData.append("agencyName", selectedOrganization);
-  
-     const name = e.target.name.value
-     const email = e.target.email.value
-     const password = e.target.password.value
-      const agencyName =selectedOrganization 
+    const handleDetailsClick = (house) => {
+        document.getElementById("my_modal_5").showModal();
+        setSelectedHouse(house);
+    };
 
-      const data={
-       name,
-      email,
-      password,
-      agencyName
-      }
-      const response = await axios.post("http://localhost:5000/agent",data
-      );
-  
-      if (response.status === 201) {
-        setOpenModal(false);
-        toast.success("Added successfully");
-        fetchAgent();
-      } else if (response.status === 400 && response.data.error === "Email already exists") {
-        toast.error("Email already exists");
-      } else {
-        toast.error("Email already exists");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      toast.error("Email already exists");
+    useEffect(() => {
+        fetchListingData();
+    }, [loading]);
+
+    const getBadgeClass = (role) => {
+        switch (role) {
+            case "approved":
+                return "badge-accent";
+            case "pending":
+                return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
+            default:
+                return "";
+        }
+    };
+
+    // Logic for pagination
+    const indexOfLastFlat = currentPage * HousePerPage;
+    const indexOfFirstFlat = indexOfLastFlat - HousePerPage;
+    const currentJobs = listings.slice(indexOfFirstFlat, indexOfLastFlat);
+
+    // Change page
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
+
+    const houseUpdate = async (e, id) => {
+        try {
+            const value = e.target.innerText.toLowerCase();
+            const res = await fetch(
+                `http://localhost:5000/house/update/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status: value,
+                        agencyName: user.name,
+                        agencyEmail: user.email,
+                        agencyImage: user.photoURL,
+                    }),
+                }
+            );
+            toast.success(`Successfully ${value}`);
+            fetchListingData();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    if (loading) {
+        <Loading />;
     }
-  };
-  
-  console.log(agentData);
-
-  useEffect(() => {
-    fetchAgent();
-  }, []);
-
-  const fetchAgent = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/allusers");
-      setAgentData(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const agentDataFiltered = agentData.filter((item) => item.role === 'agent');
-
-  console.log("agentDataFiltered", agentDataFiltered);
-  //update Agent
- const editAgentData=(id, item)=>{
-  setUpdateData(item)
-  setUpdateOpenModal(true)
- }
-
-
-//  console.log("hhhhhhhhhhhhhhhh",updateData);
-
-const updateAgentData = async (event) => {
-  event.preventDefault();
-  
-  const formData = new FormData(event.target);
-
-  const updatedCode = {
-    name: formData.get('name'),
-    email: formData.get('email'),
-    password: formData.get('password'),
-    agencyName: formData.get('agency')
-  };
-
-  try {
-    const id =updateData._id
-    const response = await axios.patch(`http://localhost:5000/agent/update/${id}`, updatedCode);
-     fetchAgent()
-     toast.success("updated")
-  } catch (error) {
-    console.error('Error:', error);
-  }
-};
-
-// const updateAgentData = async (event) => {
-//   event.preventDefault();
-  
-//   const formData = new FormData(event.target);
-
-//   const updatedData = {
-//     name: formData.get('name'),
-//     email: formData.get('email'),
-//     password: formData.get('password'),
-//     agency: formData.get('agency')
-//   };
-
-//   try {
-//     await axios.patch('YOUR_API_ENDPOINT', updatedData);
-
-//     // If the request succeeds, this line will be executed
-//     console.log('Agent data updated successfully!');
-//   } catch (error) {
-//     // Handle errors here
-//     console.error('Failed to update agent data:', error);
-//   }
-// };
-
-
-  //deleteAgent
-  const handleAgentDelete = async (id) => {
-    console.log(id);
-    try {
-      await axios.delete(`http://localhost:5000/agent/deleted/${id}`);
-      toast.success("deleted");
-      fetchAgent();
-    } catch (error) {
-      console.error("Error deleting", error);
-    }
-  };
-
-  return (
-    <>
-  
-      <div className="p-2 mx-auto sm:p-4">
-        <div className="overflow-x-auto">
-          <table className="w-full p-6 text-base text-left whitespace-nowrap">
-            <colgroup>
-              <col className="w-5" />
-              <col />
-              <col />
-              <col />
-              <col />
-              <col />
-              <col className="w-5" />
-            </colgroup>
-            <thead>
-              <tr className="bg-primary text-white">
-                <th className="px-6 py-2 text-base  text-left">Agent Name</th>
-                <th className="px-6 py-2 text-base  text-left">Agent Email</th>
-                <th className="px-6 py-2 text-base  text-left">Agency</th>
-              </tr>
-            </thead>
-            <tbody className="border-b">
-              {agentDataFiltered.map((item, index) => (
-                <tr
-                  key={index}
-                  className="hover:bg-gray-50 transition duration-300"
-                >
-                  <td className="py-4 px-6 border-b text-base">{item?.name}</td>
-                  <td className="py-4 px-6 border-b text-base ">
-                    {item?.email}
-                  </td>
-                  <td className="py-4 px-6 border-b text-base">
-                    {item?.agencyName}
-                  </td>
-                  
-                </tr>
-              ))}
-            </tbody>
-          </table>
+    return (
+        <div className="p-6">
+            <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
+                <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
+                    <div className="text-center">
+                        <h4 className="text-xl font-medium ">
+                            Hello,
+                            <span className="text-3xl font-bold text-primary uppercase">
+                                {user?.name}
+                            </span>
+                        </h4>
+                        <p>{"Here's what's going on"}</p>
+                    </div>
+                </div>
+                <div className="flex justify-center items-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
+                    <h4 className="text-2xl font-medium">
+                        Total Houses:{" "}
+                        <span className="text-3xl text-primary font-bold">
+                            {currentJobs.length}
+                        </span>
+                    </h4>
+                </div>
+            </div>
+            <div className="shadow-2xl border-2 border-primary p-5 rounded-md">
+                <div className="flex justify-between"></div>
+                <div className="overflow-x-auto">
+                    <table className="table w-full">
+                        {/* head */}
+                        <thead>
+                            <tr className="font-semibold text-base text-center">
+                                <th>No.</th>
+                                <th>Owner Name</th>
+                                <th>Owner Email</th>
+                                <th>House Phone</th>
+                                <th>Status</th>
+                                <th>Details</th>
+                            </tr>
+                        </thead>
+                        <tbody className="text-center">
+                            {currentJobs.map((house, index) => (
+                                <tr key={house?.jobData?._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{house?.houseOwnerName}</td>
+                                    <td>{house?.houseOwnerEmail}</td>
+                                    <td>{house?.houseOwnerPhone}</td>
+                                    <td>
+                                        <div
+                                            className={`px-2 py-1 capitalize text-lg rounded-lg  ${getBadgeClass(
+                                                house?.status
+                                            )} text-white`}
+                                        >
+                                            {house?.status}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {/* Open the modal using document.getElementById('ID').showModal() method */}
+                                        <div className="flex gap-2">
+                                            <details className="dropdown">
+                                                <summary className="m-1 btn btn-primary">
+                                                    Action
+                                                </summary>
+                                                <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Approved
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Sold
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Hold
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            PENDING MANDATE
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Pending
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            PENDING CONTACT WITH
+                                                            CLIENT
+                                                        </button>
+                                                    </li>
+                                                </ul>
+                                            </details>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                    handleDetailsClick(house)
+                                                }
+                                            >
+                                                Details
+                                            </button>
+                                        </div>
+                                        <dialog
+                                            id="my_modal_5"
+                                            className="modal modal-bottom sm:modal-middle"
+                                        >
+                                            <div className="modal-box">
+                                                <h3 className="font-bold text-3xl mb-3">
+                                                    House{" "}
+                                                    <span className="text-primary font-bold">
+                                                        Details!
+                                                    </span>
+                                                </h3>
+                                                <div className="text-center text-xl">
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Bedroom:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.bedroom
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Bathroom:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.bathroom
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Sell Time:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.sellTime
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Agency:
+                                                        </span>
+                                                        {selectedHouse?.agency.map(
+                                                            (
+                                                                agencyItem,
+                                                                index
+                                                            ) => (
+                                                                <span
+                                                                    key={index}
+                                                                    className="text-primary font-bold text-2xl ml-2"
+                                                                >
+                                                                    {agencyItem}
+                                                                    ,
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </h1>
+                                                </div>
+                                                <div className="modal-action">
+                                                    <form method="dialog">
+                                                        <button className="btn btn-error">
+                                                            Close
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </dialog>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+                {/* for pagination */}
+                <div className=" flex flex-wrap justify-center mb-10 mt-5">
+                    <button
+                        className="join-item btn btn-outline btn-primary mr-2"
+                        onClick={() => paginate(currentPage - 1)}
+                        disabled={currentPage === 1}
+                    >
+                        <span className="text-white">
+                            {" "}
+                            &larr; Previous page
+                        </span>
+                    </button>
+                    {Array.from(
+                        { length: Math.ceil(listings.length / HousePerPage) },
+                        (_, i) => (
+                            <button
+                                key={i}
+                                onClick={() => paginate(i + 1)}
+                                className={`join-item btn btn-outline btn-primary  text-white mr-2 ${
+                                    currentPage === i + 1
+                                        ? "bg-primary border-2 border-black text-white"
+                                        : ""
+                                }`}
+                            >
+                                <span className="text-white">{i + 1}</span>
+                            </button>
+                        )
+                    )}
+                    <button
+                        className="join-item btn btn-outline btn-primary  mr-2"
+                        onClick={() => paginate(currentPage + 1)}
+                        disabled={
+                            currentPage ===
+                            Math.ceil(listings.length / HousePerPage)
+                        }
+                    >
+                        <span className="text-white">Next&rarr;</span>
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
-    </>
-  );
+    );
 };
 
-export default ManageLIstings
+export default ManageListings;

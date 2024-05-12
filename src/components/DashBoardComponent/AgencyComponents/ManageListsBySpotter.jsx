@@ -71,6 +71,9 @@ const ManageListsBySpotter = () => {
                     },
                     body: JSON.stringify({
                         status: value,
+                        agencyName: user.name,
+                        agencyEmail: user.email,
+                        agencyImage: user.photoURL,
                         agency: [user.name],
                     }),
                 }
@@ -101,11 +104,10 @@ const ManageListsBySpotter = () => {
                         Total Houses:{" "}
                         <span className="text-3xl text-primary font-bold">
                             {
-                                currentJobs.filter(
-                                    (item) =>
-                                        item.agency.some(
-                                            (name) => name === user.name
-                                        )
+                                currentJobs.filter((item) =>
+                                    item.agency.some(
+                                        (name) => name === user.name
+                                    )
                                 ).length
                             }
                         </span>
@@ -140,9 +142,9 @@ const ManageListsBySpotter = () => {
                                         <td>{house?.spooterEmail}</td>
                                         <td>
                                             <div
-                                                className={`badge ${getBadgeClass(
+                                                className={`px-2 py-1 capitalize text-lg rounded-lg  ${getBadgeClass(
                                                     house?.status
-                                                )} badge-md text-white text-nowrap`}
+                                                )} text-white`}
                                             >
                                                 {house?.status}
                                             </div>
@@ -165,6 +167,18 @@ const ManageListsBySpotter = () => {
                                                                 }
                                                             >
                                                                 Approved
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Available
                                                             </button>
                                                         </li>
                                                         <li>

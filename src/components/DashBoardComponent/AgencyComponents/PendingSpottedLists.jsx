@@ -30,12 +30,23 @@ const PendingSpottedLists = () => {
         fetchListingData();
     }, []);
 
+
     const getBadgeClass = (role) => {
         switch (role) {
             case "approved":
                 return "badge-accent";
             case "pending":
                 return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
             default:
                 return "";
         }
@@ -49,8 +60,9 @@ const PendingSpottedLists = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async (id) => {
+    const houseUpdate = async (e, id) => {
         try {
+            const value = e.target.innerText.toLowerCase();
             const res = await fetch(
                 `http://localhost:5000/house/update/${id}`,
                 {
@@ -59,12 +71,15 @@ const PendingSpottedLists = () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        status: "approved",
+                        agencyName: user.name,
+                        agencyEmail: user.email,
+                        agencyImage: user.photoURL,
                         agency: [user.name],
                     }),
                 }
             );
-            toast.success("Successfully Updated");
+            toast.success(`Successfully ${value}`);
+            fetchListingData();
         } catch (error) {
             console.log(error);
         }
@@ -86,7 +101,7 @@ const PendingSpottedLists = () => {
                 </div>
                 <div className="flex justify-center items-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <h4 className="text-2xl font-medium">
-                        Total Houses: {listings.length}
+                        Total Houses:
                         <span className="text-3xl text-primary font-bold">
                             {
                                 currentJobs.filter(

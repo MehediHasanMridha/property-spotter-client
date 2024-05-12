@@ -17,10 +17,11 @@ const ManageListsByAgent = () => {
     const [openCreateModal, setOpenCreateModal] = useState(false);
     const [openEditModal, setOpenEditModal] = useState(false);
     const [editAgentData, setEditAgentData] = useState(null)
+    
     const fetchAgentData = async () => {
         try {
             const response = await axios.get(
-                `http://localhost:5000/allusers/filterby/agent/${user?.email}`
+                `http://localhost:5000/allusers/filterby/agent/${user?.name}`
             );
             console.log(response.data);
             setListings(response.data);
@@ -39,16 +40,23 @@ const ManageListsByAgent = () => {
         fetchAgentData();
     }, [user]);
 
+
     const getBadgeClass = (role) => {
         switch (role) {
-            case "blue":
-                return "badge-primary";
-            case "red":
-                return "badge-error";
-            case "purple":
-                return "badge-info";
-            case "orange":
+            case "approved":
+                return "badge-accent";
+            case "pending":
                 return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
             default:
                 return "";
         }

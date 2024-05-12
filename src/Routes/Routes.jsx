@@ -1,14 +1,22 @@
 import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import Main from "../Layout/Main";
+import Chat from "../MessageComponents/Chat";
 import BuyPage from "../Pages/Buy/Buy";
 import CommercialPage from "../Pages/Commercial/Commercial";
 import Home from "../Pages/Home/Home";
+import ManageSpottedListings from "../Pages/ManageSpottedListings/ManageSpottedListings";
+import PaidOutListings from "../Pages/PaidOutListings/PaidOutListings";
+import PropertyDetails from "../Pages/PropertyDetails/PropertyDetails";
 import ResidentialPage from "../Pages/Residential/Residential";
 import SellPage from "../Pages/Sell/Sell";
+import SuccessfulListings from "../Pages/SuccessfulListings/SuccessfulListings";
+import UnsuccessfulListings from "../Pages/UnsuccessfulListings/UnsuccessfulListings";
 import LoginSignUp from "../components/Authentication/LoginSignUp";
+import OtpUI from "../components/Authentication/OtpUI/OtpUI";
 import ManageAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgency";
 import ManageAgent from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageAgent";
+import ManageListByAdmin from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAdmin";
 import ManageListByAgency from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListByAgency";
 import ManageListBySpotter from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageListBySpotter";
 import ManageSpotters from "../components/DashBoardComponent/AdminComponents/ManageAllLists/ManageSpotters";
@@ -23,7 +31,8 @@ import ForgotPassword from "../components/ForgotPassword/ForgotPassword";
 import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassword";
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
-import OtpUI from "../components/Authentication/OtpUI/OtpUI";
+import PrivateRouter from "./PrivateRouter";
+// import Chat from "../MessageComponents/Chat";
 
 export const router = createBrowserRouter([
   {
@@ -40,16 +49,16 @@ export const router = createBrowserRouter([
       },
       {
         path: "/sell",
-        element: <SellPage />,
+        element: <PrivateRouter><SellPage /></PrivateRouter>,
       },
       {
         path: "/residential",
-        loader: ()=> fetch("http://localhost:5000/house/houseData"),
+        loader: () => fetch("http://localhost:5000/house/houseAvailableData"),
         element: <ResidentialPage />,
       },
       {
         path: "/commercial",
-        loader: ()=> fetch("http://localhost:5000/house/houseData"),
+        loader: () => fetch("http://localhost:5000/house/houseAvailableData"),
         element: <CommercialPage />,
       },
       {
@@ -76,6 +85,27 @@ export const router = createBrowserRouter([
         path: "/otp",
         element: <OtpUI />,
       },
+      {
+        path: '/property-details/:id',
+        loader: ({ params }) => fetch(`http://localhost:5000/house/single-house-data/${params.id}`),
+        element: <PropertyDetails />
+      },
+      {
+        path: "/manage-spotted-listings",
+        element: <PrivateRouter><ManageSpottedListings /></PrivateRouter>
+      },
+      {
+        path: "/successful-listings",
+        element: <PrivateRouter><SuccessfulListings /></PrivateRouter>
+      },
+      {
+        path: "/unsuccessful-listings",
+        element: <PrivateRouter><UnsuccessfulListings /></PrivateRouter>
+      },
+      {
+        path: "/paid-out-listings",
+        element: <PrivateRouter><PaidOutListings /></PrivateRouter>
+      },
     ],
   },
 
@@ -101,15 +131,23 @@ export const router = createBrowserRouter([
       },
       {
         path: "/dashboard/ManageAllListings/manageListingByAgency",
-        element: <ManageListByAgency/>,
+        element: <ManageListByAgency />,
       },
       {
         path: "/dashboard/ManageAllListings/manageListingBySpotter",
-        element:<ManageListBySpotter/>
+        element: <ManageListBySpotter />
+      },
+      {
+        path: "/dashboard/ManageAllListings/manageListingByAdmin",
+        element: <ManageListByAdmin />,
       },
       {
         path: "/dashboard/ManageAllListings/profile",
         element: <Profiles />,
+      },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
       },
 
       //Agency Components--------------------------
@@ -133,6 +171,10 @@ export const router = createBrowserRouter([
         path: "/dashboard/agency/profile",
         element: <Profiles />,
       },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
+      },
 
       //Agent Components-----------------------
       {
@@ -146,6 +188,10 @@ export const router = createBrowserRouter([
       {
         path: "/dashboard/agent/manageListing",
         element: <ManageLIstings />,
+      },
+      {
+        path: "/dashboard/message",
+        element: <Chat />,
       },
     ],
   },

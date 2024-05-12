@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 import { useLoaderData } from "react-router-dom";
@@ -10,14 +10,30 @@ const ResidentialPage = () => {
     const [search, setSearch] = useState("");
     const [locationValue, setLocationValue] = useState("");
     const [filteredData, setFilteredData] = useState([]);
+    const [mainData, setMainData] = useState([]);
     const residentialData = useLoaderData();
-    
+
+    useEffect(() => {
+        setMainData(
+            residentialData.filter(
+                (item) => item.propertyType === "residential"
+            )
+        );
+    }, [residentialData]);
+
     const filterData = (item) => {
-        const searchMatch = item.propertyType.toLowerCase().includes(search.toLowerCase());
-        const locationMatch = item.address.toLowerCase().includes(locationValue.toLowerCase());
-        return (searchMatch && locationMatch) || (search === "" && locationValue === "");
+        const searchMatch = item.propertyType
+            .toLowerCase()
+            .includes(search.toLowerCase());
+        const locationMatch = item.address
+            .toLowerCase()
+            .includes(locationValue.toLowerCase());
+        return (
+            (searchMatch && locationMatch) ||
+            (search === "" && locationValue === "")
+        );
     };
-    
+
     return (
         <div>
             <Breadcrumb title={"Residential"} />
@@ -44,7 +60,9 @@ const ResidentialPage = () => {
                                 type="text"
                                 name="location"
                                 id="location"
-                                onChange={(e) => setLocationValue(e.target.value)}
+                                onChange={(e) =>
+                                    setLocationValue(e.target.value)
+                                }
                                 placeholder="Enter Location.."
                             />
                             <CiLocationOn
@@ -60,7 +78,7 @@ const ResidentialPage = () => {
                     </div>
                     <div className="px-6 py-5 md:w-3/4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
-                            {residentialData
+                            {mainData
                                 ?.filter(filterData)
                                 .map((item, idx) => (
                                     <PropertyCard key={idx} item={item} />
