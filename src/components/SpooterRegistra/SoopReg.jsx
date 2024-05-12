@@ -207,7 +207,7 @@ const SoopReg = () => {
       <div className="min-h-screen py-20">
         <div className="lg:w-[600px] mx-auto shadow-xl bg-white p-16">
           <h1 className="text-4xl font-bold text-center my-4 pb-10">
-            Spooter Registration
+            Spotter Registration
           </h1>
           <>
             <Form

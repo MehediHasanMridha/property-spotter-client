@@ -602,7 +602,7 @@ const Steper = () => {
                                                 onClick={handleButtonClick}
                                                 className="bg-blue-500 px-10 text-white py-2 rounded "
                                             >
-                                                Active
+                                                Submit
                                             </button>
                                         )}
                                 </div>
