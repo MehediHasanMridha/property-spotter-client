@@ -14,8 +14,7 @@ const ManageListings = () => {
     const fetchListingData = async () => {
         if (user) {
             try {
-                const url = `http://localhost:5000/house/listings-by-agency-agent/${user?.agencyName}`;
-                console.log(url);
+                const url = `http://localhost:5000/house/houseDataByAgent/${user?.name}`;
                 const response = await axios.get(url);
                 setListings(response.data);
             } catch (error) {
@@ -65,8 +64,9 @@ const ManageListings = () => {
     const houseUpdate = async (e, id) => {
         try {
             const value = e.target.innerText.toLowerCase();
-            const res = await fetch(
-                `http://localhost:5000/house/update/${id}`,
+            console.log({ status: value, agencyName: user.agencyName });
+            await fetch(
+                `http://localhost:5000/house/updateHouseDataByAgent/${id}`,
                 {
                     method: "POST",
                     headers: {
@@ -74,9 +74,9 @@ const ManageListings = () => {
                     },
                     body: JSON.stringify({
                         status: value,
-                        agencyName: user.name,
-                        agencyEmail: user.email,
-                        agencyImage: user.photoURL,
+                        agencyName: user.agencyName,
+                        // agencyEmail: user.email,
+                        // agencyImage: user.photoURL,
                     }),
                 }
             );
@@ -161,6 +161,18 @@ const ManageListings = () => {
                                                             }
                                                         >
                                                             Approved
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Available
                                                         </button>
                                                     </li>
                                                     <li>
