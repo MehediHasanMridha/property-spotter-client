@@ -13,7 +13,8 @@ const ManageListByAdmin = () => {
   const [selectedAgencies, setSelectedAgencies] = useState([]);
   const [selectedAgent, setSelectedAgent] = useState([]);
   const [allAgency, setAllAgency] = useState([]);
-
+  const [selectedAgency, setSelectedAgency] = useState(false);
+  const [allAgent, setAllAgent] = useState([]);
   const fetchAgency = async () => {
     try {
       const response = await axios.get("http://localhost:5000/allusers");
@@ -22,7 +23,16 @@ const ManageListByAdmin = () => {
       console.error(error);
     }
   };
-
+  const fetchAgent = async (name) => {
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/all-agents/${name}`
+      );
+      return setAllAgent(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
     fetchAgency();
     fetchListingData();
@@ -40,7 +50,7 @@ const ManageListByAdmin = () => {
   };
 
   const handleDetailsClick = (house) => {
-    document.getElementById("my_modal_5").showModal();
+    document.getElementById("my_modal_4").showModal();
     setSelectedHouse(house);
   };
 
@@ -95,20 +105,15 @@ const ManageListByAdmin = () => {
     }
   };
 
-  // Handle selection of agencies
-  const handleAgencySelect = (selectedOptions) => {
-    const selectedValues = selectedOptions.map((option) => option.value);
-    setSelectedAgencies(selectedValues);
-  };
-  // Handle selection of agencies
-  const handleAgentSelect = (selectedOptions) => {
-    const selectedValues = selectedOptions.map((option) => option.value);
-    setSelectedAgent(selectedValues);
+  const handleAgencySelect = async (e) => {
+    setSelectedAgencies(e.target.value);
+    await fetchAgent(e.target.value);
+    setSelectedAgency(true);
   };
 
+
   const handleSubmit = async (id) => {
-    console.log(selectedAgent);
-    console.log(selectedAgencies);
+    console.log(id);
 
     try {
       const res = await fetch(`http://localhost:5000/house/update/${id}`, {
@@ -117,8 +122,8 @@ const ManageListByAdmin = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          agency: selectedAgencies,
-          agencyAgent: selectedAgent,
+          agency: [selectedAgencies],
+          agent: selectedAgent,
         }),
       });
       toast.success(`Successfully Forward to Agency Agent!`);
@@ -127,17 +132,6 @@ const ManageListByAdmin = () => {
       console.log(error);
     }
   };
-  // Options for React Select component
-  const options = allAgency.map((agency) => ({
-    value: agency.agencyName,
-    label: agency.agencyName,
-  }));
-  // Options for React Select component
-  const optionsForAgent = allAgency.map((agency) => ({
-    value: agency.agencyName,
-    label: agency.agencyName,
-  }));
-  console.log(selectedAgent);
   return (
     <div className="p-6">
       <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
@@ -199,11 +193,11 @@ const ManageListByAdmin = () => {
                   <td>
                     {/* Open the modal using document.getElementById('ID').showModal() method */}
                     <div className="flex gap-2">
-                      <details className="dropdown">
+                      <details className="dropdown dropdown-left dropdown-end">
                         <summary className="m-1 btn btn-primary">
                           Action
                         </summary>
-                        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52 text-black">
                           <li>
                             <button onClick={(e) => houseUpdate(e, house._id)}>
                               Approved
@@ -251,60 +245,9 @@ const ManageListByAdmin = () => {
                               FORWARD AGENCY
                             </button>
                           </li>
+                          
                         </ul>
-                        <dialog
-                          id="my_modal_5"
-                          className="modal modal-bottom sm:modal-middle"
-                        >
-                          <div className="modal-box  space-y-10 space-x-5">
-                            <h1 className="text-2xl font-bold">
-                              Select The Agency Agent
-                            </h1>
-                            <div className="mt-6 relative ">
-                              <label className="block text-sm z-50 font-medium absolute -top-3 px-2 bg-white left-3 text-gray-700">
-                                Select Agency
-                              </label>
-                              <Select
-                                isMulti
-                                options={options}
-                                onChange={handleAgencySelect}
-                                value={selectedAgencies.map((agency) => ({
-                                  value: agency,
-                                  label: agency,
-                                }))}
-                              />
-                            </div>
-                            <div className="mt-6 relative ">
-                              <label className="block text-sm z-50 font-medium absolute -top-3 px-2 bg-white left-3 text-gray-700">
-                                Select Agent
-                              </label>
-                              <Select
-                                isMulti
-                                options={optionsForAgent}
-                                onChange={handleAgentSelect}
-                                value={selectedAgent.map((agency) => ({
-                                  value: agency,
-                                  label: agency,
-                                }))}
-                              />
-                            </div>
-                            <div>
-                              <button
-                                className="btn btn-accent"
-                                onClick={(e) => handleSubmit(house._id)}
-                              >
-                                Submit
-                              </button>
-                            </div>
-                            <div className="modal-action">
-                              <form method="dialog">
-                                <button className="btn btn-error btn-outline">
-                                  Close
-                                </button>
-                              </form>
-                            </div>
-                          </div>
-                        </dialog>
+                        
                       </details>
                       <button
                         className="btn btn-info"
@@ -314,7 +257,7 @@ const ManageListByAdmin = () => {
                       </button>
                     </div>
                     <dialog
-                      id="my_modal_5"
+                      id="my_modal_4"
                       className="modal modal-bottom sm:modal-middle"
                     >
                       <div className="modal-box">
@@ -362,6 +305,79 @@ const ManageListByAdmin = () => {
                         </div>
                       </div>
                     </dialog>
+                    <dialog
+                          id="my_modal_5"
+                          className="modal modal-top modal-backdrop sm:modal-middle"
+                        >
+                          <div className="modal-box  space-y-10 space-x-5">
+                            <h1 className="text-2xl font-bold">
+                              Select The Agency Agent
+                            </h1>
+                            <div className="mt-6 relative">
+                              <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
+                                Select Agency
+                              </label>
+                              <select
+                                defaultValue={""}
+                                className="select select-bordered w-full text-black"
+                                onChange={(e) => handleAgencySelect(e)}
+                              >
+                                <option value={""} disabled>
+                                  Select an agency
+                                </option>
+                                {allAgency.map((agency, idx) => (
+                                  <option key={idx} value={agency.name} className="text-black">
+                                    {agency.name}
+                                  </option>
+                                ))}
+                              </select>
+                            </div>
+                            {selectedAgency &&
+                              (allAgent.length > 0 ? (
+                                <div className="mt-6 relative">
+                                  <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
+                                    Select Agent
+                                  </label>
+                                  <select
+                                    className="select select-bordered w-full text-black"
+                                    defaultValue={""}
+                                    onChange={(e) =>
+                                      setSelectedAgent(e.target.value)
+                                    }
+                                  >
+                                    <option value={""} disabled>
+                                      Select an agent
+                                    </option>
+                                    {allAgent.map((agent, idx) => (
+                                      <option key={idx} value={agent.name} className="text-black">
+                                        {agent.name}
+                                      </option>
+                                    ))}
+                                  </select>
+                                </div>
+                              ) : (
+                                <h3 className="text-center text-lg font-semibold">
+                                  {" "}
+                                  No Agent Available{" "}
+                                </h3>
+                              ))}
+                            <div>
+                              <button
+                                className="btn btn-accent"
+                                onClick={(e) => handleSubmit(house._id)}
+                              >
+                                Submit
+                              </button>
+                            </div>
+                            <div className="modal-action">
+                              <form method="dialog">
+                                <button className="btn btn-error btn-outline">
+                                  Close
+                                </button>
+                              </form>
+                            </div>
+                          </div>
+                        </dialog>
                   </td>
                 </tr>
               ))}
