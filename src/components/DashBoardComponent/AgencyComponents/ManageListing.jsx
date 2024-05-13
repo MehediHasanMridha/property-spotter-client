@@ -5,20 +5,22 @@ import { AuthContext } from "../../../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
 
 const ManageListing = () => {
-    const { user } = useContext(AuthContext);
+    const { user, loading } = useContext(AuthContext);
     const [currentPage, setCurrentPage] = useState(1);
     const [HousePerPage] = useState(6);
     const [listings, setListings] = useState([]);
     const [selectedHouse, setSelectedHouse] = useState(null);
 
     const fetchListingData = async () => {
-        try {
-            const response = await axios.get(
-                "http://localhost:5000/house/houseData"
-            );
-            setListings(response.data);
-        } catch (error) {
-            console.error("Error fetching data:", error);
+        if (user) {
+            try {
+                const url = `http://localhost:5000/house/getHouseDataByAgency/${user?.name}`;
+                console.log(url);
+                const response = await axios.get(url);
+                setListings(response.data);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
         }
     };
 
@@ -29,7 +31,7 @@ const ManageListing = () => {
 
     useEffect(() => {
         fetchListingData();
-    }, []);
+    }, [user]);
 
     const getBadgeClass = (role) => {
         switch (role) {
@@ -40,6 +42,8 @@ const ManageListing = () => {
             case "offer pending":
                 return "badge-warning";
             case "pending mandate":
+                return "badge-warning";
+            case "pending contact with client":
                 return "badge-warning";
             case "hold":
                 return "badge-warning";
@@ -60,27 +64,25 @@ const ManageListing = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async (e, id) => {
+    const houseUpdate = async (e, house) => {
         try {
             const value = e.target.innerText.toLowerCase();
-            const res = await fetch(
-                `http://localhost:5000/house/update/${id}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        status: value,
-                        agencyName: user.name,
-                        agencyEmail: user.email,
-                        agencyImage: user.photoURL,
-                        agency: [user.name],
-                    }),
-                }
-            );
+            await fetch(`http://localhost:5000/house/update/${house._id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    status: value,
+                    agencyName: user?.name,
+                    agencyEmail: user?.email,
+                    agencyImage: user?.photoURL,
+                    agency: [user?.name],
+                }),
+            });
             toast.success(`Successfully ${value}`);
             fetchListingData();
+            document.getElementById(`my_modal_${house._id}`).close();
         } catch (error) {
             console.log(error);
         }
@@ -107,13 +109,7 @@ const ManageListing = () => {
                     <h4 className="text-2xl font-medium">
                         Total Houses:{" "}
                         <span className="text-3xl text-primary font-bold">
-                            {
-                                currentJobs.filter((item) =>
-                                    item.agency.some(
-                                        (name) => name === user.name
-                                    )
-                                ).length
-                            }
+                            {currentJobs.length}
                         </span>
                     </h4>
                 </div>
@@ -134,41 +130,49 @@ const ManageListing = () => {
                             </tr>
                         </thead>
                         <tbody className="text-center">
-                            {currentJobs
-                                .filter((item) =>
-                                    item.agency.some(
-                                        (name) => name === user.name
-                                    )
-                                )
-                                .map((house, index) => (
-                                    <tr key={house?.jobData?._id}>
-                                        <td>{index + 1}</td>
-                                        <td>{house?.houseOwnerName}</td>
-                                        <td>{house?.houseOwnerEmail}</td>
-                                        <td>{house?.houseOwnerPhone}</td>
-                                        <td>
-                                            <div
-                                                className={`px-2 py-1 capitalize text-lg rounded-lg  ${getBadgeClass(
-                                                    house?.status
-                                                )} text-white`}
+                            {currentJobs.map((house, index) => (
+                                <tr key={house?.jobData?._id}>
+                                    <td>{index + 1}</td>
+                                    <td>{house?.houseOwnerName}</td>
+                                    <td>{house?.houseOwnerEmail}</td>
+                                    <td>{house?.houseOwnerPhone}</td>
+                                    <td>
+                                        <div
+                                            className={`px-2 py-1 capitalize rounded-lg  ${getBadgeClass(
+                                                house?.status
+                                            )} text-white`}
+                                        >
+                                            {house?.status}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {/* Open the modal using document.getElementById('ID').showModal() method */}
+                                        <div className="flex gap-2">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                    document
+                                                        .getElementById(
+                                                            `my_modal_${house._id}`
+                                                        )
+                                                        .showModal()
+                                                }
                                             >
-                                                {house?.status}
-                                            </div>
-                                        </td>
-                                        <td>
-                                            {/* Open the modal using document.getElementById('ID').showModal() method */}
-                                            <div className="flex gap-2">
-                                                <details className="dropdown">
-                                                    <summary className="m-1 btn btn-primary">
-                                                        Action
-                                                    </summary>
-                                                    <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+                                                Action
+                                            </button>
+                                            <dialog
+                                                id={`my_modal_${house._id}`}
+                                                className="modal"
+                                            >
+                                                <div className="modal-box w-fit">
+                                                    <ul className="p-2 menu z-[1] rounded-box">
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -177,10 +181,11 @@ const ManageListing = () => {
                                                         </li>
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -189,10 +194,11 @@ const ManageListing = () => {
                                                         </li>
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -201,10 +207,11 @@ const ManageListing = () => {
                                                         </li>
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -213,10 +220,11 @@ const ManageListing = () => {
                                                         </li>
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -225,10 +233,11 @@ const ManageListing = () => {
                                                         </li>
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -237,10 +246,11 @@ const ManageListing = () => {
                                                         </li>
                                                         <li>
                                                             <button
+                                                                className="hover:bg-primary hover:text-white"
                                                                 onClick={(e) =>
                                                                     houseUpdate(
                                                                         e,
-                                                                        house._id
+                                                                        house
                                                                     )
                                                                 }
                                                             >
@@ -249,96 +259,99 @@ const ManageListing = () => {
                                                             </button>
                                                         </li>
                                                     </ul>
-                                                </details>
-                                                <button
-                                                    className="btn btn-primary"
-                                                    onClick={() =>
-                                                        handleDetailsClick(
-                                                            house
-                                                        )
-                                                    }
-                                                >
-                                                    Details
-                                                </button>
-                                            </div>
-                                            <dialog
-                                                id="my_modal_5"
-                                                className="modal modal-bottom sm:modal-middle"
-                                            >
-                                                <div className="modal-box">
-                                                    <h3 className="font-bold text-3xl mb-3">
-                                                        House{" "}
-                                                        <span className="text-primary font-bold">
-                                                            Details!
-                                                        </span>
-                                                    </h3>
-                                                    <div className="text-center text-xl">
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Bedroom:
-                                                            </span>{" "}
-                                                            <span className="text-primary font-bold text-2xl">
-                                                                {
-                                                                    selectedHouse?.bedroom
-                                                                }
-                                                            </span>
-                                                        </h1>
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Bathroom:
-                                                            </span>{" "}
-                                                            <span className="text-primary font-bold text-2xl">
-                                                                {
-                                                                    selectedHouse?.bathroom
-                                                                }
-                                                            </span>
-                                                        </h1>
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Sell Time:
-                                                            </span>{" "}
-                                                            <span className="text-primary font-bold text-2xl">
-                                                                {
-                                                                    selectedHouse?.sellTime
-                                                                }
-                                                            </span>
-                                                        </h1>
-                                                        <h1>
-                                                            <span className="font-semibold">
-                                                                Agency:
-                                                            </span>
-                                                            {selectedHouse?.agency.map(
-                                                                (
-                                                                    agencyItem,
-                                                                    index
-                                                                ) => (
-                                                                    <span
-                                                                        key={
-                                                                            index
-                                                                        }
-                                                                        className="text-primary font-bold text-2xl ml-2"
-                                                                    >
-                                                                        {
-                                                                            agencyItem
-                                                                        }
-                                                                        ,
-                                                                    </span>
-                                                                )
-                                                            )}
-                                                        </h1>
-                                                    </div>
                                                     <div className="modal-action">
                                                         <form method="dialog">
-                                                            <button className="btn btn-error">
+                                                            <button className="btn btn-primary bg-red-500 border-red-500 hover:border-red-600 hover:bg-red-600">
                                                                 Close
                                                             </button>
                                                         </form>
                                                     </div>
                                                 </div>
                                             </dialog>
-                                        </td>
-                                    </tr>
-                                ))}
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                    handleDetailsClick(house)
+                                                }
+                                            >
+                                                Details
+                                            </button>
+                                        </div>
+
+                                        <dialog
+                                            id="my_modal_5"
+                                            className="modal modal-bottom sm:modal-middle"
+                                        >
+                                            <div className="modal-box">
+                                                <h3 className="font-bold text-3xl mb-3">
+                                                    House{" "}
+                                                    <span className="text-primary font-bold">
+                                                        Details!
+                                                    </span>
+                                                </h3>
+                                                <div className="text-center text-xl">
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Bedroom:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.bedroom
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Bathroom:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.bathroom
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Sell Time:
+                                                        </span>{" "}
+                                                        <span className="text-primary font-bold text-2xl">
+                                                            {
+                                                                selectedHouse?.sellTime
+                                                            }
+                                                        </span>
+                                                    </h1>
+                                                    <h1>
+                                                        <span className="font-semibold">
+                                                            Agency:
+                                                        </span>
+                                                        {selectedHouse?.agency.map(
+                                                            (
+                                                                agencyItem,
+                                                                index
+                                                            ) => (
+                                                                <span
+                                                                    key={index}
+                                                                    className="text-primary font-bold text-2xl ml-2"
+                                                                >
+                                                                    {agencyItem}
+                                                                    ,
+                                                                </span>
+                                                            )
+                                                        )}
+                                                    </h1>
+                                                </div>
+                                                <div className="modal-action">
+                                                    <form method="dialog">
+                                                        <button className="btn btn-error">
+                                                            Close
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </dialog>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </div>
