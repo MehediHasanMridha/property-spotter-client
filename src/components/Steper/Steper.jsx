@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -29,6 +30,7 @@ const Steper = () => {
     const [allAgent, setAllAgent] = useState([]);
     const [allAgency, setAllAgency] = useState([]);
 
+    const navigate = useNavigate()
     useEffect(() => {
         fetchAgency();
     }, []);
@@ -107,6 +109,7 @@ const Steper = () => {
                         },
                     }
                 );
+                navigate('/')
                 toast.success("Form submitted successfully");
             } catch (error) {
                 console.error("Error submitting form:", error);
