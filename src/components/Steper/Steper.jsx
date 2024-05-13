@@ -1,18 +1,17 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import Select from "react-select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../Provider/AuthProvider";
 
 const Steper = () => {
     const [activeStep, setActiveStep] = useState(1);
-    const [selectedOption, setSelectedOption] = useState("");
+    const [description, setDescription] = useState("");
     const [selectedOptionSelector, setSelectedOptionSelector] = useState("");
     const [access, setAccess] = useState(false);
     const [agencyList, setAgencyList] = useState([]);
-    const [selectedAgencies, setSelectedAgencies] = useState([]);
+    const [selectedAgencies, setSelectedAgencies] = useState("");
     const [title, setTitle] = useState("");
     const [name, setName] = useState(null);
     const [property, setProperty] = useState("");
@@ -24,34 +23,41 @@ const Steper = () => {
     const [spooName, setSpooName] = useState("");
     const [spooEmail, setSpooEmail] = useState("");
     const [spooPhone, setSpooPhone] = useState("");
-    const [selectedAgency, setSelectedAgency] = useState("");
-    const [agency, setAgency] = useState([]);
+    const [selectedAgency, setSelectedAgency] = useState(null);
+    const [selectedAgent, setSelectedAgent] = useState();
     const { user } = useContext(AuthContext);
+    const [allAgent, setAllAgent] = useState([]);
     const [allAgency, setAllAgency] = useState([]);
 
     useEffect(() => {
-        fetchAgent();
+        fetchAgency();
     }, []);
 
-    const fetchAgent = async () => {
+    const fetchAgency = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/allusers");
+            const response = await axios.get(
+                "http://localhost:5000/all-agency"
+            );
             setAllAgency(response.data);
         } catch (error) {
             console.error(error);
         }
     };
 
-    // Options for React Select component
-    const options = allAgency.map((agency) => ({
-        value: agency.agencyName,
-        label: agency.agencyName,
-    }));
+    const fetchAgent = async (name) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:5000/all-agents/${name}`
+            );
+            return setAllAgent(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
 
-    // Handle selection of agencies
-    const handleAgencySelect = (selectedOptions) => {
-        const selectedValues = selectedOptions.map((option) => option.value);
-        setSelectedAgencies(selectedValues);
+    const handleAgencySelect = async (e) => {
+        setSelectedAgencies(e.target.value);
+        await fetchAgent(e.target.value);
     };
 
     const previousStep = () => {
@@ -64,47 +70,7 @@ const Steper = () => {
         setAccess(false);
     };
 
-    console.log(spooEmail, spooName);
-
     const isLastStep = activeStep === 4;
-
-    console.log(selectedAgency);
-
-    // const handleButtonClick = async () => {
-    //     if (isLastStep) {
-    //         console.log("done");
-    //         const data = {
-    //             spooterName: name,
-    //             spooterEmail: user?.email,
-    //             status: "pending",
-    //             bedroom,
-    //             address,
-    //             image,
-    //             propertyType: property,
-    //             bathroom,
-    //             previousStep,
-    //             sellTime,
-    //             houseOwnerName: spooName,
-    //             houseOwnerEmail: spooEmail,
-    //             houseOwnerPhone: spooPhone,
-    //             agency:
-    //                 selectedAgency === "Yes"
-    //                     ? agency
-    //                     : ["first", "second", "all"],
-    //         };
-    //         console.log("data",data);
-    //         const res = await axios.post(
-    //             "http://localhost:5000/house/add",
-    //             data
-    //         );
-    //         console.log(res.data);
-    //         if (res.data._id) {
-    //             toast.success("Form submitted successfully", data);
-    //         }
-    //     } else {
-    //         nextStep();
-    //     }
-    // };
 
     const handleButtonClick = async () => {
         if (isLastStep) {
@@ -112,9 +78,10 @@ const Steper = () => {
             const formData = new FormData();
             formData.append("spooterName", name);
             formData.append("spooterEmail", user?.email);
-            formData.append("status", "pending");
+            formData.append("status", "offer pending");
             formData.append("bedroom", bedroom);
             formData.append("address", address);
+            formData.append("description", description);
             formData.append("image", image);
             formData.append("propertyType", property);
             formData.append("bathroom", bathroom);
@@ -123,9 +90,12 @@ const Steper = () => {
             formData.append("houseOwnerName", spooName);
             formData.append("houseOwnerEmail", spooEmail);
             formData.append("houseOwnerPhone", spooPhone);
-            selectedAgencies.forEach((agency) => {
-                formData.append("agency", agency);
-            });
+            if (selectedAgencies) {
+                formData.append("agency", [selectedAgencies]);
+                formData.append("agent", selectedAgent);
+            } else {
+                formData.append("agency", ["admin"]);
+            }
 
             try {
                 const res = await axios.post(
@@ -138,10 +108,6 @@ const Steper = () => {
                     }
                 );
                 toast.success("Form submitted successfully");
-                console.log(res.data);
-                if (res.data._id) {
-                    toast.success("Form submitted successfully", data);
-                }
             } catch (error) {
                 console.error("Error submitting form:", error);
             }
@@ -149,7 +115,7 @@ const Steper = () => {
             nextStep();
         }
     };
-    console.log(image);
+
     useEffect(() => {
         fetch("http://localhost:5000/agency/agencyData")
             .then((res) => res.json())
@@ -163,6 +129,7 @@ const Steper = () => {
             );
     }, []);
 
+    console.log(selectedAgent);
     return (
         <div className="max-w-3xl mx-auto rounded-lg">
             <div className="py-10">
@@ -326,7 +293,7 @@ const Steper = () => {
                                         </span>
                                     </div>
                                     <select
-                                    required
+                                        required
                                         value={bedroom}
                                         onChange={(e) =>
                                             setBedroom(e.target.value)
@@ -362,6 +329,25 @@ const Steper = () => {
                                             setAddress(e.target.value)
                                         }
                                     />
+                                </label>
+                            </div>
+                            <div>
+                                <label className="form-control w-[400px]">
+                                    <div className="label">
+                                        <span className="label-text">
+                                            Description
+                                        </span>
+                                    </div>
+                                    <textarea
+                                        type="text"
+                                        required
+                                        className="textarea textarea-bordered"
+                                        placeholder="Enter Description"
+                                        value={description}
+                                        onChange={(e) =>
+                                            setDescription(e.target.value)
+                                        }
+                                    ></textarea>
                                 </label>
                             </div>
                             <div>
@@ -423,13 +409,14 @@ const Steper = () => {
                                 {!isLastStep &&
                                     property &&
                                     bedroom &&
-                                    image && 
+                                    image &&
+                                    description &&
                                     bathroom && (
                                         <button
                                             onClick={handleButtonClick}
                                             className="bg-[#AEB2B4] px-10 w-full text-white py-2 rounded "
                                         >
-                                            Active
+                                            Next
                                         </button>
                                     )}
                             </div>
@@ -584,22 +571,57 @@ const Steper = () => {
                             </div>
                             {selectedAgency === "Yes" && (
                                 <div className="mt-6 relative">
-                                    <label className="block text-sm z-50 font-medium absolute -top-3 px-2 bg-white left-3 text-gray-700">
-                                        Select Organization
+                                    <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
+                                        Select Agency
                                     </label>
-                                    <Select
-                                        isMulti
-                                        options={options}
-                                        onChange={handleAgencySelect}
-                                        value={selectedAgencies.map(
-                                            (agency) => ({
-                                                value: agency,
-                                                label: agency,
-                                            })
-                                        )}
-                                    />
+                                    <select
+                                    defaultValue={''}
+                                        className="select select-bordered w-full"
+                                        onChange={(e) => handleAgencySelect(e)}
+                                    >
+                                        <option value={''} disabled>Select an agency</option>
+                                        {allAgency.map((agency, idx) => (
+                                            <option
+                                                key={idx}
+                                                value={agency.name}
+                                            >
+                                                {agency.name}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </div>
                             )}
+
+                            {selectedAgency === "Yes" &&
+                                (allAgent.length > 0 ? (
+                                    <div className="mt-6 relative">
+                                        <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
+                                            Select Agent
+                                        </label>
+                                        <select
+                                            className="select select-bordered w-full"
+                                            defaultValue={''}
+                                            onChange={(e) =>
+                                                setSelectedAgent(e.target.value)
+                                            }
+                                        >
+                                            <option value={''} disabled>Select an agent</option>
+                                            {allAgent.map((agent, idx) => (
+                                                <option
+                                                    key={idx}
+                                                    value={agent.name}
+                                                >
+                                                    {agent.name}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                ) : (
+                                    <h3 className="text-center text-lg font-semibold">
+                                        {" "}
+                                        No Agent Available{" "}
+                                    </h3>
+                                ))}
                             <div className="flex justify-between items-center gap-5 py-10">
                                 <div className="grid grid-cols-2 w-full justify-center items-center gap-5">
                                     <button
@@ -619,7 +641,7 @@ const Steper = () => {
                                                 onClick={handleButtonClick}
                                                 className="bg-blue-500 px-10 text-white py-2 rounded "
                                             >
-                                                Active
+                                                Submit
                                             </button>
                                         )}
                                 </div>

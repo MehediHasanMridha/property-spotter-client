@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 
@@ -28,6 +29,10 @@ const ResetPassword = () => {
   };
 
   return (
+<>
+<Helmet>
+    <title>Reset Password</title>
+  </Helmet>
     <div className="lg:w-1/2 w-11/12 mx-auto">
       <div className="flex justify-between gap-20 md:py-36 py-12">
         <div className="w-[600px] bg-[#edf7f4] custom-shadow rounded-lg p-8 mb-4">
@@ -57,6 +62,7 @@ const ResetPassword = () => {
         </div>
       </div>
     </div>
+</>
   );
 };
 

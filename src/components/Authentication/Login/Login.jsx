@@ -5,6 +5,7 @@ import { useContext, useState } from "react";
 import axios from "axios";
 import { message } from "antd";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const Login = () => {
   const { signinWithGoogle, facebookSignIn, login, user, setUser } =
@@ -123,6 +124,9 @@ const Login = () => {
 
   return (
     <>
+      <Helmet>
+        <title>Login</title>
+      </Helmet>
       <form onSubmit={handleLogin}>
         <div className="flex flex-col gap-1">
           <div className="">

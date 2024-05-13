@@ -2,9 +2,13 @@ import { PiHouseLight } from "react-icons/pi";
 
 import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
+import { Link } from "react-router-dom";
 import BannerImage from "../../assets/images/banner.svg";
 
 const Banner = ({ search, setSearch, mainData, filterData }) => {
+
+    console.log(mainData, 'from banner');
+
     return (
         <div
             className="flex justify-center items-center bg-primary bg-no-repeat bg-bottom w-full h-[550px]"
@@ -14,7 +18,7 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                 <h3 className="text-2xl md:text-5xl font-bold text-white py-3">
                     Find Property for Sale
                 </h3>
-                <div className="relative">
+                <div className="relative m-2 w-[90%] sm:w-full lg:m-0">
                     <PiHouseLight
                         className="absolute left-2 top-3.5 text-gray-600"
                         size={28}
@@ -32,16 +36,15 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                     </button>
                 </div>
                 <div
-                    className={`absolute ${
-                        search ? "" : "hidden"
-                    } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
+                    className={`absolute ${search ? "" : "hidden"
+                        } top-36 bg-white border border-primary h-40 w-full overflow-y-scroll px-3`}
                 >
                     <ul>
                         {mainData.length > 0 &&
                             mainData.filter(filterData).map((item, idx) => (
                                 <li key={idx}>
-                                    <a
-                                        href="#reduceprice"
+                                    <Link
+                                        to={`/property-details/${item._id}`}
                                         className="flex justify-between items-center gap-3 py-2 px-5"
                                     >
                                         <img
@@ -62,7 +65,7 @@ const Banner = ({ search, setSearch, mainData, filterData }) => {
                                                 Births:{item.bathroom}
                                             </h3>
                                         </div>
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                     </ul>

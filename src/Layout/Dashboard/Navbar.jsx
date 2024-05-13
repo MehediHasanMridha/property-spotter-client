@@ -9,10 +9,11 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
     const navigate = useNavigate();
     const { user, logOut } = useContext(AuthContext);
     const [dropdownOpen, setDropdownOpen] = useState(false);
-    const handleLogout =  async () => {
+    const handleLogout = async () => {
         await logOut()
         navigate("/");
     };
+
     return (
         <header className="flex items-center border-b  justify-between px-6 py-3 ">
             <div className="flex items-center">
@@ -36,7 +37,7 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
                     </svg>
                 </button>
 
-                
+
             </div>
 
             <div className="flex items-center">
@@ -54,15 +55,13 @@ const Navbar = ({ sidebarOpen, setSidebarOpen }) => {
 
                     <div
                         onClick={() => setDropdownOpen(false)}
-                        className={`fixed inset-0 z-10 w-full h-full ${
-                            dropdownOpen ? "" : "hidden"
-                        }`}
+                        className={`fixed inset-0 z-10 w-full h-full ${dropdownOpen ? "" : "hidden"
+                            }`}
                     ></div>
 
                     <div
-                        className={`absolute right-0 z-10 w-32 mt-2 overflow-hidden bg-white dark:bg-[#0c1427] rounded shadow-xl ${
-                            dropdownOpen ? "" : "hidden"
-                        }`}
+                        className={`absolute right-0 z-10 w-32 mt-2 overflow-hidden bg-white dark:bg-[#0c1427] rounded shadow-xl ${dropdownOpen ? "" : "hidden"
+                            }`}
                     >
                         <Link
                             to="/profiles"

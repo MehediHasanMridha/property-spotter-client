@@ -5,6 +5,7 @@ import { MdOutlineDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const ManageListsByAgent = () => {
     const [showName, setShowName] = useState("");
@@ -40,16 +41,23 @@ const ManageListsByAgent = () => {
         fetchAgentData();
     }, [user]);
 
+
     const getBadgeClass = (role) => {
         switch (role) {
-            case "blue":
-                return "badge-primary";
-            case "red":
-                return "badge-error";
-            case "purple":
-                return "badge-info";
-            case "orange":
+            case "approved":
+                return "badge-accent";
+            case "pending":
                 return "badge-warning";
+            case "offer pending":
+                return "badge-warning";
+            case "pending mandate":
+                return "badge-warning";
+            case "hold":
+                return "badge-warning";
+            case "available":
+                return "badge-success";
+            case "sold":
+                return "badge-success";
             default:
                 return "";
         }
@@ -155,6 +163,9 @@ const ManageListsByAgent = () => {
     console.log(editAgentData);
     return (
         <div className="p-6">
+               <Helmet>
+        <title>Manage Listing By Agent</title>
+      </Helmet>
             <div className="grid lg:grid-cols-3 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">

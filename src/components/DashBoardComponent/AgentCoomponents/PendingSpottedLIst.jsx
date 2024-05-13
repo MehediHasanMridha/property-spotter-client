@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 
 const PendingSpottedLIst = () => {
@@ -13,9 +14,7 @@ const PendingSpottedLIst = () => {
 
   const fetchListingData = async () => {
       try {
-          const response = await axios.get(
-              "http://localhost:5000/house/houseData"
-          );
+          const response = await axios.get(`http://localhost:5000/house/houseDataByAgent/${user?.name}`);
           setListings(response.data);
       } catch (error) {
           console.error("Error fetching data:", error);
@@ -31,16 +30,27 @@ const PendingSpottedLIst = () => {
       fetchListingData();
   }, []);
 
+
   const getBadgeClass = (role) => {
-      switch (role) {
-          case "approved":
-              return "badge-accent";
-          case "pending":
-              return "badge-warning";
-          default:
-              return "";
-      }
-  };
+    switch (role) {
+        case "approved":
+            return "badge-accent";
+        case "pending":
+            return "badge-warning";
+        case "offer pending":
+            return "badge-warning";
+        case "pending mandate":
+            return "badge-warning";
+        case "hold":
+            return "badge-warning";
+        case "available":
+            return "badge-success";
+        case "sold":
+            return "badge-success";
+        default:
+            return "";
+    }
+};
 
   // Logic for pagination
   const indexOfLastFlat = currentPage * HousePerPage;
@@ -73,6 +83,9 @@ const PendingSpottedLIst = () => {
 
   return (
       <div className="p-6">
+            <Helmet>
+           <title>Pending Spotted Listing</title>
+            </Helmet>
           <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
               <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                   <div className="text-center">
@@ -114,7 +127,7 @@ const PendingSpottedLIst = () => {
                           </tr>
                       </thead>
                       <tbody className="text-center">
-                          {currentJobs.map((house, index) => (
+                          {currentJobs.filter(item=>item.status === 'pending').map((house, index) => (
                                   <tr key={house?.jobData?._id}>
                                       <td>{index + 1}</td>
                                       <td>{house?.spooterName}</td>

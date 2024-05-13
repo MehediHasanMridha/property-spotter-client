@@ -1,6 +1,7 @@
-import axios from 'axios'
-import React, { useContext, useEffect, useState } from 'react'
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../../../Provider/AuthProvider';
+import { Helmet } from 'react-helmet-async';
 const stringToColor = (str) => {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -35,21 +36,28 @@ useEffect(()=>{
     }
   };
 
-  console.log(selectedHouse);
+
   const getBadgeClass = (role) => {
     switch (role) {
-      case "approved":
-        return "badge-accent";
-      case "pending":
-        return "badge-warning";
+        case "approved":
+            return "badge-accent";
+        case "pending":
+            return "badge-warning";
+        case "offer pending":
+            return "badge-warning";
+        case "pending mandate":
+            return "badge-warning";
+        case "hold":
+            return "badge-warning";
+        case "available":
+            return "badge-success";
         case "sold":
-          return "badge-success";
-          case "hold":
-          return "badge-info";
-      default:
-        return "";
+            return "badge-success";
+        default:
+            return "";
     }
-  };
+};
+
   const handleDetailsClick = (house) => {
     document.getElementById("my_modal_5").showModal();
     setSelectedHouse(house);
@@ -64,6 +72,9 @@ useEffect(()=>{
 
   return (
     <div className="p-6">
+         <Helmet>
+        <title>Manage Listing By Agency</title>
+      </Helmet>
       <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
         <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
           <div className="text-center">
@@ -119,7 +130,7 @@ useEffect(()=>{
                   <td>
   
                     <button
-                      className="btn btn-info text-base"
+                      className="btn btn-info whitespace-nowrap text-base"
                       onClick={() => handleDetailsClick(house)}
                     >
                      Agency ({house.agency.length})

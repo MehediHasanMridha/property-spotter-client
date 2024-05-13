@@ -8,6 +8,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import axios from "axios";
 import { AuthContext } from "../../Provider/AuthProvider";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 const Profiles = () => {
   const { user, setUser, logOut } = useContext(AuthContext);
   const [fileList, setFileList] = useState([]);
@@ -100,6 +101,10 @@ const Profiles = () => {
     fileList,
   };
   return (
+  <>
+  <Helmet>
+    <title>Profile</title>
+  </Helmet>
     <div className="lg:w-3/4 w-11/12 mx-auto my-12">
       <div className="card card-side bg-base-100 shadow-2xl border-2">
         <figure>
@@ -223,6 +228,7 @@ const Profiles = () => {
         </button>
       </div>
     </div>
+  </>
   );
 };
 

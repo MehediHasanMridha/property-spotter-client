@@ -3,6 +3,7 @@ import AdvertisesProperty from "./AdvertisesProperty";
 import Banner from "./Banner";
 import Places from "./Places";
 import ReducedPrice from "./ReducedPrice";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
     const [search, setSearch] = useState("");
@@ -13,7 +14,7 @@ const Home = () => {
     }, [search]);
 
     const fetchData = async () => {
-        const res = await fetch("http://localhost:5000/house/houseData");
+        const res = await fetch("http://localhost:5000/house/houseAvailableData");
         const data = await res.json();
         setMainData(data);
     };
@@ -26,9 +27,14 @@ const Home = () => {
             .includes(search.toLowerCase());
         return searchMatch || locationMatch;
     };
-
+    useEffect(() => {
+        window.scrollTo(0, 0);
+      }, []);
     return (
         <main>
+             <Helmet>
+        <title>Home</title>
+      </Helmet>
             <Banner
                 search={search}
                 setSearch={setSearch}
@@ -36,7 +42,7 @@ const Home = () => {
                 filterData={filterData}
             />
             <Places />
-            <AdvertisesProperty />
+            {/* <AdvertisesProperty /> */}
             <ReducedPrice mainData={mainData} filterData={filterData} />
             {/* <Steper /> */}
         </main>

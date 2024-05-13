@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const ManageListsBySpotter = () => {
     const { user } = useContext(AuthContext);
@@ -71,6 +72,9 @@ const ManageListsBySpotter = () => {
                     },
                     body: JSON.stringify({
                         status: value,
+                        agencyName: user.name,
+                        agencyEmail: user.email,
+                        agencyImage: user.photoURL,
                         agency: [user.name],
                     }),
                 }
@@ -84,6 +88,10 @@ const ManageListsBySpotter = () => {
 
     return (
         <div className="p-6">
+               <Helmet>
+        <title> Manage Listing By Spotter</title>
+      </Helmet>
+           
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
@@ -101,11 +109,10 @@ const ManageListsBySpotter = () => {
                         Total Houses:{" "}
                         <span className="text-3xl text-primary font-bold">
                             {
-                                currentJobs.filter(
-                                    (item) =>
-                                        item.agency.some(
-                                            (name) => name === user.name
-                                        )
+                                currentJobs.filter((item) =>
+                                    item.agency.some(
+                                        (name) => name === user.name
+                                    )
                                 ).length
                             }
                         </span>
@@ -140,9 +147,9 @@ const ManageListsBySpotter = () => {
                                         <td>{house?.spooterEmail}</td>
                                         <td>
                                             <div
-                                                className={`badge ${getBadgeClass(
+                                                className={`px-2 py-1 capitalize text-lg rounded-lg  ${getBadgeClass(
                                                     house?.status
-                                                )} badge-md text-white text-nowrap`}
+                                                )} text-white`}
                                             >
                                                 {house?.status}
                                             </div>
@@ -165,6 +172,18 @@ const ManageListsBySpotter = () => {
                                                                 }
                                                             >
                                                                 Approved
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house._id
+                                                                    )
+                                                                }
+                                                            >
+                                                                Available
                                                             </button>
                                                         </li>
                                                         <li>

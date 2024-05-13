@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
@@ -23,6 +24,10 @@ const ForgotPassword = () => {
   };
 
   return (
+    <>
+    <Helmet>
+    <title>Forgot Password</title>
+  </Helmet>
     <div className="lg:w-full w-11/12  lg:my-28 my-12">
       <div className="flex justify-center">
         <div className="w-[600px] bg-[#edf7f4] custom-shadow rounded-lg p-8 mb-4">
@@ -52,6 +57,7 @@ const ForgotPassword = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

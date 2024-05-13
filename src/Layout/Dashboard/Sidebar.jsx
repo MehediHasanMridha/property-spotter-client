@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
+import logo from "../../assets/logo/logo.png";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -26,6 +27,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             icon: "uBuilding",
             path: "/dashboard/ManageAllListings",
             childrens: [
+                {
+                    title: "Manage listings by Admin",
+                    icon: "uBuilding",
+                    path: "/dashboard/ManageAllListings/manageListingByAdmin",
+                },
                 {
                     title: "Manage listing by Agency",
                     icon: "uBuilding",
@@ -58,6 +64,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 },
             ],
         },
+        {
+            title: "Message",
+            icon: "uBuilding",
+            path: "/dashboard/message",
+        },
     ];
 
     const agencyItems = [
@@ -86,6 +97,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             icon: "uBuilding",
             path: "/dashboard/agency/profile",
         },
+        {
+            title: "Message",
+            icon: "uBuilding",
+            path: "/dashboard/message",
+        },
     ];
 
     const agentItems = [
@@ -103,6 +119,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             title: "Profile",
             icon: "Luuilding",
             path: "/dashboard/agent/profile",
+        },
+        {
+            title: "Message",
+            icon: "uBuilding",
+            path: "/dashboard/message",
         },
     ];
 
@@ -123,10 +144,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
             >
                 <div className="flex items-center justify-center border-b border-slate-800 py-4">
                     <Link to="/">
-                        <h3 className="text-xl text-white font-semibold">
-                            Property
-                            <span className="text-primary"> Spotted</span>
-                        </h3>
+                        <img className="w-28" src={logo} alt="logo" />
                     </Link>
                 </div>
                 <div className="overflow-y-auto custom-scroll">

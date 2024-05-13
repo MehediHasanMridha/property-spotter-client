@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const ManageListBySpotter = () => {
     const { user } = useContext(AuthContext);
@@ -83,6 +84,9 @@ const ManageListBySpotter = () => {
 
     return (
         <div className="p-6">
+               <Helmet>
+        <title>Manage Listing By Spotter</title>
+      </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
@@ -142,7 +146,7 @@ const ManageListBySpotter = () => {
                                     <td>
                                         {/* Open the modal using document.getElementById('ID').showModal() method */}
                                         <div className="flex gap-2">
-                                            <details className="dropdown">
+                                            {/* <details className="dropdown">
                                                 <summary className="m-1 btn btn-primary">
                                                     Action
                                                 </summary>
@@ -157,6 +161,18 @@ const ManageListBySpotter = () => {
                                                             }
                                                         >
                                                             Approved
+                                                        </button>
+                                                    </li>
+                                                    <li>
+                                                        <button
+                                                            onClick={(e) =>
+                                                                houseUpdate(
+                                                                    e,
+                                                                    house._id
+                                                                )
+                                                            }
+                                                        >
+                                                            Available
                                                         </button>
                                                     </li>
                                                     <li>
@@ -221,7 +237,7 @@ const ManageListBySpotter = () => {
                                                         </button>
                                                     </li>
                                                 </ul>
-                                            </details>
+                                            </details> */}
                                             <button
                                                 className="btn btn-info"
                                                 onClick={() =>
