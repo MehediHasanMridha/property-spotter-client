@@ -51,7 +51,6 @@ const Chat = () => {
     const agentOfAgency = users?.filter(u => u?._id !== user?._id && u?.role === 'agent' && u?.agencyName === user?.name);
     const agencyOfAgent = users?.filter(u => u?._id !== user?._id && u?.role === 'agency' && u?.name === user?.agencyName);
 
-    console.log(agencyOfAgent);
 
 
     return (
@@ -206,7 +205,6 @@ const Chat = () => {
                                 </>
                             }
                             {
-                                user?.role === 'spotter' &&
                                 <>
                                     <div>
                                         <h1 className='text-2xl font-bold text-white'>Your Spotters Here</h1>
