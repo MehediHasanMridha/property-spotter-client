@@ -42,6 +42,7 @@ export const router = createBrowserRouter([
         path: "/sell",
         element: <SellPage />,
       },
+    
       {
         path: "/residential",
         loader: ()=> fetch("http://localhost:5000/house/houseData"),
