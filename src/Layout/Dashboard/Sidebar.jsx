@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { useContext } from "react";
 import { Link } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
+import logo from "../../assets/logo/logo.png";
 import SidebarItem from "../../components/SubMenu/SidebarItem";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
@@ -130,21 +131,20 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         <>
             <div
                 onClick={() => setSidebarOpen(!sidebarOpen)}
-                className={`fixed inset-0 z-20 transition-opacity  bg-black opacity-50 lg:hidden ${sidebarOpen ? "block" : "hidden"
-                    }`}
+                className={`fixed inset-0 z-20 transition-opacity  bg-black opacity-50 lg:hidden ${
+                    sidebarOpen ? "block" : "hidden"
+                }`}
             ></div>
             <div
-                className={`fixed inset-y-0 left-0 z-30 w-80 flex flex-col border dark:border-slate-800 bg-[#0c1427] min-h-screen transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${sidebarOpen
-                    ? "translate-x-0 ease-out"
-                    : "-translate-x-full ease-in"
-                    }`}
+                className={`fixed inset-y-0 left-0 z-30 w-80 flex flex-col border dark:border-slate-800 bg-[#0c1427] min-h-screen transition duration-300 transform lg:translate-x-0 lg:static lg:inset-0 ${
+                    sidebarOpen
+                        ? "translate-x-0 ease-out"
+                        : "-translate-x-full ease-in"
+                }`}
             >
                 <div className="flex items-center justify-center border-b border-slate-800 py-4">
                     <Link to="/">
-                        <h3 className="text-xl text-white font-semibold">
-                            Property
-                            <span className="text-primary"> Spotted</span>
-                        </h3>
+                        <img className="w-28" src={logo} alt="logo" />
                     </Link>
                 </div>
                 <div className="overflow-y-auto custom-scroll">

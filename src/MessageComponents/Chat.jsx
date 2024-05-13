@@ -1,8 +1,8 @@
-import React, { useContext, useEffect, useRef, useState } from 'react'
 import axios from 'axios'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import { io } from 'socket.io-client'
-import Message from './Message'
 import { AuthContext } from '../Provider/AuthProvider'
+import Message from './Message'
 
 const Chat = () => {
 
@@ -45,6 +45,8 @@ const Chat = () => {
     const admins = users?.filter(u => u?._id !== user?._id && u?.role === 'admin')
     const agency = users?.filter(u => u?._id !== user?._id && u?.role === 'agency')
     const agents = users?.filter(u => u?._id !== user?._id && u?.role === 'agent')
+    const spotters = users?.filter(u => u?._id !== user?._id && u?.role === 'spotter')
+    console.log(spotters);
 
     const agentOfAgency = users?.filter(u => u?._id !== user?._id && u?.role === 'agent' && u?.agencyName === user?.name);
     const agencyOfAgent = users?.filter(u => u?._id !== user?._id && u?.role === 'agency' && u?.name === user?.agencyName);
@@ -180,6 +182,34 @@ const Chat = () => {
                                         <h1 className='text-2xl font-bold text-white'>Your Agency Here</h1>
                                         {
                                             agencyOfAgent && agencyOfAgent.map((chat, idx) =>
+                                                <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                                    <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                                    <div>
+                                                        <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                        {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                                <p className="text-sm text-green-700">Online</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                                <p className="text-sm text-red-500">Offline</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </div>
+                                </>
+                            }
+                            {
+                                <>
+                                    <div>
+                                        <h1 className='text-2xl font-bold text-white'>Your Spotters Here</h1>
+                                        {
+                                            spotters && spotters.map((chat, idx) =>
                                                 <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
                                                     <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
                                                     <div>

@@ -10,15 +10,14 @@ const Footer = () => {
                         <div>
                             <h6 className="font-semibold uppercase pb-2">Services</h6>
                             <div className="flex flex-col">
-                                <Link>Find Job</Link>
-                                <Link>Find Employee</Link>
+                                <Link to={"/spotter-reg"}>Become a spotter</Link>
+                                <Link to="buy">Find a Property</Link>
                             </div>
                         </div>
                         <div>
                             <h6 className="font-semibold uppercase pb-2">Company</h6>
                             <div className="flex flex-col">
-                                <Link>About Us</Link>
-                                <Link>Contact</Link>
+                                <Link to="about-us">About Us</Link>
                             </div>
                         </div>
                         <div>
@@ -26,7 +25,6 @@ const Footer = () => {
                             <div className="flex flex-col">
                                 <Link>Terms of Use</Link>
                                 <Link>Privacy & Policy</Link>
-                                <Link>Help and FAQs</Link>
                             </div>
                         </div>
                         <div className="">
