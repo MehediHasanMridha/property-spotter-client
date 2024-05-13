@@ -30,7 +30,6 @@ const PendingSpottedLists = () => {
         fetchListingData();
     }, []);
 
-
     const getBadgeClass = (role) => {
         switch (role) {
             case "approved":
@@ -40,6 +39,8 @@ const PendingSpottedLists = () => {
             case "offer pending":
                 return "badge-warning";
             case "pending mandate":
+                return "badge-warning";
+            case "pending contact with client":
                 return "badge-warning";
             case "hold":
                 return "badge-warning";
@@ -60,26 +61,25 @@ const PendingSpottedLists = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async (e, id) => {
+    const houseUpdate = async (e, house) => {
         try {
             const value = e.target.innerText.toLowerCase();
-            const res = await fetch(
-                `http://localhost:5000/house/update/${id}`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        agencyName: user.name,
-                        agencyEmail: user.email,
-                        agencyImage: user.photoURL,
-                        agency: [user.name],
-                    }),
-                }
-            );
+            await fetch(`http://localhost:5000/house/update/${house._id}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    status: value,
+                    agencyName: user?.name,
+                    agencyEmail: user?.email,
+                    agencyImage: user?.photoURL,
+                    agency: [user?.name],
+                }),
+            });
             toast.success(`Successfully ${value}`);
             fetchListingData();
+            document.getElementById(`my_modal_${house._id}`).close();
         } catch (error) {
             console.log(error);
         }
@@ -160,14 +160,126 @@ const PendingSpottedLists = () => {
                                         <td>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
                                             <div className="flex gap-2">
-                                                {/* <button
-                                                    className="btn btn-info"
-                                                    onClick={() =>
-                                                        houseUpdate(house._id)
-                                                    }
-                                                >
-                                                    Approve
-                                                </button> */}
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                    document
+                                                        .getElementById(
+                                                            `my_modal_${house._id}`
+                                                        )
+                                                        .showModal()
+                                                }
+                                            >
+                                                Action
+                                            </button>
+                                            <dialog
+                                                id={`my_modal_${house._id}`}
+                                                className="modal"
+                                            >
+                                                <div className="modal-box w-fit">
+                                                    <ul className="p-2 menu z-[1] rounded-box">
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Approved
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Available
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Sold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Hold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING MANDATE
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Pending
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING CONTACT
+                                                                WITH CLIENT
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="modal-action">
+                                                        <form method="dialog">
+                                                            <button className="btn btn-primary bg-red-500 border-red-500 hover:border-red-600 hover:bg-red-600">
+                                                                Close
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </dialog>
                                                 <button
                                                     className="btn btn-info"
                                                     onClick={() =>

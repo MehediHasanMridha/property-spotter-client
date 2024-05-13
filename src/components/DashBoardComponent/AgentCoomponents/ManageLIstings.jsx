@@ -42,6 +42,8 @@ const ManageListings = () => {
                 return "badge-warning";
             case "pending mandate":
                 return "badge-warning";
+            case "pending contact with client":
+                return "badge-warning";
             case "hold":
                 return "badge-warning";
             case "available":
@@ -61,12 +63,11 @@ const ManageListings = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async (e, id) => {
+    const houseUpdate = async (e, house) => {
         try {
             const value = e.target.innerText.toLowerCase();
-            console.log({ status: value, agencyName: user.agencyName });
             await fetch(
-                `http://localhost:5000/house/updateHouseDataByAgent/${id}`,
+                `http://localhost:5000/house/updateHouseDataByAgent/${house._id}`,
                 {
                     method: "POST",
                     headers: {
@@ -82,6 +83,7 @@ const ManageListings = () => {
             );
             toast.success(`Successfully ${value}`);
             fetchListingData();
+            document.getElementById(`my_modal_${house._id}`).close();
         } catch (error) {
             console.log(error);
         }
@@ -146,98 +148,126 @@ const ManageListings = () => {
                                     <td>
                                         {/* Open the modal using document.getElementById('ID').showModal() method */}
                                         <div className="flex gap-2">
-                                            <details className="dropdown">
-                                                <summary className="m-1 btn btn-primary">
-                                                    Action
-                                                </summary>
-                                                <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Approved
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Available
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Sold
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Hold
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            PENDING MANDATE
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Pending
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            PENDING CONTACT WITH
-                                                            CLIENT
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </details>
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                    document
+                                                        .getElementById(
+                                                            `my_modal_${house._id}`
+                                                        )
+                                                        .showModal()
+                                                }
+                                            >
+                                                Action
+                                            </button>
+                                            <dialog
+                                                id={`my_modal_${house._id}`}
+                                                className="modal"
+                                            >
+                                                <div className="modal-box w-fit">
+                                                    <ul className="p-2 menu z-[1] rounded-box">
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Approved
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Available
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Sold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Hold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING MANDATE
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Pending
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING CONTACT
+                                                                WITH CLIENT
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="modal-action">
+                                                        <form method="dialog">
+                                                            <button className="btn btn-primary bg-red-500 border-red-500 hover:border-red-600 hover:bg-red-600">
+                                                                Close
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </dialog>
                                             <button
                                                 className="btn btn-primary"
                                                 onClick={() =>
