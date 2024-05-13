@@ -45,12 +45,10 @@ const Chat = () => {
     const admins = users?.filter(u => u?._id !== user?._id && u?.role === 'admin')
     const agency = users?.filter(u => u?._id !== user?._id && u?.role === 'agency')
     const agents = users?.filter(u => u?._id !== user?._id && u?.role === 'agent')
-    console.log(user);
 
     const agentOfAgency = users?.filter(u => u?._id !== user?._id && u?.role === 'agent' && u?.agencyName === user?.name);
     const agencyOfAgent = users?.filter(u => u?._id !== user?._id && u?.role === 'agency' && u?.name === user?.agencyName);
 
-    console.log(agencyOfAgent);
 
 
     return (
