@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { io } from 'socket.io-client'
 import { AuthContext } from '../Provider/AuthProvider'
 import Message from './Message'
+import { Helmet } from 'react-helmet-async'
 
 const Chat = () => {
 
@@ -55,6 +56,9 @@ const Chat = () => {
 
     return (
         <div className='bg-slate-900 max-h-[85vh]'>
+               <Helmet>
+        <title>Chat</title>
+      </Helmet>
             <div className='h-[85vh] overflow-y-scroll'>
                 <div className="grid gap-2 grid-cols-7 lg:gap-1">
                     <div className="rounded-lg col-span-2 p-2">

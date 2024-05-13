@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import Loading from "../../Loader/Loading";
+import { Helmet } from "react-helmet-async";
 
 const ManageListings = () => {
     const { user, loading } = useContext(AuthContext);
@@ -93,6 +94,9 @@ const ManageListings = () => {
     }
     return (
         <div className="p-6">
+                <Helmet>
+        <title>Manage Listings</title>
+      </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">

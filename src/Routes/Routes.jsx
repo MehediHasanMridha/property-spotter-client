@@ -56,6 +56,7 @@ export const router = createBrowserRouter([
         path: "/sell",
         element: <PrivateRouter><SellPage /></PrivateRouter>,
       },
+    
       {
         path: "/residential",
         loader: () => fetch("http://localhost:5000/house/houseAvailableData"),

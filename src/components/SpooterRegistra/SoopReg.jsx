@@ -7,6 +7,7 @@ import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Button, Checkbox, Form, Input, message, Upload } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
 import { AuthContext } from "../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 const { useForm } = Form;
 
 const SoopReg = () => {
@@ -204,6 +205,9 @@ const SoopReg = () => {
 
   return (
     <>
+    <Helmet>
+    <title>Spotter Registration</title>
+  </Helmet>
       <div className="min-h-screen py-20">
         <div className="lg:w-[600px] mx-auto shadow-xl bg-white p-16">
           <h1 className="text-4xl font-bold text-center my-4 pb-10">

@@ -4,6 +4,7 @@ import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
+import { Helmet } from "react-helmet-async";
 
 const BuyPage = () => {
     const [area, setArea] = useState([]);
@@ -35,6 +36,9 @@ const BuyPage = () => {
     }, []);
     return (
         <div>
+            <Helmet>
+        <title>Buy</title>
+      </Helmet>
             <Breadcrumb title={"Buy"} />
             <div className="px-6 py-5 flex justify-center">
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5 md:gap-10">

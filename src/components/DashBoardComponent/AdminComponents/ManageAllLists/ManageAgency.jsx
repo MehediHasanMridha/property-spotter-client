@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const ManageAgency = () => {
     const [showName, setShowName] = useState("");
@@ -146,6 +147,9 @@ const ManageAgency = () => {
 
     return (
         <>
+        <Helmet>
+        <title>Manage Agency</title>
+      </Helmet>
             <div className="mx-auto flex items-center justify-end">
                 <button
                     onClick={() => setOpenModal(true)}

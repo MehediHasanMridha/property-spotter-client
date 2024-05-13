@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
 import {
     FaRegCalendarAlt,
     FaTag
@@ -13,7 +14,12 @@ const PropertyDetails = () => {
         window.scrollTo(0, 0);
       }, []);
     return (
+ <>
+        <Helmet>
+        <title>Property Details</title>
+      </Helmet>
         <div className="max-w-screen-2xl mx-auto">
+
             <div className=" w-[80%] mx-auto my-28">
                 {/* Detais part */}
                 <img
@@ -135,6 +141,7 @@ const PropertyDetails = () => {
                 </div>
             </div>
         </div>
+ </>
     );
 };
 

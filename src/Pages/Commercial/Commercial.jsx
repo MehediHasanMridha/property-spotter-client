@@ -5,6 +5,7 @@ import { useLoaderData } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
+import { Helmet } from "react-helmet-async";
 
 const CommercialPage = () => {
     const [search, setSearch] = useState("");
@@ -38,6 +39,9 @@ const CommercialPage = () => {
       }, []);
     return (
         <div>
+               <Helmet>
+        <title>Commercial</title>
+      </Helmet>
             <Breadcrumb title={"Commercial"} />
             <Container>
                 <div className="flex flex-col md:flex-row justify-between gap-5 py-10 px-6 md:px-0">

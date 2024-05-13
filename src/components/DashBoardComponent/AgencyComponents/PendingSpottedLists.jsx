@@ -2,6 +2,7 @@ import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const PendingSpottedLists = () => {
     const { user } = useContext(AuthContext);
@@ -87,6 +88,9 @@ const PendingSpottedLists = () => {
 
     return (
         <div className="p-6">
+               <Helmet>
+        <title>Pending Spotted Lists</title>
+      </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
