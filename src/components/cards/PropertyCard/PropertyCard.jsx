@@ -1,27 +1,41 @@
+import { useContext } from "react";
+import { FaRegShareSquare } from "react-icons/fa";
 import { LiaToiletSolid } from "react-icons/lia";
 import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
-const PropertyCard = ({item}) => {
-
-    console.log("item?mmmmm",item?.image);
-
-
+const PropertyCard = ({ item }) => {
+    console.log("item?mmmmm", item?.image);
+    const { user } = useContext(AuthContext);
+    const copyToClip = (e, link) => {
+        e.stopPropagation();
+        const url = window.location.origin + link;
+        navigator.clipboard.writeText(url);
+        toast.success("Copied");
+    };
     return (
         <div className=" bg-white shadow rounded-xl">
-            <Link to={`/property-details/${item._id}`}>
-                <div className="relative">
-                    <img src={item.image} alt="" className="rounded-lg h-56 mx-auto mt-2" />
-                    <div className="absolute flex flex-col justify-center items-center right-3.5 gap-2 bottom-2">
-                        <img
-                            className="w-12 h-12 rounded-full"
-                            src={item.agencyImage}
-                            alt=""
-                        />
-                        <h3 className="bg-blue-100/60 px-2 rounded-md py-0.5 text-primary">{item.agencyName}</h3>
-                    </div>
+            <div className="relative">
+                <img
+                    src={item.image}
+                    alt=""
+                    className="rounded-lg h-56 mx-auto mt-2"
+                />
+                <div className="absolute flex flex-col justify-center items-center right-3.5 gap-2 bottom-2">
+                    <img
+                        className="w-12 h-12 rounded-full"
+                        src={item.agencyImage}
+                        alt=""
+                    />
+                    <h3 className="bg-blue-100/60 px-2 rounded-md py-0.5 text-primary">
+                        {item.agencyName}
+                    </h3>
                 </div>
-                <div className="px-3 py-2.5">
+            </div>
+            <div className="px-3 py-2.5">
+                {user && (
                     <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
                         <span className="text-primary text-2xl">
                             <svg
@@ -44,21 +58,42 @@ const PropertyCard = ({item}) => {
                         </span>{" "}
                         {item.address}
                     </h3>
-                    <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 uppercase">
-                        {item.propertyType}
-                    </h2>
-                    <ul className="flex justify-between text-gray-700">
-                        <li className="space-x-2">
-                            <LuBedDouble className="inline" />
-                            <span>Bed:{item.bedroom}</span>
-                        </li>
-                        <li className="space-x-2">
-                            <LiaToiletSolid className="inline" />
-                            <span>Baths:{item.bathroom}</span>
-                        </li>
-                    </ul>
-                </div>
-            </Link>
+                )}
+                <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 uppercase">
+                    {item.propertyType}
+                </h2>
+                <ul className="flex justify-between text-gray-700">
+                    <li className="space-x-2">
+                        <LuBedDouble className="inline" />
+                        <span>Bed:{item.bedroom}</span>
+                    </li>
+                    <li className="space-x-2">
+                        <LiaToiletSolid className="inline" />
+                        <span>
+                            Baths:
+                            {item.bathroom === "4 or more"
+                                ? "4+"
+                                : item.bathroom}
+                        </span>
+                    </li>
+                    <li
+                        className="space-x-2 cursor-pointer"
+                        onClick={(e) =>
+                            copyToClip(e, `/property-details/${item._id}`)
+                        }
+                    >
+                        <span class="tooltip" data-tip="Copy Link">
+                            Share:{" "}
+                        </span>
+                        <FaRegShareSquare className="inline" />
+                    </li>
+                </ul>
+            </div>
+            <div className="flex justify-center items-center py-3">
+                <Link to={`/property-details/${item._id}`}>
+                    <button className="btn btn-primary">View Details</button>
+                </Link>
+            </div>
         </div>
     );
 };
