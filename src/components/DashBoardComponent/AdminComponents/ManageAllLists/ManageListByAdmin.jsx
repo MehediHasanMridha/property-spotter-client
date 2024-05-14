@@ -133,7 +133,7 @@ const ManageListByAdmin = () => {
           });
           toast.success(`Successfully Forward to Agency Agent!`);
           fetchListingData();
-          document.getElementById(`my_modal_f${id}`).showModal();
+          document.getElementById(`my_modal_f${id}`).close();
         } catch (error) {
           console.log(error);
         }
