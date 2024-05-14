@@ -17,7 +17,7 @@ const ManageListByAdmin = () => {
 
     const fetchAgency = async () => {
         try {
-            const response = await axios.get("http://localhost:5000/allusers");
+            const response = await axios.get("http://localhost:5000/allusers/filterby/agency");
             setAllAgency(response.data);
         } catch (error) {
             console.error(error);
