@@ -116,8 +116,8 @@ const Navbar = () => {
                     {user && user?.role === "admin" && (
                       <>
                         <li>
-                          <Link to="/chatModerate" className="justify-between">
-                            Moderate chats
+                          <Link to="/dashboard" className="justify-between">
+                            Dashboard
                           </Link>
                         </li>
                         <li>
@@ -158,11 +158,6 @@ const Navbar = () => {
                             className="justify-between"
                           >
                             Manage Spotters
-                          </Link>
-                        </li>
-                        <li>
-                          <Link to="/reports" className="justify-between">
-                            Reports (abuse)
                           </Link>
                         </li>
                       </>
