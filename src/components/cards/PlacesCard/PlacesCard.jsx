@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const PlacesCard = ({ item }) => {
     return (
-        <Link  to="#" className="block border rounded-xl px-2.5 py-2.5 my-2">
+        <Link  to="/buy" className="block border rounded-xl px-2.5 py-2.5 my-2">
           <div className="rounded-2xl h-44 object-center object-cover overflow-hidden">
             <img
               className="rounded-2xl hover:scale-150 transition-transform duration-300"
