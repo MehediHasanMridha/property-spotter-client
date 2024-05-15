@@ -108,7 +108,7 @@ const ManageListByAdmin = () => {
   const handleAgencySelect = async (e) => {
     setSelectedAgencies(e.target.value);
     await fetchAgent(e.target.value);
-    setSelectedAgency(true);
+     setSelectedAgency(true);
   };
 
 
