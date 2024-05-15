@@ -8,8 +8,8 @@ const ReducedPrice = ({ mainData, filterData }) => {
     return (
         <section className="bg-white py-10 px-6 md:px-0" id="reduceprice">
             <SectionTitle
-                heading={"Reduced Price"}
-                subheading={"Exploring Reduced Property Lists"}
+                heading={"Featured Properties"}
+                subheading={"Exploring Featured Property Lists"}
             />
             {mainData.length > 0 && (
                 <Container>
