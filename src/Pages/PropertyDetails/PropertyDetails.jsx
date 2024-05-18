@@ -31,7 +31,7 @@ const PropertyDetails = () => {
                                 <FaRegCalendarAlt className=" text-primary"></FaRegCalendarAlt>
                                 <span className=" hover:text-primary uppercase text-sm">
                                     {new Date(
-                                        propertyData?.createAt
+                                        propertyData?.createDate
                                     ).toDateString()}
                                 </span>
                             </p>
@@ -66,7 +66,7 @@ const PropertyDetails = () => {
                             <FaTag></FaTag>
                             <h4>
                                 <span className="text-3xl font-extrabold">
-                                    ApartmentTypes:{" "}
+                                    Property Type:{" "}
                                     <span className="capitalize">
                                         {propertyData?.propertyType}
                                     </span>
@@ -103,9 +103,15 @@ const PropertyDetails = () => {
                             <div className=" flex items-center gap-1 text-xl">
                                 <LuBedDouble></LuBedDouble>
                                 <h4>
-                                    <span className=" font-bold">
-                                        Bed Room: {propertyData?.bedroom}
-                                    </span>
+                                    {propertyData.propertyType === "commercial property" ? (
+                                        <span className=" font-bold">
+                                            Room: {propertyData?.room}
+                                        </span>
+                                    ) : (
+                                        <span className=" font-bold">
+                                            Bed Room: {propertyData?.bedroom}
+                                        </span>
+                                    )}
                                 </h4>
                             </div>
                             <div className=" flex items-center gap-1 text-xl">

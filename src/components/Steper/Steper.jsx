@@ -17,6 +17,7 @@ const Steper = () => {
     const [name, setName] = useState(null);
     const [property, setProperty] = useState("");
     const [bedroom, setBedroom] = useState("");
+    const [room, setRoom] = useState("");
     const [bathroom, setBathroom] = useState("");
     const [image, setImage] = useState("");
     const [sellTime, setSellTime] = useState("");
@@ -28,14 +29,14 @@ const Steper = () => {
     const { user } = useContext(AuthContext);
     const [allAgent, setAllAgent] = useState([]);
     const [allAgency, setAllAgency] = useState([]);
-    const [street, setStreet] = useState('')
-    const [suburb, setSuburb] = useState('')
+    const [street, setStreet] = useState("");
+    const [suburb, setSuburb] = useState("");
     const [city, setCity] = useState("");
+    const [provinces, setProvinces] = useState([]);
+    const [selectedProvinces, setSelectedProvinces] = useState("");
+    const [addParking, setAddParking] = useState(false);
 
-    const navigate = useNavigate()
-    useEffect(() => {
-        fetchAgency();
-    }, []);
+    const navigate = useNavigate();
 
     const fetchAgency = async () => {
         try {
@@ -58,6 +59,21 @@ const Steper = () => {
             console.error(error);
         }
     };
+    const fetchProvinces = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:5000/area/AreasData"
+            );
+            setProvinces(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchAgency();
+        fetchProvinces();
+    }, []);
 
     const handleAgencySelect = async (e) => {
         setSelectedAgencies(e.target.value);
@@ -83,11 +99,20 @@ const Steper = () => {
             formData.append("spooterName", name);
             formData.append("spooterEmail", user?.email);
             formData.append("status", "offer pending");
-            formData.append("bedroom", bedroom);
-            formData.append("address", `${street} ${suburb} ${city}`);
+
+            formData.append(
+                "address",
+                `${street} ${suburb} ${city} ${selectedProvinces}`
+            );
             formData.append("description", description);
             formData.append("image", image);
             formData.append("propertyType", property);
+            if (property === "commercial property") {
+                formData.append("room", room);
+                formData.append("parking", addParking);
+            } else {
+                formData.append("bedroom", bedroom);
+            }
             formData.append("bathroom", bathroom);
             formData.append("previousStep", previousStep);
             formData.append("sellTime", sellTime);
@@ -111,7 +136,7 @@ const Steper = () => {
                         },
                     }
                 );
-                navigate('/')
+                navigate("/");
                 toast.success("Form submitted successfully");
             } catch (error) {
                 console.error("Error submitting form:", error);
@@ -134,7 +159,6 @@ const Steper = () => {
             );
     }, []);
 
-    console.log(selectedAgent);
     return (
         <div className="max-w-3xl mx-auto rounded-lg">
             <div className="py-10">
@@ -290,38 +314,94 @@ const Steper = () => {
                                     </select>
                                 </label>
                             </div>
-                            <div>
-                                <label className="form-control w-[400px]">
-                                    <div className="label">
-                                        <span className="label-text">
-                                            Bedrooms
+                            {property === "commercial property" ? (
+                                <div>
+                                    <label className="form-control w-[400px]">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Room
+                                            </span>
+                                        </div>
+                                        <select
+                                            required
+                                            value={bedroom}
+                                            onChange={(e) =>
+                                                setRoom(e.target.value)
+                                            }
+                                            className="select select-bordered"
+                                        >
+                                            <option disabled value="">
+                                                Pick one
+                                            </option>
+                                            <option value="1">1 Bedroom</option>
+                                            <option value="2">
+                                                2 Bedrooms
+                                            </option>
+                                            <option value="3">
+                                                3 Bedrooms
+                                            </option>
+                                            <option value="4 or more">
+                                                4 or more Bedrooms
+                                            </option>
+                                        </select>
+                                    </label>
+                                </div>
+                            ) : (
+                                <div>
+                                    <label className="form-control w-[400px]">
+                                        <div className="label">
+                                            <span className="label-text">
+                                                Bedrooms
+                                            </span>
+                                        </div>
+                                        <select
+                                            required
+                                            value={bedroom}
+                                            onChange={(e) =>
+                                                setBedroom(e.target.value)
+                                            }
+                                            className="select select-bordered"
+                                        >
+                                            <option disabled value="">
+                                                Pick one
+                                            </option>
+                                            <option value="1">1 Bedroom</option>
+                                            <option value="2">
+                                                2 Bedrooms
+                                            </option>
+                                            <option value="3">
+                                                3 Bedrooms
+                                            </option>
+                                            <option value="4 or more">
+                                                4 or more Bedrooms
+                                            </option>
+                                        </select>
+                                    </label>
+                                </div>
+                            )}
+
+                            {property === "commercial property" && (
+                                <div class="bg-white rounded-lg border border-gray-300 px-3 py-1 form-control">
+                                    <label class="cursor-pointer label">
+                                        <span class="label-text">
+                                            Add Parking ?
                                         </span>
-                                    </div>
-                                    <select
-                                        required
-                                        value={bedroom}
-                                        onChange={(e) =>
-                                            setBedroom(e.target.value)
-                                        }
-                                        className="select select-bordered"
-                                    >
-                                        <option disabled value="">
-                                            Pick one
-                                        </option>
-                                        <option value="1">1 Bedroom</option>
-                                        <option value="2">2 Bedrooms</option>
-                                        <option value="3">3 Bedrooms</option>
-                                        <option value="4 or more">
-                                            4 or more Bedrooms
-                                        </option>
-                                    </select>
-                                </label>
-                            </div>
+                                        <input
+                                            type="checkbox"
+                                            class="checkbox"
+                                            defaultValue={addParking}
+                                            onChange={(e) =>
+                                                setAddParking(!addParking)
+                                            }
+                                        />
+                                    </label>
+                                </div>
+                            )}
                             <div>
                                 <label className="form-control w-[400px]">
                                     <div className="label">
                                         <span className="label-text">
-                                        Street
+                                            Street
                                         </span>
                                     </div>
                                     <input
@@ -340,7 +420,7 @@ const Steper = () => {
                                 <label className="form-control w-[400px]">
                                     <div className="label">
                                         <span className="label-text">
-                                        Suburb
+                                            Suburb
                                         </span>
                                     </div>
                                     <input
@@ -358,9 +438,7 @@ const Steper = () => {
                             <div>
                                 <label className="form-control w-[400px]">
                                     <div className="label">
-                                        <span className="label-text">
-                                            City
-                                        </span>
+                                        <span className="label-text">City</span>
                                     </div>
                                     <input
                                         type="text"
@@ -372,6 +450,36 @@ const Steper = () => {
                                             setCity(e.target.value)
                                         }
                                     />
+                                </label>
+                            </div>
+                            <div>
+                                <label className="form-control">
+                                    <div className="label">
+                                        <span className="label-text">
+                                            Select Provinces
+                                        </span>
+                                    </div>
+                                    <select
+                                        name="selectProvinces"
+                                        id="selectProvinces"
+                                        defaultValue={selectedProvinces}
+                                        onChange={(e) =>
+                                            setSelectedProvinces(e.target.value)
+                                        }
+                                        className="select select-bordered w-full"
+                                    >
+                                        <option value="" disabled>
+                                            Select a city
+                                        </option>
+                                        {provinces.map((province, idx) => (
+                                            <option
+                                                key={idx}
+                                                value={province.city}
+                                            >
+                                                {province.city}
+                                            </option>
+                                        ))}
+                                    </select>
                                 </label>
                             </div>
                             <div>
@@ -451,12 +559,11 @@ const Steper = () => {
 
                                 {!isLastStep &&
                                     property &&
-                                    bedroom &&
                                     image &&
                                     description &&
-                                    street && 
+                                    street &&
                                     suburb &&
-                                    city && 
+                                    city &&
                                     bathroom && (
                                         <button
                                             onClick={handleButtonClick}
@@ -470,68 +577,75 @@ const Steper = () => {
                     </div>
                 )}
 
-                {activeStep === 3 && property && bedroom && bathroom && (
-                    <div className="py-20">
-                        <div className="max-w-[400px] mx-auto clear-start space-y-5 ">
-                            <p className="text-2xl font-medium text-center py-5">
-                                When would you likely be able to <br /> sell
-                                your property?
-                            </p>
-                            <button
-                                onClick={() => setSellTime("now")}
-                                className={`border w-full py-2 border-black hover:border-primary ${
-                                    sellTime === "now"
-                                        ? "bg-primary text-white"
-                                        : ""
-                                }`}
-                            >
-                                <h1>Now</h1>
-                            </button>
-                            <button
-                                onClick={() => setSellTime("1-3 month")}
-                                className={`border w-full py-2 border-black hover:border-primary ${
-                                    sellTime === "1-3 month"
-                                        ? "bg-primary text-white"
-                                        : ""
-                                }`}
-                            >
-                                <h1>1-3 months</h1>
-                            </button>
-                            <button
-                                onClick={() => setSellTime("4-6 month")}
-                                className={`border w-full py-2 border-black hover:border-primary ${
-                                    sellTime === "4-6 month"
-                                        ? "bg-primary text-white"
-                                        : ""
-                                }`}
-                            >
-                                <h1>4-6 months</h1>
-                            </button>
-                            <button
-                                onClick={() => setSellTime("not for sell")}
-                                className={`border w-full py-2 border-black hover:border-primary ${
-                                    sellTime === "not for sell"
-                                        ? "bg-primary text-white"
-                                        : ""
-                                }`}
-                            >
-                                <h1>I'm not looking to sell</h1>
-                            </button>
-                            <div className="flex justify-between items-center gap-5 py-5">
-                                {!isLastStep && sellTime && (
-                                    <div
-                                        onClick={handleButtonClick}
-                                        className="flex bg-primary text-white w-[400px] cursor-pointer justify-center items-center gap-2 px-10"
-                                    >
-                                        <button className=" py-2 rounded">
-                                            Next
-                                        </button>
-                                    </div>
-                                )}
+                {activeStep === 3 &&
+                    property &&
+                    image &&
+                    description &&
+                    street &&
+                    suburb &&
+                    city &&
+                    bathroom && (
+                        <div className="py-20">
+                            <div className="max-w-[400px] mx-auto clear-start space-y-5 ">
+                                <p className="text-2xl font-medium text-center py-5">
+                                    When would you likely be able to <br /> sell
+                                    your property?
+                                </p>
+                                <button
+                                    onClick={() => setSellTime("now")}
+                                    className={`border w-full py-2 border-black hover:border-primary ${
+                                        sellTime === "now"
+                                            ? "bg-primary text-white"
+                                            : ""
+                                    }`}
+                                >
+                                    <h1>Now</h1>
+                                </button>
+                                <button
+                                    onClick={() => setSellTime("1-3 month")}
+                                    className={`border w-full py-2 border-black hover:border-primary ${
+                                        sellTime === "1-3 month"
+                                            ? "bg-primary text-white"
+                                            : ""
+                                    }`}
+                                >
+                                    <h1>1-3 months</h1>
+                                </button>
+                                <button
+                                    onClick={() => setSellTime("4-6 month")}
+                                    className={`border w-full py-2 border-black hover:border-primary ${
+                                        sellTime === "4-6 month"
+                                            ? "bg-primary text-white"
+                                            : ""
+                                    }`}
+                                >
+                                    <h1>4-6 months</h1>
+                                </button>
+                                <button
+                                    onClick={() => setSellTime("not for sell")}
+                                    className={`border w-full py-2 border-black hover:border-primary ${
+                                        sellTime === "not for sell"
+                                            ? "bg-primary text-white"
+                                            : ""
+                                    }`}
+                                >
+                                    <h1>I'm not looking to sell</h1>
+                                </button>
+                                <div className="flex justify-between items-center gap-5 py-5">
+                                    {!isLastStep && sellTime && (
+                                        <div
+                                            onClick={handleButtonClick}
+                                            className="flex bg-primary text-white w-[400px] cursor-pointer justify-center items-center gap-2 px-10"
+                                        >
+                                            <button className=" py-2 rounded">
+                                                Next
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         </div>
-                    </div>
-                )}
+                    )}
 
                 {/* Step 4 content */}
                 {activeStep === 4 && (
@@ -621,11 +735,13 @@ const Steper = () => {
                                         Select Agency
                                     </label>
                                     <select
-                                    defaultValue={''}
+                                        defaultValue={""}
                                         className="select select-bordered w-full"
                                         onChange={(e) => handleAgencySelect(e)}
                                     >
-                                        <option value={''} disabled>Select an agency</option>
+                                        <option value={""} disabled>
+                                            Select an agency
+                                        </option>
                                         {allAgency.map((agency, idx) => (
                                             <option
                                                 key={idx}
@@ -646,12 +762,14 @@ const Steper = () => {
                                         </label>
                                         <select
                                             className="select select-bordered w-full"
-                                            defaultValue={''}
+                                            defaultValue={""}
                                             onChange={(e) =>
                                                 setSelectedAgent(e.target.value)
                                             }
                                         >
-                                            <option value={''} disabled>Select an agent</option>
+                                            <option value={""} disabled>
+                                                Select an agent
+                                            </option>
                                             {allAgent.map((agent, idx) => (
                                                 <option
                                                     key={idx}
