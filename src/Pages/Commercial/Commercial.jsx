@@ -1,16 +1,18 @@
+import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
 import { useLoaderData } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
-import { Helmet } from "react-helmet-async";
 
 const CommercialPage = () => {
     const [search, setSearch] = useState("");
     const [locationValue, setLocationValue] = useState("");
     const [filteredData, setFilteredData] = useState([]);
+    const [provinces, setProvinces] = useState([]);
     const [mainData, setMainData] = useState([]);
     const commercialData = useLoaderData();
 
@@ -20,8 +22,9 @@ const CommercialPage = () => {
                 (item) => item.propertyType === "commercial property"
             )
         );
+        fetchProvinces();
     }, [commercialData]);
-
+    console.log(provinces);
     const filterData = (item) => {
         const searchMatch = item.propertyType
             .toLowerCase()
@@ -34,14 +37,29 @@ const CommercialPage = () => {
             (search === "" && locationValue === "")
         );
     };
+    const handleClearFilter = () => {
+        setSearch("");
+        setLocationValue("");
+    };
+    const fetchProvinces = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:5000/area/AreasData"
+            );
+            setProvinces(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
     return (
         <div>
-               <Helmet>
-        <title>Commercial</title>
-      </Helmet>
+            <Helmet>
+                <title>Commercial</title>
+            </Helmet>
             <Breadcrumb title={"Commercial"} />
             <Container>
                 <div className="flex flex-col md:flex-row justify-between gap-5 py-10 px-6 md:px-0">
@@ -76,19 +94,50 @@ const CommercialPage = () => {
                                 size={20}
                             />
                         </div>
-                        <div className="py-2">
+                        <div>
+                            <label className="form-control">
+                                <div className="label">
+                                    <span className="label-text">
+                                        Select Provinces
+                                    </span>
+                                </div>
+                                <select
+                                    name="selectProvinces"
+                                    id="selectProvinces"
+                                    defaultValue={locationValue}
+                                    onChange={(e) =>
+                                        setLocationValue(e.target.value)
+                                    }
+                                    className="select bg-primary/10 select-bordered w-full"
+                                >
+                                    <option value="" disabled>
+                                        Select a city
+                                    </option>
+                                    {provinces.map((province, idx) => (
+                                        <option key={idx} value={province.city}>
+                                            {province.city}
+                                        </option>
+                                    ))}
+                                </select>
+                            </label>
+                        </div>
+                        <div className="flex py-2 gap-3">
                             <button className="bg-primary px-5 py-3.5 text-center text-sm inline-block text-white cursor-pointer transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95 w-full">
-                                Show Results
+                                Filter
+                            </button>
+                            <button
+                                onClick={handleClearFilter}
+                                className="bg-primary px-5 py-3.5 text-center text-sm inline-block text-white cursor-pointer transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95 w-full"
+                            >
+                                Clear
                             </button>
                         </div>
                     </div>
                     <div className="px-6 py-5 md:w-3/4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
-                            {mainData
-                                ?.filter(filterData)
-                                .map((item, idx) => (
-                                    <PropertyCard key={idx} item={item} />
-                                ))}
+                            {mainData?.filter(filterData).map((item, idx) => (
+                                <PropertyCard key={idx} item={item} />
+                            ))}
                         </div>
                     </div>
                 </div>
