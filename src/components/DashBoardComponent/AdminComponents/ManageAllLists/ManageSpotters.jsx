@@ -1,21 +1,27 @@
 import { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
 import { AuthContext } from "../../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 
 const ManageSpotters = () => {
     const [spotters, setSpotters] = useState([]);
     const [spotterData, setSpotterData] = useState(null);
     const [openEditModal, setEditModal] = useState(false);
     const [openListModal, setListModal] = useState(false);
-    const [imagePath, setImagePath] = useState("")
+    const [imagePath, setImagePath] = useState("");
     const [tableData, setTableData] = useState([]);
     const { user } = useContext(AuthContext);
     console.log(spotters);
-    useEffect(() => {
+    const fetchAllSpotters = () => {
         fetch("http://localhost:5000/spotters")
             .then((res) => res.json())
             .then((data) => setSpotters(data));
-    },[]);
+    };
+    useEffect(() => {
+        fetchAllSpotters();
+    }, []);
+
     const handleEditModal = (spotter) => {
         setEditModal(true);
         setSpotterData(spotter);
@@ -47,11 +53,13 @@ const ManageSpotters = () => {
                 body: formData,
             }
         );
+        fetchAllSpotters()
         setEditModal(false);
         setSpotterData(null);
-        setImagePath("")
+        setImagePath("");
         toast.success("Successfully updated");
     };
+    
     const [PayoutModal, setPayoutModal] = useState(false);
     const [PayoutModalData, setPayoutModalData] = useState([]);
     const handlePayoutModal = (spotter) => {
@@ -79,8 +87,44 @@ const ManageSpotters = () => {
         setAllocatePayoutModal(false);
         setAllocatePayoutModalData([]);
     };
+    const deleteSpotter = async (email) => {
+        try {
+            const result = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            });
+
+            if (result.isConfirmed) {
+                await fetch(`http://localhost:5000/user/delete/${email}`, {
+                    method: "DELETE",
+                });
+                fetchAllSpotters();
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your file has been deleted.",
+                    icon: "success",
+                });
+            } else {
+                Swal.fire({
+                    title: "Canceled!",
+                    text: "Your file safe.",
+                    icon: "error",
+                });
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    }
     return (
         <div className="p-6">
+               <Helmet>
+        <title>Manage Spotters</title>
+      </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
@@ -122,7 +166,11 @@ const ManageSpotters = () => {
                                     className="hover:bg-gray-50 transition duration-300"
                                 >
                                     <td className="py-4 px-6 border-b">
-                                        <img className="mask mask-squircle w-12 h-12" src={spotter?.photoURL} alt="" />
+                                        <img
+                                            className="mask mask-squircle w-12 h-12"
+                                            src={spotter?.photoURL}
+                                            alt=""
+                                        />
                                     </td>
                                     <td className="py-4 px-6 border-b">
                                         {spotter?.name}
@@ -231,7 +279,15 @@ const ManageSpotters = () => {
                                                                 <input
                                                                     type="file"
                                                                     name="images"
-                                                                    onChange={(e)=>setImagePath(e.target.value)}
+                                                                    onChange={(
+                                                                        e
+                                                                    ) =>
+                                                                        setImagePath(
+                                                                            e
+                                                                                .target
+                                                                                .value
+                                                                        )
+                                                                    }
                                                                     className="file-input file-input-bordered w-full"
                                                                 />
                                                             </div>
@@ -502,6 +558,16 @@ const ManageSpotters = () => {
                                                     </table>
                                                 </div>
                                             </div>
+                                            <button
+                                                onClick={() =>
+                                                    deleteSpotter(
+                                                        spotter.email
+                                                    )
+                                                }
+                                                className="bg-red-500 text-sm text-white  px-3 py-2"
+                                            >
+                                                Delete
+                                            </button>
                                         </div>
                                     </td>
                                 </tr>

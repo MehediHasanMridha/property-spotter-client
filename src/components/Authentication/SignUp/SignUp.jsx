@@ -5,6 +5,7 @@ import React, { useContext, useState } from "react";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
+import { Helmet } from "react-helmet-async";
 const { useForm } = Form;
 
 const SignUp = () => {
@@ -184,6 +185,9 @@ const SignUp = () => {
   };
   return (
     <>
+      <Helmet>
+        <title>SignUp</title>
+      </Helmet>
       <Form
         form={form}
         name="property_signup"

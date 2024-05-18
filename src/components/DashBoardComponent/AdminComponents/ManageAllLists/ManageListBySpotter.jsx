@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../Provider/AuthProvider";
 
@@ -9,7 +10,35 @@ const ManageListBySpotter = () => {
     const [HousePerPage] = useState(6);
     const [listings, setListings] = useState([]);
     const [selectedHouse, setSelectedHouse] = useState(null);
+    const [selectedAgencies, setSelectedAgencies] = useState([]);
+    const [selectedAgent, setSelectedAgent] = useState([]);
+    const [allAgency, setAllAgency] = useState([]);
+    const [selectedAgency, setSelectedAgency] = useState(false);
+    const [allAgent, setAllAgent] = useState([]);
+
+    const fetchAgency = async () => {
+        try {
+            const response = await axios.get(
+                "http://localhost:5000/allusers/filterby/agency"
+            );
+            setAllAgency(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+    const fetchAgent = async (name) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:5000/all-agents/${name}`
+            );
+            return setAllAgent(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     useEffect(() => {
+        fetchAgency();
         fetchListingData();
     }, []);
 
@@ -39,6 +68,8 @@ const ManageListBySpotter = () => {
                 return "badge-warning";
             case "pending mandate":
                 return "badge-warning";
+            case "pending contact with client":
+                return "badge-warning";
             case "hold":
                 return "badge-warning";
             case "available":
@@ -58,9 +89,42 @@ const ManageListBySpotter = () => {
     // Change page
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const houseUpdate = async (e, id) => {
+    const houseUpdate = async (e, house) => {
         try {
             const value = e.target.innerText.toLowerCase();
+            console.log(house);
+            await fetch(
+                `http://localhost:5000/house/updateHouseDataByAgent/${house._id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        status: value,
+                        agencyName: house.agency[0],
+                        // agencyEmail: user.email,
+                        // agencyImage: user.photoURL,
+                    }),
+                }
+            );
+            toast.success(`Successfully ${value}`);
+            fetchListingData();
+            document.getElementById(`my_modal_${house._id}`).close();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+    const handleAgencySelect = async (e) => {
+        setSelectedAgencies(e.target.value);
+        await fetchAgent(e.target.value);
+        setSelectedAgency(true);
+    };
+
+    const handleSubmit = async (id) => {
+        console.log(id);
+
+        try {
             const res = await fetch(
                 `http://localhost:5000/house/update/${id}`,
                 {
@@ -69,20 +133,23 @@ const ManageListBySpotter = () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        status: value,
-                        agency: [user.name],
+                        agency: [selectedAgencies],
+                        agent: selectedAgent,
                     }),
                 }
             );
-            toast.success(`Successfully ${value}`);
+            toast.success(`Successfully Forward to Agency Agent!`);
             fetchListingData();
+            document.getElementById(`my_modal_f${id}`).close();
         } catch (error) {
             console.log(error);
         }
     };
-
     return (
         <div className="p-6">
+               <Helmet>
+        <title>Manage Listing By Spotter</title>
+      </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
@@ -142,98 +209,126 @@ const ManageListBySpotter = () => {
                                     <td>
                                         {/* Open the modal using document.getElementById('ID').showModal() method */}
                                         <div className="flex gap-2">
-                                            {/* <details className="dropdown">
-                                                <summary className="m-1 btn btn-primary">
-                                                    Action
-                                                </summary>
-                                                <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Approved
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Available
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Sold
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Hold
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            PENDING MANDATE
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            Pending
-                                                        </button>
-                                                    </li>
-                                                    <li>
-                                                        <button
-                                                            onClick={(e) =>
-                                                                houseUpdate(
-                                                                    e,
-                                                                    house._id
-                                                                )
-                                                            }
-                                                        >
-                                                            PENDING CONTACT WITH
-                                                            CLIENT
-                                                        </button>
-                                                    </li>
-                                                </ul>
-                                            </details> */}
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={() =>
+                                                    document
+                                                        .getElementById(
+                                                            `my_modal_${house._id}`
+                                                        )
+                                                        .showModal()
+                                                }
+                                            >
+                                                Action
+                                            </button>
+                                            <dialog
+                                                id={`my_modal_${house._id}`}
+                                                className="modal"
+                                            >
+                                                <div className="modal-box w-fit">
+                                                    <ul className="p-2 menu z-[1] rounded-box">
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Approved
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Available
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Sold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Hold
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING MANDATE
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                Pending
+                                                            </button>
+                                                        </li>
+                                                        <li>
+                                                            <button
+                                                                className="hover:bg-primary hover:text-white"
+                                                                onClick={(e) =>
+                                                                    houseUpdate(
+                                                                        e,
+                                                                        house
+                                                                    )
+                                                                }
+                                                            >
+                                                                PENDING CONTACT
+                                                                WITH CLIENT
+                                                            </button>
+                                                        </li>
+                                                    </ul>
+                                                    <div className="modal-action">
+                                                        <form method="dialog">
+                                                            <button className="btn btn-primary bg-red-500 border-red-500 hover:border-red-600 hover:bg-red-600">
+                                                                Close
+                                                            </button>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                            </dialog>
                                             <button
                                                 className="btn btn-info"
                                                 onClick={() =>
@@ -308,6 +403,138 @@ const ManageListBySpotter = () => {
                                                 <div className="modal-action">
                                                     <form method="dialog">
                                                         <button className="btn btn-error">
+                                                            Close
+                                                        </button>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </dialog>
+                                    </td>
+                                    <td>
+                                    <button
+                                            className="btn btn-primary"
+                                            onClick={() =>
+                                                document
+                                                    .getElementById(
+                                                        `my_modal_f${house._id}`
+                                                    )
+                                                    .showModal()
+                                            }
+                                        >
+                                            FORWARD AGENCY
+                                        </button>
+                                        <dialog
+                                            id={`my_modal_f${house._id}`}
+                                            className="modal modal-top modal-backdrop sm:modal-middle"
+                                        >
+                                            <div className="modal-box  space-y-10 space-x-5">
+                                                <h1 className="text-2xl font-bold">
+                                                    Select The Agency Agent
+                                                </h1>
+                                                <div className="mt-6 relative">
+                                                    <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
+                                                        Select Agency
+                                                    </label>
+                                                    <select
+                                                        defaultValue={""}
+                                                        className="select select-bordered w-full text-black"
+                                                        onChange={(e) =>
+                                                            handleAgencySelect(
+                                                                e
+                                                            )
+                                                        }
+                                                    >
+                                                        <option
+                                                            value={""}
+                                                            disabled
+                                                        >
+                                                            Select an agency
+                                                        </option>
+                                                        {allAgency.map(
+                                                            (agency, idx) => (
+                                                                <option
+                                                                    key={idx}
+                                                                    value={
+                                                                        agency.name
+                                                                    }
+                                                                    className="text-black"
+                                                                >
+                                                                    {
+                                                                        agency.name
+                                                                    }
+                                                                </option>
+                                                            )
+                                                        )}
+                                                    </select>
+                                                </div>
+                                                {selectedAgency &&
+                                                    (allAgent.length > 0 ? (
+                                                        <div className="mt-6 relative">
+                                                            <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
+                                                                Select Agent
+                                                            </label>
+                                                            <select
+                                                                className="select select-bordered w-full text-black"
+                                                                defaultValue={
+                                                                    ""
+                                                                }
+                                                                onChange={(e) =>
+                                                                    setSelectedAgent(
+                                                                        e.target
+                                                                            .value
+                                                                    )
+                                                                }
+                                                            >
+                                                                <option
+                                                                    value={""}
+                                                                    disabled
+                                                                >
+                                                                    Select an
+                                                                    agent
+                                                                </option>
+                                                                {allAgent.map(
+                                                                    (
+                                                                        agent,
+                                                                        idx
+                                                                    ) => (
+                                                                        <option
+                                                                            key={
+                                                                                idx
+                                                                            }
+                                                                            value={
+                                                                                agent.name
+                                                                            }
+                                                                            className="text-black"
+                                                                        >
+                                                                            {
+                                                                                agent.name
+                                                                            }
+                                                                        </option>
+                                                                    )
+                                                                )}
+                                                            </select>
+                                                        </div>
+                                                    ) : (
+                                                        <h3 className="text-center text-lg font-semibold">
+                                                            {" "}
+                                                            No Agent Available{" "}
+                                                        </h3>
+                                                    ))}
+                                                <div>
+                                                    <button
+                                                        className="btn btn-accent"
+                                                        onClick={(e) =>
+                                                            handleSubmit(
+                                                                house._id
+                                                            )
+                                                        }
+                                                    >
+                                                        Submit
+                                                    </button>
+                                                </div>
+                                                <div className="modal-action">
+                                                    <form method="dialog">
+                                                        <button className="btn btn-error btn-outline">
                                                             Close
                                                         </button>
                                                     </form>

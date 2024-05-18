@@ -12,7 +12,7 @@ const AdvertisesProperty = () => {
                         </h3>
                         <h4></h4>
                     </div>
-                   <Link to="/loginSignup"> <button className="bg-white border border-primary px-5 md:px-16 py-5 text-center text-nowrap text-sm md:text-xl inline-block text-primary cursor-pointer transition duration-200 ease-in-out rounded-md  focus-visible:outline-none ring-4 ring-blue-300/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95">Sign up</button></Link>
+                   <Link to="/spotter-reg"> <button className="bg-white border border-primary px-5 md:px-16 py-5 text-center text-nowrap text-sm md:text-xl inline-block text-primary cursor-pointer transition duration-200 ease-in-out rounded-md  focus-visible:outline-none ring-4 ring-blue-300/20 focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95">Sign up</button></Link>
                 </div>
             </section>
         </Container>

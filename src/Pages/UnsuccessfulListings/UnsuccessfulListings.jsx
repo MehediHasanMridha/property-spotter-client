@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Container from "../../components/Container/Container";
 import Loading from "../../components/Loader/Loading";
+import { Helmet } from "react-helmet-async";
 
 const UnsuccessfulListings = () => {
     const { user, loading } = useContext(AuthContext);
@@ -70,6 +71,9 @@ const UnsuccessfulListings = () => {
 
     return (
         <Container>
+             <Helmet>
+        <title>Unsuccessful Listings</title>
+      </Helmet>
             <div className="flex flex-col md:flex-row justify-between py-10 lg:gap-10 px-3 lg:px-0">
                 <div className="md:w-1/4">
                     <div className="flex flex-col gap-3">

@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useRef, useState } from 'react'
 import { io } from 'socket.io-client'
 import { AuthContext } from '../Provider/AuthProvider'
 import Message from './Message'
+import { Helmet } from 'react-helmet-async'
 
 const Chat = () => {
 
@@ -51,11 +52,13 @@ const Chat = () => {
     const agentOfAgency = users?.filter(u => u?._id !== user?._id && u?.role === 'agent' && u?.agencyName === user?.name);
     const agencyOfAgent = users?.filter(u => u?._id !== user?._id && u?.role === 'agency' && u?.name === user?.agencyName);
 
-    console.log(agencyOfAgent);
 
 
     return (
         <div className='bg-slate-900 max-h-[85vh]'>
+               <Helmet>
+        <title>Chat</title>
+      </Helmet>
             <div className='h-[85vh] overflow-y-scroll'>
                 <div className="grid gap-2 grid-cols-7 lg:gap-1">
                     <div className="rounded-lg col-span-2 p-2">
@@ -206,7 +209,6 @@ const Chat = () => {
                                 </>
                             }
                             {
-                                user?.role === 'spotter' &&
                                 <>
                                     <div>
                                         <h1 className='text-2xl font-bold text-white'>Your Spotters Here</h1>

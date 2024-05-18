@@ -3,6 +3,7 @@ import AdvertisesProperty from "./AdvertisesProperty";
 import Banner from "./Banner";
 import Places from "./Places";
 import ReducedPrice from "./ReducedPrice";
+import { Helmet } from "react-helmet-async";
 
 const Home = () => {
     const [search, setSearch] = useState("");
@@ -31,6 +32,9 @@ const Home = () => {
       }, []);
     return (
         <main>
+             <Helmet>
+        <title>Home</title>
+      </Helmet>
             <Banner
                 search={search}
                 setSearch={setSearch}

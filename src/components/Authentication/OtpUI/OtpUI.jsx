@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 const OtpUI = () => {
   const { user } = useContext(AuthContext);
@@ -27,6 +28,9 @@ const OtpUI = () => {
   }
   return (
     <>
+    <Helmet>
+    <title>OTP</title>
+  </Helmet>
       <section className="w-full min-h-screen mx-auto py-10 ">
         <div className="w-full max-w-md p-8 space-y-3 rounded-xl border-2 bg-white   font-sans mx-auto shadow-2xl">
           <h1 className="text-3xl font-bold text-center text-indigo-600 py-2">

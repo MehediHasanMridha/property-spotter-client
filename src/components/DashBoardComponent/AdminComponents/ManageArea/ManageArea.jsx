@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
+import { Helmet } from "react-helmet-async";
 
 const ManageArea = () => {
   const [showName, setShowName] = useState("");
@@ -69,7 +70,9 @@ const ManageArea = () => {
 
   return (
     <>
-
+<Helmet>
+        <title>Manage Area</title>
+      </Helmet>
 <div className="mx-auto flex items-center justify-end">
         <button onClick={() => setOpenModal(true)} className="rounded-md bg-green-700 py-3 px-10 text-white">
           + Add Manage Area

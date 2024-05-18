@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { IoIosCheckmarkCircle } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { AuthContext } from "../../Provider/AuthProvider";
@@ -17,7 +18,6 @@ const Steper = () => {
     const [property, setProperty] = useState("");
     const [bedroom, setBedroom] = useState("");
     const [bathroom, setBathroom] = useState("");
-    const [address, setAddress] = useState("");
     const [image, setImage] = useState("");
     const [sellTime, setSellTime] = useState("");
     const [spooName, setSpooName] = useState("");
@@ -28,7 +28,11 @@ const Steper = () => {
     const { user } = useContext(AuthContext);
     const [allAgent, setAllAgent] = useState([]);
     const [allAgency, setAllAgency] = useState([]);
+    const [street, setStreet] = useState('')
+    const [suburb, setSuburb] = useState('')
+    const [city, setCity] = useState("");
 
+    const navigate = useNavigate()
     useEffect(() => {
         fetchAgency();
     }, []);
@@ -80,7 +84,7 @@ const Steper = () => {
             formData.append("spooterEmail", user?.email);
             formData.append("status", "offer pending");
             formData.append("bedroom", bedroom);
-            formData.append("address", address);
+            formData.append("address", `${street} ${suburb} ${city}`);
             formData.append("description", description);
             formData.append("image", image);
             formData.append("propertyType", property);
@@ -107,6 +111,7 @@ const Steper = () => {
                         },
                     }
                 );
+                navigate('/')
                 toast.success("Form submitted successfully");
             } catch (error) {
                 console.error("Error submitting form:", error);
@@ -316,17 +321,55 @@ const Steper = () => {
                                 <label className="form-control w-[400px]">
                                     <div className="label">
                                         <span className="label-text">
-                                            Address
+                                        Street
                                         </span>
                                     </div>
                                     <input
                                         type="text"
                                         required
                                         className="input input-bordered"
-                                        placeholder="Enter Address"
-                                        value={address}
+                                        placeholder="Enter Street"
+                                        value={street}
                                         onChange={(e) =>
-                                            setAddress(e.target.value)
+                                            setStreet(e.target.value)
+                                        }
+                                    />
+                                </label>
+                            </div>
+                            <div>
+                                <label className="form-control w-[400px]">
+                                    <div className="label">
+                                        <span className="label-text">
+                                        Suburb
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="input input-bordered"
+                                        placeholder="Enter Suburb"
+                                        value={suburb}
+                                        onChange={(e) =>
+                                            setSuburb(e.target.value)
+                                        }
+                                    />
+                                </label>
+                            </div>
+                            <div>
+                                <label className="form-control w-[400px]">
+                                    <div className="label">
+                                        <span className="label-text">
+                                            City
+                                        </span>
+                                    </div>
+                                    <input
+                                        type="text"
+                                        required
+                                        className="input input-bordered"
+                                        placeholder="Enter City"
+                                        value={city}
+                                        onChange={(e) =>
+                                            setCity(e.target.value)
                                         }
                                     />
                                 </label>
@@ -411,6 +454,9 @@ const Steper = () => {
                                     bedroom &&
                                     image &&
                                     description &&
+                                    street && 
+                                    suburb &&
+                                    city && 
                                     bathroom && (
                                         <button
                                             onClick={handleButtonClick}
