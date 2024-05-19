@@ -38,7 +38,7 @@ const PropertyCard = ({ item }) => {
                     </div>
                 )}
 
-                <div className="absolute flex flex-col justify-center items-center right-3.5 gap-2 bottom-2">
+                <div className="absolute flex flex-col justify-center items-center left-3.5 gap-2 bottom-2">
                     <img
                         className="w-12 h-12 rounded-full"
                         src={item.agencyImage}

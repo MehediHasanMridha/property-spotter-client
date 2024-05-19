@@ -103,7 +103,8 @@ const PropertyDetails = () => {
                             <div className=" flex items-center gap-1 text-xl">
                                 <LuBedDouble></LuBedDouble>
                                 <h4>
-                                    {propertyData.propertyType === "commercial property" ? (
+                                    {propertyData.propertyType ===
+                                    "commercial property" ? (
                                         <span className=" font-bold">
                                             Room: {propertyData?.room}
                                         </span>
@@ -132,19 +133,36 @@ const PropertyDetails = () => {
                             </div>
                         </div>
                     </div>
-                    <div className="bg-white rounded-3xl border flex md:flex-row flex-col justify-start items-center gap-8 py-6 px-5 my-7">
-                        <img
-                            className="h-40 w-40 rounded-full"
-                            src={propertyData?.agencyImage}
-                            alt=""
-                        />
+                    <div className=" bg-white rounded-3xl border flex md:flex-row flex-col justify-evenly items-center gap-8 py-6 px-5 my-7">
                         <div>
-                            <h2 className="text-xs lg:text-3xl font-bold ">
-                                {propertyData?.agencyName}
-                            </h2>
-                            <p className=" leading-8 text-xs lg:text-xl text-gray-400 mt-2">
+                            <img
+                                className="h-40 w-40 rounded-full"
+                                src={propertyData?.agencyImage}
+                                alt=""
+                            />
+                            <div>
+                                <h2 className="text-xs lg:text-3xl font-bold ">
+                                    {propertyData?.agencyName}
+                                </h2>
+                                {/* <p className=" leading-8 text-xs lg:text-xl text-gray-400 mt-2">
                                 Email: {propertyData?.agencyEmail}
+                            </p> */}
+                            </div>
+                        </div>
+                        <div>
+                            <img
+                                className="h-40 w-40 rounded-full"
+                                src={propertyData?.agentImage}
+                                alt=""
+                            />
+                            <div>
+                                <h2 className="text-xs lg:text-3xl font-bold ">
+                                    {propertyData?.agent}
+                                </h2>
+                                <p className=" leading-8 text-xs lg:text-xl text-gray-400 mt-2">
+                                Email: {propertyData?.agentEmail}
                             </p>
+                            </div>
                         </div>
                     </div>
                 </div>
