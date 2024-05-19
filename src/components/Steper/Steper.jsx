@@ -119,7 +119,7 @@ const Steper = () => {
             formData.append("houseOwnerName", spooName);
             formData.append("houseOwnerEmail", spooEmail);
             formData.append("houseOwnerPhone", spooPhone);
-            if (selectedAgencies) {
+            if (selectedAgency === "Yes") {
                 formData.append("agency", [selectedAgencies]);
                 formData.append("agent", selectedAgent);
             } else {

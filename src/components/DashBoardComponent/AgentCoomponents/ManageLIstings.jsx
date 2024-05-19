@@ -1,9 +1,9 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
 import Loading from "../../Loader/Loading";
-import { Helmet } from "react-helmet-async";
 
 const ManageListings = () => {
     const { user, loading } = useContext(AuthContext);
@@ -77,8 +77,8 @@ const ManageListings = () => {
                     body: JSON.stringify({
                         status: value,
                         agencyName: user.agencyName,
-                        // agencyEmail: user.email,
-                        // agencyImage: user.photoURL,
+                        agentEmail: user?.email,
+                        agentImage: user?.photoURL,
                     }),
                 }
             );
