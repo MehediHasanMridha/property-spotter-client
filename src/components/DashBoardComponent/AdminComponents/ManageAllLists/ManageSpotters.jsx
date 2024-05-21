@@ -7,6 +7,7 @@ import { AuthContext } from "../../../../Provider/AuthProvider";
 const ManageSpotters = () => {
     const [spotters, setSpotters] = useState([]);
     const [spotterData, setSpotterData] = useState(null);
+    const [spotterAllocateData, setSpotterAllocateData] = useState(null);
     const [openEditModal, setEditModal] = useState(false);
     const [openListModal, setListModal] = useState(false);
     const [imagePath, setImagePath] = useState("");
@@ -53,13 +54,13 @@ const ManageSpotters = () => {
                 body: formData,
             }
         );
-        fetchAllSpotters()
+        fetchAllSpotters();
         setEditModal(false);
         setSpotterData(null);
         setImagePath("");
         toast.success("Successfully updated");
     };
-    
+
     const [PayoutModal, setPayoutModal] = useState(false);
     const [PayoutModalData, setPayoutModalData] = useState([]);
     const handlePayoutModal = (spotter) => {
@@ -75,18 +76,16 @@ const ManageSpotters = () => {
     };
 
     const [AllocatePayoutModal, setAllocatePayoutModal] = useState(false);
-    const [AllocatePayoutModalData, setAllocatePayoutModalData] = useState([]);
+
     const handleAllocatePayoutModal = (spotter) => {
         setAllocatePayoutModal(true);
-        const email = spotter?.email;
-        fetch(`http://localhost:5000/all-list/${email}`)
-            .then((res) => res.json())
-            .then((data) => setAllocatePayoutModalData(data));
+        setSpotterAllocateData(spotter);
     };
     const closeAllocatePayoutModal = () => {
         setAllocatePayoutModal(false);
-        setAllocatePayoutModalData([]);
+        setSpotterAllocateData(null);
     };
+
     const deleteSpotter = async (email) => {
         try {
             const result = await Swal.fire({
@@ -119,12 +118,29 @@ const ManageSpotters = () => {
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    const handleAllocatePayout = async (e) => {
+        e.preventDefault();
+        const formData = new FormData();
+        formData.append("commissionAmount", e.target.amount.value);
+        const res = await fetch(
+            `http://localhost:5000/update/${spotterAllocateData.email}`,
+            {
+                method: "PUT",
+                body: formData,
+            }
+        );
+        fetchAllSpotters()
+        setAllocatePayoutModal(false);
+        toast.success("Successfully updated");
+    };
+
     return (
         <div className="p-6">
-               <Helmet>
-        <title>Manage Spotters</title>
-      </Helmet>
+            <Helmet>
+                <title>Manage Spotters</title>
+            </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
@@ -157,6 +173,7 @@ const ManageSpotters = () => {
                                 <th>Image</th>
                                 <th>Spotter Name</th>
                                 <th>Spotter Email</th>
+                                <th className="text-wrap">Commission Amount</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -181,6 +198,9 @@ const ManageSpotters = () => {
                                     </td>
                                     <td className="py-4 px-6 border-b">
                                         {spotter?.email}
+                                    </td>
+                                    <td className="py-4 px-6 border-b">
+                                        {spotter?.commissionAmount}
                                     </td>
                                     <td className="py-4 px-6 border-b">
                                         <div className="relative flex gap-2">
@@ -312,7 +332,7 @@ const ManageSpotters = () => {
                                                 }
                                                 className="bg-green-500 text-sm text-white  px-3 py-2"
                                             >
-                                                View Lists
+                                                View Listings
                                             </button>
                                             <div
                                                 onClick={() => closeListModal()}
@@ -388,7 +408,7 @@ const ManageSpotters = () => {
                                                     </table>
                                                 </div>
                                             </div>
-                                            <button
+                                            {/* <button
                                                 onClick={() =>
                                                     handlePayoutModal(spotter)
                                                 }
@@ -473,7 +493,7 @@ const ManageSpotters = () => {
                                                         </tbody>
                                                     </table>
                                                 </div>
-                                            </div>
+                                            </div> */}
                                             <button
                                                 onClick={() =>
                                                     handleAllocatePayoutModal(
@@ -498,75 +518,54 @@ const ManageSpotters = () => {
                                                     onClick={(e_) =>
                                                         e_.stopPropagation()
                                                     }
-                                                    className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[750px] ${
+                                                    className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[350px] ${
                                                         AllocatePayoutModal
                                                             ? "opacity-1 translate-y-0 duration-300"
                                                             : "-translate-y-20 opacity-0 duration-150"
                                                     }`}
                                                 >
-                                                    <table className="min-w-[90%] shadow-md  border mx-auto border-gray-100  my-6">
-                                                        <thead>
-                                                            <tr className="bg-primary text-white">
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Owner Name
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Bathroom
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Bedroom
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Sell Time
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Status
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {AllocatePayoutModalData?.filter(
-                                                                (data) =>
-                                                                    data.status ==
-                                                                    "pending mandate"
-                                                            ).map((item) => (
-                                                                <tr>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.houseOwnerName
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.bathroom
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.bedroom
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.sellTime
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.status
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
+                                                    <div className="flex justify-center items-center py-5 gap-5">
+                                                        <form
+                                                            onSubmit={(e) =>
+                                                                handleAllocatePayout(
+                                                                    e
+                                                                )
+                                                            }
+                                                            className="space-y-5"
+                                                        >
+                                                            <div>
+                                                                <label
+                                                                    className="form-control"
+                                                                    htmlFor="amount"
+                                                                >
+                                                                    <div class="label">
+                                                                        <span class="label-text">
+                                                                            Enter
+                                                                            commission
+                                                                            amount
+                                                                        </span>
+                                                                    </div>
+                                                                </label>
+                                                                <input
+                                                                    type="number"
+                                                                    id="amount"
+                                                                    name="amount"
+                                                                    className="input input-bordered"
+                                                                />
+                                                            </div>
+                                                            <button
+                                                                type="submit"
+                                                                className="btn btn-primary pt-2"
+                                                            >
+                                                                Submit
+                                                            </button>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
                                             <button
                                                 onClick={() =>
-                                                    deleteSpotter(
-                                                        spotter.email
-                                                    )
+                                                    deleteSpotter(spotter.email)
                                                 }
                                                 className="bg-red-500 text-sm text-white  px-3 py-2"
                                             >
