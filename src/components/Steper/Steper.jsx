@@ -98,7 +98,7 @@ const Steper = () => {
             const formData = new FormData();
             formData.append("spooterName", name);
             formData.append("spooterEmail", user?.email);
-            formData.append("status", "offer pending");
+            formData.append("status", "new");
 
             formData.append(
                 "address",

@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../Provider/AuthProvider";
-import { Helmet } from "react-helmet-async";
 
 const ManageSpotters = () => {
     const [spotters, setSpotters] = useState([]);
@@ -153,6 +153,7 @@ const ManageSpotters = () => {
                         {/* head */}
                         <thead>
                             <tr className="font-semibold text-base text-center">
+                                <th>Random Id</th>
                                 <th>Image</th>
                                 <th>Spotter Name</th>
                                 <th>Spotter Email</th>
@@ -165,6 +166,9 @@ const ManageSpotters = () => {
                                     key={idx}
                                     className="hover:bg-gray-50 transition duration-300"
                                 >
+                                    <td className="py-4 px-6 border-b">
+                                        {spotter?.random_id}
+                                    </td>
                                     <td className="py-4 px-6 border-b">
                                         <img
                                             className="mask mask-squircle w-12 h-12"

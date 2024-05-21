@@ -1,8 +1,8 @@
 import axios from "axios";
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
-import { Helmet } from "react-helmet-async";
 
 const PendingSpottedLists = () => {
     const { user } = useContext(AuthContext);
@@ -126,7 +126,7 @@ const PendingSpottedLists = () => {
                         {/* head */}
                         <thead>
                             <tr className="font-semibold text-base text-center">
-                                <th>No.</th>
+                            <th>Random Id</th>
                                 <th>Spooter Name</th>
                                 <th>Spooter Email</th>
                                 <th>Owner Name</th>
@@ -146,7 +146,7 @@ const PendingSpottedLists = () => {
                                 )
                                 .map((house, index) => (
                                     <tr key={house?.jobData?._id}>
-                                        <td>{index + 1}</td>
+                                        <td>{house?.random_id}</td>
                                         <td>{house?.spooterName}</td>
                                         <td>{house?.spooterEmail}</td>
                                         <td>{house?.houseOwnerName}</td>
