@@ -133,8 +133,6 @@ const ManageListByAgency = () => {
     };
 
     const handleSubmit = async (id) => {
-        console.log(id);
-
         try {
             const res = await fetch(
                 `http://localhost:5000/house/update/${id}`,
@@ -150,8 +148,30 @@ const ManageListByAgency = () => {
                 }
             );
             toast.success(`Successfully Forward to Agency Agent!`);
-            fetchListingData();
+            fetchListingAgency();
             document.getElementById(`my_modal_f${id}`).close();
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    const handleUnassigned = async (id) => {
+        try {
+            const res = await fetch(
+                `http://localhost:5000/house/update/${id}`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        agency: ['admin'],
+                        agent: "",
+                    }),
+                }
+            );
+            toast.success(`Successfully Unassigned!`);
+            fetchListingAgency();
         } catch (error) {
             console.log(error);
         }
@@ -187,6 +207,7 @@ const ManageListByAgency = () => {
                         {/* head */}
                         <thead>
                             <tr className="font-semibold text-base text-center">
+                                <th>Random Id</th>
                                 <th>Spooter Name</th>
                                 <th>Owner Name</th>
                                 <th>Owner Email</th>
@@ -197,8 +218,9 @@ const ManageListByAgency = () => {
                             </tr>
                         </thead>
                         <tbody className="text-center">
-                            {currentJobs.map((house, index) => (
+                            {currentJobs.filter(item=> item.agency.some(name=> name !== 'admin')).map((house, index) => (
                                 <tr key={house?._id}>
+                                    <td>{house?.random_id}</td>
                                     <td>{house?.spooterName}</td>
                                     <td>{house?.houseOwnerName}</td>
                                     <td>{house?.houseOwnerEmail}</td>
@@ -222,7 +244,7 @@ const ManageListByAgency = () => {
                                         >
                                             Agency ({house.agency.length})
                                         </button>
-                                        
+
                                         <dialog
                                             id="my_modal_5"
                                             className="modal modal-bottom sm:modal-middle"
@@ -264,7 +286,6 @@ const ManageListByAgency = () => {
                                         </dialog>
                                     </td>
                                     <td>
-                                        
                                         <button
                                             className="btn btn-primary"
                                             onClick={() =>
@@ -387,7 +408,7 @@ const ManageListByAgency = () => {
                                         </dialog>
                                     </td>
                                     <td>
-                                    <button
+                                        <button
                                             className="btn btn-primary"
                                             onClick={() =>
                                                 document
@@ -517,6 +538,16 @@ const ManageListByAgency = () => {
                                                 </div>
                                             </div>
                                         </dialog>
+                                    </td>
+                                    <td>
+                                        <button
+                                            className="btn btn-primary"
+                                            onClick={() =>
+                                                handleUnassigned(house._id)
+                                            }
+                                        >
+                                            UNASSIGNED
+                                        </button>
                                     </td>
                                 </tr>
                             ))}

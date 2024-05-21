@@ -1,8 +1,9 @@
 import axios from "axios";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { toast } from "react-toastify";
-import { AuthContext } from "../../../../Provider/AuthProvider";
 import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
 const ManageAgency = () => {
     const [showName, setShowName] = useState("");
@@ -71,11 +72,29 @@ const ManageAgency = () => {
     // console.log("agencyData",agencyData);
     const handleAgencyDelete = async (email) => {
         try {
-            await axios.delete(`http://localhost:5000/admin/delete/${email}`);
-            toast.success("Agency Deleted");
-            fetchAgency();
+            const swalConfirm = await Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!",
+            });
+            if (swalConfirm.isConfirmed) {
+                await axios.delete(
+                    `http://localhost:5000/admin/delete/${email}`
+                );
+                toast.success("Agency Deleted");
+                fetchAgency();
+                Swal.fire({
+                    title: "Deleted!",
+                    text: "Your Camp has been deleted.",
+                    icon: "success",
+                });
+            }
         } catch (error) {
-            console.error("Error deleting", error);
+            console.log(error);
         }
     };
     //update Agent
@@ -85,7 +104,7 @@ const ManageAgency = () => {
     };
     const closeEditAgency = () => {
         setUpdateOpenModal(false);
-        setUpdateAgency(null)
+        setUpdateAgency(null);
     };
 
     const updateAgencyData = async (event) => {
@@ -147,9 +166,9 @@ const ManageAgency = () => {
 
     return (
         <>
-        <Helmet>
-        <title>Manage Agency</title>
-      </Helmet>
+            <Helmet>
+                <title>Manage Agency</title>
+            </Helmet>
             <div className="mx-auto flex items-center justify-end">
                 <button
                     onClick={() => setOpenModal(true)}
@@ -513,7 +532,9 @@ const ManageAgency = () => {
                                                             className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10 overflow-y-scroll h-96 lg:h-[500px]"
                                                         >
                                                             <svg
-                                                                onClick={closeEditAgency}
+                                                                onClick={
+                                                                    closeEditAgency
+                                                                }
                                                                 className="mx-auto mr-0 w-10 cursor-pointer fill-black dark:fill-white"
                                                                 viewBox="0 0 24 24"
                                                                 fill="none"

@@ -94,9 +94,9 @@ const ManageListings = () => {
     }
     return (
         <div className="p-6">
-                <Helmet>
-        <title>Manage Listings</title>
-      </Helmet>
+            <Helmet>
+                <title>Manage Listings</title>
+            </Helmet>
             <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
                 <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
                     <div className="text-center">
@@ -125,7 +125,7 @@ const ManageListings = () => {
                         {/* head */}
                         <thead>
                             <tr className="font-semibold text-base text-center">
-                                <th>No.</th>
+                                <th>Random Id</th>
                                 <th>Owner Name</th>
                                 <th>Owner Email</th>
                                 <th>House Phone</th>
@@ -136,7 +136,7 @@ const ManageListings = () => {
                         <tbody className="text-center">
                             {currentJobs.map((house, index) => (
                                 <tr key={house?.jobData?._id}>
-                                    <td>{index + 1}</td>
+                                    <td>{house?.random_id}</td>
                                     <td>{house?.houseOwnerName}</td>
                                     <td>{house?.houseOwnerEmail}</td>
                                     <td>{house?.houseOwnerPhone}</td>
