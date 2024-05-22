@@ -60,6 +60,8 @@ const ManageListBySpotter = () => {
 
     const getBadgeClass = (role) => {
         switch (role) {
+            case "new":
+                return "badge-accent";
             case "approved":
                 return "badge-accent";
             case "pending":
