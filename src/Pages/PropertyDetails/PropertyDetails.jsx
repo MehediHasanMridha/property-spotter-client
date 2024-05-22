@@ -57,7 +57,7 @@ const PropertyDetails = () => {
                                         </svg>
                                     </span>
                                     <span className=" hover:text-primary uppercase text-xs md:text-base">
-                                        {propertyData?.address}
+                                        {propertyData.address.split(' ').pop()}
                                     </span>
                                 </p>
                             )}

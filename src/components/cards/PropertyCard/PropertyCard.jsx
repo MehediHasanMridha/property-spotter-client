@@ -71,7 +71,7 @@ const PropertyCard = ({ item }) => {
                                 ></path>
                             </svg>
                         </span>{" "}
-                        {item.address}
+                        {item.address.split(' ').pop()}
                     </h3>
                 )}
                 <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 uppercase">
