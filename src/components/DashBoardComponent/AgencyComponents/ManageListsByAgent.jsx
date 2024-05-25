@@ -1,11 +1,11 @@
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../Provider/AuthProvider";
-import { Helmet } from "react-helmet-async";
 
 const ManageListsByAgent = () => {
     const [showName, setShowName] = useState("");
@@ -24,7 +24,7 @@ const ManageListsByAgent = () => {
             const response = await axios.get(
                 `http://localhost:5000/allusers/filterby/agent/${user?.name}`
             );
-            console.log(response.data);
+
             setListings(response.data);
         } catch (error) {
             console.error("Error fetching data:", error);
@@ -160,7 +160,7 @@ const ManageListsByAgent = () => {
             console.log(error);
         }
     };
-    console.log(editAgentData);
+
     return (
         <div className="p-6">
                <Helmet>

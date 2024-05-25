@@ -94,7 +94,6 @@ const Steper = () => {
 
     const handleButtonClick = async () => {
         if (isLastStep) {
-            console.log("done");
             const formData = new FormData();
             formData.append("spooterName", name);
             formData.append("spooterEmail", user?.email);
@@ -303,9 +302,6 @@ const Steper = () => {
                                         </option>
                                         <option value={"townhouse"}>
                                             Townhouse
-                                        </option>
-                                        <option value={"residential"}>
-                                            Residential
                                         </option>
                                         <option value={"farm"}>Farm</option>
                                         <option value={"commercial property"}>

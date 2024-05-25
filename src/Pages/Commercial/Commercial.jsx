@@ -24,7 +24,7 @@ const CommercialPage = () => {
         );
         fetchProvinces();
     }, [commercialData]);
-    console.log(provinces);
+
     const filterData = (item) => {
         const searchMatch = item.propertyType
             .toLowerCase()

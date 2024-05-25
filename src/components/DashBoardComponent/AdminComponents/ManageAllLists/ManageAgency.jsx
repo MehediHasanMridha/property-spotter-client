@@ -69,7 +69,6 @@ const ManageAgency = () => {
         }
     };
 
-    // console.log("agencyData",agencyData);
     const handleAgencyDelete = async (email) => {
         try {
             const swalConfirm = await Swal.fire({
@@ -129,7 +128,7 @@ const ManageAgency = () => {
 
         try {
             const response = await axios.put(url, data, config);
-            console.log("🚀 ~ onFinish ~ response:", response);
+
             if (response.data.modifiedCount > 0) {
                 toast.success("Data updated successfully");
             } else {

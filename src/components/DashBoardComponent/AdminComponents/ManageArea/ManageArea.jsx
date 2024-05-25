@@ -1,8 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
 import axios from "axios";
+import React, { useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Helmet } from "react-helmet-async";
 
 const ManageArea = () => {
   const [showName, setShowName] = useState("");
@@ -20,7 +20,7 @@ const ManageArea = () => {
       if (showName) {
         formData.append("image", showName);
       }
-      console.log(formData);
+
       const response = await axios.post("http://localhost:5000/area/add-area", formData);
       if (response.data._id) {
         toast.success('Successfully added areas');
@@ -53,10 +53,9 @@ const ManageArea = () => {
     }
   }
 
-  console.log(area);
 
   const handleAreaDelete = async (id) => {
-    console.log(id);
+
     try {
       await axios.delete(`http://localhost:5000/area/delete/${id}`);
       toast.success("deleted")

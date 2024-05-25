@@ -1,13 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useRef, useState } from 'react';
-import * as timeago from 'timeago.js';
-import InputEmoji from "react-input-emoji";
-import { MdOutlineWifiCalling } from "react-icons/md";
-import { MdOutlineVideoCall } from "react-icons/md";
-import { HiDotsVertical } from "react-icons/hi";
-import { FaRegImage } from "react-icons/fa6";
 import { FaPoll } from "react-icons/fa";
+import { HiDotsVertical } from "react-icons/hi";
 import { IoIosAddCircle } from "react-icons/io";
+import { MdOutlineVideoCall, MdOutlineWifiCalling } from "react-icons/md";
+import InputEmoji from "react-input-emoji";
+import * as timeago from 'timeago.js';
 
 
 const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
@@ -28,7 +26,6 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
     const fetchData = async () => {
         try {
             const res = await axios.get(`http://localhost:5000/message/get-message/${reciever._id}/${currentUser?._id}`);
-            console.log(res?.data);
             setMessages(res.data);
             setHasMessages(res.data.length > 0);
         } catch (error) {
@@ -54,7 +51,7 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
 
     const sendMessage = async (e) => {
         e.preventDefault();
-        console.log('sending...');
+
         try {
             socket.current.emit('send-message', {
                 senderId: currentUser._id,
@@ -75,8 +72,6 @@ const Message = ({ currentUser, reciever, socket, onlineUsers }) => {
             });
             fetchData();
             setNewMessage('');
-            // scrollToBottom();
-            console.log('message sent successfully');
         } catch (error) {
             console.error('Error sending message:', error);
         }

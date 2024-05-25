@@ -1,7 +1,7 @@
-import React from "react";
-import SignUp from "./SignUp/SignUp";
-import Login from "./Login/Login";
 import { Tabs } from "antd";
+import React from "react";
+import Login from "./Login/Login";
+import SignUp from "./SignUp/SignUp";
 
 const LoginSignUp = () => {
   const items = [

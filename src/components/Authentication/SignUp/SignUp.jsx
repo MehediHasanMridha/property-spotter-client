@@ -2,10 +2,10 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Checkbox, Form, Input, Upload, message } from "antd";
 import axios from "axios";
 import React, { useContext, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { FaFacebook, FaGoogle } from "react-icons/fa";
 import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../../Provider/AuthProvider";
-import { Helmet } from "react-helmet-async";
 const { useForm } = Form;
 
 const SignUp = () => {
@@ -24,7 +24,7 @@ const SignUp = () => {
     try {
       const { name, email, password, confirmPassword, remember } =
         values;
-      console.log("🚀 ~ onFinish ~ termsAndcondition:", remember);
+
       if (remember != true) {
         setError("Please agree to the terms and conditions.");
         return;
@@ -56,7 +56,7 @@ const SignUp = () => {
         },
       };
       const url = "http://localhost:5000/signup";
-      console.log(data);
+
       try {
         await axios.post(url, data, config);
         message.success("Signup successful");
@@ -102,7 +102,6 @@ const SignUp = () => {
     signinWithGoogle()
       .then((result) => {
         const person = result?.user;
-        console.log("🚀 ~ .then ~ person:", person);
 
         if (person) {
           const userData = {
@@ -120,14 +119,13 @@ const SignUp = () => {
               },
             })
             .then((response) => {
-              console.log("🚀 ~ .then ~ response:", response.data);
+
               if (!response) {
                 message.error("Failed to Signup");
               }
               const { token, user: userData } = response.data;
               message.success("Login successful");
               if (userData) {
-                console.log("🚀 ~ handleGoogleLogin ~ userData:", userData);
                 setUser(userData);
                 localStorage.setItem("access-token", token);
                 if (userData?.role === "user" || userData?.role === "spotter") {
@@ -151,7 +149,7 @@ const SignUp = () => {
       .then((result) => {
         const user = result.user;
 
-        console.log(user);
+
         const saveUser = {
           name: user?.displayName,
           email: user.email,
@@ -159,7 +157,7 @@ const SignUp = () => {
           photoURL: user?.photoURL,
           role: "user",
         };
-        console.log(saveUser);
+
 
         axios
           .post("http://localhost:5000/signup/google", saveUser, {

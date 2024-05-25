@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import { AuthContext } from "../../Provider/AuthProvider";
 import Container from "../../components/Container/Container";
 import Loading from "../../components/Loader/Loading";
-import { Helmet } from "react-helmet-async";
 
 const PaidOutListings = () => {
     const { user, loading } = useContext(AuthContext);
@@ -48,7 +48,7 @@ const PaidOutListings = () => {
                 `http://localhost:5000/house/spotted-list-success/${user.email}`
             );
             const data = await res.json();
-            console.log(data);
+
             setSpottedList(data);
             setCustomPagination(
                 Array(Math.ceil(data?.length / rowsLimit)).fill(null)

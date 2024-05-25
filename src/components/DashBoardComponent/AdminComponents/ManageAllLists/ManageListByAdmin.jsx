@@ -120,7 +120,6 @@ const ManageListByAdmin = () => {
       };
 
       const handleSubmit = async (id) => {
-        console.log(id);
     
         try {
           const res = await fetch(`http://localhost:5000/house/update/${id}`, {

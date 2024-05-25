@@ -1,14 +1,13 @@
-import { useContext, useState } from "react";
-import { MdOutlineDeleteForever, MdOutlineEmail } from "react-icons/md";
-import { LuGraduationCap } from "react-icons/lu";
-import { SlLocationPin } from "react-icons/sl";
-import { FaRegEdit } from "react-icons/fa";
-import {  Form, Input, Upload, Button } from "antd";
 import { UploadOutlined } from "@ant-design/icons";
+import { Button, Form, Input, Upload } from "antd";
 import axios from "axios";
-import { AuthContext } from "../../Provider/AuthProvider";
-import { toast } from "react-toastify";
+import { useContext, useState } from "react";
 import { Helmet } from "react-helmet-async";
+import { FaRegEdit } from "react-icons/fa";
+import { MdOutlineDeleteForever, MdOutlineEmail } from "react-icons/md";
+import { SlLocationPin } from "react-icons/sl";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../Provider/AuthProvider";
 const Profiles = () => {
   const { user, setUser, logOut } = useContext(AuthContext);
   const [fileList, setFileList] = useState([]);
@@ -16,7 +15,7 @@ const Profiles = () => {
   const [file, setFile] = useState();
 
   const onFinish = async (values) => {
-    console.log("🚀 ~ onFinish ~ values:", values);
+
     try {
       const { name, location, about, newPassword } = values || {};
 
@@ -37,7 +36,7 @@ const Profiles = () => {
       const url = `http://localhost:5000/update/${user?.email}`;
       try {
         const response = await axios.put(url, data, config);
-        console.log("🚀 ~ onFinish ~ response:", response);
+
         if (response.data.user) {
           toast.success("Profile Updated!");
           setUser(response.data.user);
@@ -65,7 +64,6 @@ const Profiles = () => {
       .delete(`http://localhost:5000/user/delete/${user?.email}`)
       .then((response) => {
         const { data } = response;
-        console.log("🚀 ~ .then ~ response:", response);
         if (data.message) {
           toast.success("Profile deleted successfully");
           logOut();
