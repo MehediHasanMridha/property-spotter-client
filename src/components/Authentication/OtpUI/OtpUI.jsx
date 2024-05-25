@@ -1,9 +1,9 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
-import { AuthContext } from "../../../Provider/AuthProvider";
-import { toast } from "react-toastify";
 import { Helmet } from "react-helmet-async";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { AuthContext } from "../../../Provider/AuthProvider";
 
 const OtpUI = () => {
   const { user } = useContext(AuthContext);
@@ -12,7 +12,7 @@ const OtpUI = () => {
     event.preventDefault();
     const form = event.target;
     const otp = parseInt(form.otp.value);
-    console.log(otp);
+    
     axios
       .post("http://localhost:5000/otp-verification", { otp })
       .then((data) => {

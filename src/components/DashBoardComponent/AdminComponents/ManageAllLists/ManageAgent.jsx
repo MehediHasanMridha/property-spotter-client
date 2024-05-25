@@ -1,12 +1,12 @@
 import { Select } from "antd";
 import axios from "axios";
 import { useContext, useEffect, useRef, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import { CiEdit } from "react-icons/ci";
 import { MdOutlineDelete } from "react-icons/md";
 import { toast } from "react-toastify";
 import Swal from "sweetalert2";
 import { AuthContext } from "../../../../Provider/AuthProvider";
-import { Helmet } from "react-helmet-async";
 
 const ManageAgent = () => {
   const [showName, setShowName] = useState("");
@@ -32,7 +32,6 @@ const ManageAgent = () => {
         "http://localhost:5000/allusers/filterby/agency"
       );
       setAllAgency(response.data);
-    //   console.log("AFASFASFAS",allAgency)
     } catch (error) {
       console.error(error);
     }
@@ -43,7 +42,7 @@ const ManageAgent = () => {
       const response = await axios.get(
         `http://localhost:5000/allusers/filterby/agent`
       );
-      console.log(response.data);
+
       setListings(response.data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -181,7 +180,7 @@ const ManageAgent = () => {
       console.log(error);
     }
   };
-  console.log(editAgentData);
+
   return (
     <div className="p-6">
       <Helmet>

@@ -4,7 +4,7 @@ import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
 
 const ReducedPrice = ({ mainData, filterData }) => {
-    console.log(mainData, 'main data form reduce price');
+
     return (
         <section className="bg-white py-10 px-6 md:px-0" id="reduceprice">
             <SectionTitle

@@ -94,7 +94,6 @@ const ManageListBySpotter = () => {
     const houseUpdate = async (e, house) => {
         try {
             const value = e.target.innerText.toLowerCase();
-            console.log(house);
             await fetch(
                 `http://localhost:5000/house/updateHouseDataByAgent/${house._id}`,
                 {
@@ -124,7 +123,6 @@ const ManageListBySpotter = () => {
     };
 
     const handleSubmit = async (id) => {
-        console.log(id);
 
         try {
             const res = await fetch(

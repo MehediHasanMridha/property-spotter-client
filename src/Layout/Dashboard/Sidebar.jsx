@@ -8,7 +8,6 @@ import SidebarItem from "../../components/SubMenu/SidebarItem";
 
 const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
     const { user } = useContext(AuthContext);
-    console.log("🚀 ~ Sidebar ~ user:", user?.role);
     const role = user?.role;
 
     const adminItems = [

@@ -94,7 +94,6 @@ const Steper = () => {
 
     const handleButtonClick = async () => {
         if (isLastStep) {
-            console.log("done");
             const formData = new FormData();
             formData.append("spooterName", name);
             formData.append("spooterEmail", user?.email);

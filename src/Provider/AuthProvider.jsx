@@ -1,14 +1,14 @@
+import { message } from "antd";
 import axios from "axios";
 import {
+  FacebookAuthProvider,
   GoogleAuthProvider,
   getAuth,
   signInWithPopup,
   signOut,
-  FacebookAuthProvider,
 } from "firebase/auth";
 import { createContext, useEffect, useState } from "react";
 import { app } from "../firebase/firebase.config";
-import { message } from "antd";
 
 export const AuthContext = createContext(null);
 
@@ -68,7 +68,6 @@ const AuthProvider = ({ children }) => {
           },
         });
         if (response) {
-          // console.log("Responseeee", response.data);
           setUser(response.data);
         }
       }

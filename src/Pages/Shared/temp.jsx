@@ -5,7 +5,6 @@ import Spinner from "./Spinner";
 
 const Navbar = () => {
   const { user, logOut, loading } = useContext(AuthContext);
-    console.log("🚀 ~ Navbar ~ user:", user?.role)
     
   if (loading) {
     return <Spinner />;

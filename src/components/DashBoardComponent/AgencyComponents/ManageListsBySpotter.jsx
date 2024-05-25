@@ -15,7 +15,7 @@ const ManageListsBySpotter = () => {
         if (user) {
             try {
                 const url = `http://localhost:5000/house/getHouseDataByAgency/${user.name}`;
-                console.log(url);
+
                 const response = await axios.get(url);
                 setListings(response.data);
             } catch (error) {

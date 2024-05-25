@@ -14,7 +14,7 @@ const ManageSpotters = () => {
     const [imagePath, setImagePath] = useState("");
     const [tableData, setTableData] = useState([]);
     const { user } = useContext(AuthContext);
-    console.log(spotters);
+
     const fetchAllSpotters = () => {
         fetch("http://localhost:5000/spotters")
             .then((res) => res.json())
@@ -28,7 +28,7 @@ const ManageSpotters = () => {
         setEditModal(true);
         setSpotterData(spotter);
     };
-    const handleListModal = (spotter) => {
+    const handleListModal = async (spotter) => {
         setListModal(true);
         const email = spotter?.email;
         fetch(`http://localhost:5000/all-list/${email}`)
@@ -47,7 +47,6 @@ const ManageSpotters = () => {
         formData.append("email", e.target.email.value);
         formData.append("password", e.target.password.value);
         formData.append("images", imagePath);
-        // console.log(e.target.files[0]);
         const res = await fetch(
             `http://localhost:5000/update/${spotterData.email}`,
             {
@@ -123,13 +122,15 @@ const ManageSpotters = () => {
 
     const handleCommission = async (e) => {
         e.preventDefault();
-        const id = e.target.id.value
-        const email = e.target.spooterEmail.value
-        const data = {commissionAmount :  e.target.amount.value , status: 'Sold, Spotter paid'}
-        console.log(data);
+        const id = e.target.id.value;
+        const email = e.target.spooterEmail.value;
+        const data = {
+            commissionAmount: e.target.amount.value,
+            status: "Sold, Spotter paid",
+        };
 
-        await axios.post(`http://localhost:5000/house/update/${id}`, data)
-        handleListModal({spotter: email})
+        await axios.post(`http://localhost:5000/house/update/${id}`, data);
+        await handleListModal({ email: email });
         toast.success("Successfully updated");
     };
 
@@ -364,7 +365,8 @@ const ManageSpotters = () => {
                                                                     Status
                                                                 </th>
                                                                 <th className="py-3 px-6 text-left border-b">
-                                                                Commission Amount
+                                                                    Commission
+                                                                    Amount
                                                                 </th>
                                                                 <th className="py-3 px-6 text-left border-b">
                                                                     Enter
@@ -375,7 +377,11 @@ const ManageSpotters = () => {
                                                         <tbody>
                                                             {tableData.map(
                                                                 (item) => (
-                                                                    <tr>
+                                                                    <tr
+                                                                        key={
+                                                                            item._id
+                                                                        }
+                                                                    >
                                                                         <td className="py-4 px-6 border-b">
                                                                             {
                                                                                 item?.houseOwnerName
@@ -418,7 +424,7 @@ const ManageSpotters = () => {
                                                                                         type="text"
                                                                                         id="spooterEmail"
                                                                                         name="spooterEmail"
-                                                                                        value={
+                                                                                        defaultValue={
                                                                                             item.spooterEmail
                                                                                         }
                                                                                         hidden
@@ -427,7 +433,7 @@ const ManageSpotters = () => {
                                                                                         type="text"
                                                                                         id="id"
                                                                                         name="id"
-                                                                                        value={
+                                                                                        defaultValue={
                                                                                             item._id
                                                                                         }
                                                                                         hidden

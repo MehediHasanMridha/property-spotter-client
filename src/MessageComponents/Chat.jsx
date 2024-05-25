@@ -16,7 +16,6 @@ const Chat = () => {
 
     const getUsers = async () => {
         const res = await axios.get('http://localhost:5000/allusers');
-        console.log(res.data);
         setUsers(res.data);
     }
 
@@ -47,7 +46,6 @@ const Chat = () => {
     const agency = users?.filter(u => u?._id !== user?._id && u?.role === 'agency')
     const agents = users?.filter(u => u?._id !== user?._id && u?.role === 'agent')
     const spotters = users?.filter(u => u?._id !== user?._id && u?.role === 'spotter')
-    console.log(spotters);
 
     const agentOfAgency = users?.filter(u => u?._id !== user?._id && u?.role === 'agent' && u?.agencyName === user?.name);
     const agencyOfAgent = users?.filter(u => u?._id !== user?._id && u?.role === 'agency' && u?.name === user?.agencyName);

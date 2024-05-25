@@ -14,7 +14,7 @@ const Navbar = () => {
     await logOut()
     navigate('/')
   };
-  // console.log(user);
+
   useEffect(() => {
     const handleScroll = () => {
       return setScrollY(window.scrollY);
