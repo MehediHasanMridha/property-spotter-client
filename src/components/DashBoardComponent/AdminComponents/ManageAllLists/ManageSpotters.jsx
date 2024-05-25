@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
@@ -120,19 +121,15 @@ const ManageSpotters = () => {
         }
     };
 
-    const handleAllocatePayout = async (e) => {
+    const handleCommission = async (e) => {
         e.preventDefault();
-        const formData = new FormData();
-        formData.append("commissionAmount", e.target.amount.value);
-        const res = await fetch(
-            `http://localhost:5000/update/${spotterAllocateData.email}`,
-            {
-                method: "PUT",
-                body: formData,
-            }
-        );
-        fetchAllSpotters()
-        setAllocatePayoutModal(false);
+        const id = e.target.id.value
+        const email = e.target.spooterEmail.value
+        const data = {commissionAmount :  e.target.amount.value , status: 'Sold, Spotter paid'}
+        console.log(data);
+
+        await axios.post(`http://localhost:5000/house/update/${id}`, data)
+        handleListModal({spotter: email})
         toast.success("Successfully updated");
     };
 
@@ -173,7 +170,6 @@ const ManageSpotters = () => {
                                 <th>Image</th>
                                 <th>Spotter Name</th>
                                 <th>Spotter Email</th>
-                                <th className="text-wrap">Commission Amount</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
@@ -198,9 +194,6 @@ const ManageSpotters = () => {
                                     </td>
                                     <td className="py-4 px-6 border-b">
                                         {spotter?.email}
-                                    </td>
-                                    <td className="py-4 px-6 border-b">
-                                        {spotter?.commissionAmount}
                                     </td>
                                     <td className="py-4 px-6 border-b">
                                         <div className="relative flex gap-2">
@@ -346,7 +339,7 @@ const ManageSpotters = () => {
                                                     onClick={(e_) =>
                                                         e_.stopPropagation()
                                                     }
-                                                    className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[750px] ${
+                                                    className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[1050px] ${
                                                         openListModal
                                                             ? "opacity-1 translate-y-0 duration-300"
                                                             : "-translate-y-20 opacity-0 duration-150"
@@ -370,6 +363,13 @@ const ManageSpotters = () => {
                                                                 <th className="py-3 px-6 text-left border-b">
                                                                     Status
                                                                 </th>
+                                                                <th className="py-3 px-6 text-left border-b">
+                                                                Commission Amount
+                                                                </th>
+                                                                <th className="py-3 px-6 text-left border-b">
+                                                                    Enter
+                                                                    Commission
+                                                                </th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
@@ -378,189 +378,80 @@ const ManageSpotters = () => {
                                                                     <tr>
                                                                         <td className="py-4 px-6 border-b">
                                                                             {
-                                                                                item.houseOwnerName
+                                                                                item?.houseOwnerName
                                                                             }
                                                                         </td>
                                                                         <td className="py-4 px-6 border-b">
                                                                             {
-                                                                                item.bathroom
+                                                                                item?.bathroom
                                                                             }
                                                                         </td>
                                                                         <td className="py-4 px-6 border-b">
                                                                             {
-                                                                                item.bedroom
+                                                                                item?.bedroom
                                                                             }
                                                                         </td>
                                                                         <td className="py-4 px-6 border-b">
                                                                             {
-                                                                                item.sellTime
+                                                                                item?.sellTime
                                                                             }
                                                                         </td>
                                                                         <td className="py-4 px-6 border-b">
                                                                             {
-                                                                                item.status
+                                                                                item?.status
                                                                             }
+                                                                        </td>
+                                                                        <td className="py-4 px-6 border-b">
+                                                                            {
+                                                                                item?.commissionAmount
+                                                                            }
+                                                                        </td>
+                                                                        <td className="py-4 px-6 border-b">
+                                                                            <form
+                                                                                onSubmit={
+                                                                                    handleCommission
+                                                                                }
+                                                                                className="flex justify-center items-center gap-2"
+                                                                            >
+                                                                                <div>
+                                                                                    <input
+                                                                                        type="text"
+                                                                                        id="spooterEmail"
+                                                                                        name="spooterEmail"
+                                                                                        value={
+                                                                                            item.spooterEmail
+                                                                                        }
+                                                                                        hidden
+                                                                                    />
+                                                                                    <input
+                                                                                        type="text"
+                                                                                        id="id"
+                                                                                        name="id"
+                                                                                        value={
+                                                                                            item._id
+                                                                                        }
+                                                                                        hidden
+                                                                                    />
+                                                                                    <input
+                                                                                        type="number"
+                                                                                        id="amount"
+                                                                                        name="amount"
+                                                                                        className="input input-sm input-bordered"
+                                                                                    />
+                                                                                </div>
+                                                                                <button
+                                                                                    type="submit"
+                                                                                    className="btn btn-sm btn-primary"
+                                                                                >
+                                                                                    Submit
+                                                                                </button>
+                                                                            </form>
                                                                         </td>
                                                                     </tr>
                                                                 )
                                                             )}
                                                         </tbody>
                                                     </table>
-                                                </div>
-                                            </div>
-                                            {/* <button
-                                                onClick={() =>
-                                                    handlePayoutModal(spotter)
-                                                }
-                                                className="bg-amber-500 text-sm text-white  px-3 py-2"
-                                            >
-                                                Payout
-                                            </button>
-                                            <div
-                                                onClick={() =>
-                                                    closePayoutModal()
-                                                }
-                                                className={`fixed z-[100] flex items-center justify-center ${
-                                                    PayoutModal
-                                                        ? "opacity-1 visible"
-                                                        : "invisible opacity-0"
-                                                } inset-0 h-full w-full bg-black/20 backdrop-blur-sm duration-100`}
-                                            >
-                                                <div
-                                                    onClick={(e_) =>
-                                                        e_.stopPropagation()
-                                                    }
-                                                    className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[750px] ${
-                                                        PayoutModal
-                                                            ? "opacity-1 translate-y-0 duration-300"
-                                                            : "-translate-y-20 opacity-0 duration-150"
-                                                    }`}
-                                                >
-                                                    <table className="min-w-[90%] shadow-md  border mx-auto border-gray-100  my-6">
-                                                        <thead>
-                                                            <tr className="bg-primary text-white">
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Owner Name
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Bathroom
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Bedroom
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Sell Time
-                                                                </th>
-                                                                <th className="py-3 px-6 text-left border-b">
-                                                                    Status
-                                                                </th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            {PayoutModalData?.filter(
-                                                                (data) =>
-                                                                    data.status ==
-                                                                    "sold"
-                                                            ).map((item) => (
-                                                                <tr>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.houseOwnerName
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.bathroom
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.bedroom
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.sellTime
-                                                                        }
-                                                                    </td>
-                                                                    <td className="py-4 px-6 border-b">
-                                                                        {
-                                                                            item.status
-                                                                        }
-                                                                    </td>
-                                                                </tr>
-                                                            ))}
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div> */}
-                                            <button
-                                                onClick={() =>
-                                                    handleAllocatePayoutModal(
-                                                        spotter
-                                                    )
-                                                }
-                                                className="bg-primary text-sm text-white  px-3 py-2"
-                                            >
-                                                Allocate a payout
-                                            </button>
-                                            <div
-                                                onClick={() =>
-                                                    closeAllocatePayoutModal()
-                                                }
-                                                className={`fixed z-[100] flex items-center justify-center ${
-                                                    AllocatePayoutModal
-                                                        ? "opacity-1 visible"
-                                                        : "invisible opacity-0"
-                                                } inset-0 h-full w-full bg-black/20 backdrop-blur-sm duration-100`}
-                                            >
-                                                <div
-                                                    onClick={(e_) =>
-                                                        e_.stopPropagation()
-                                                    }
-                                                    className={`absolute top-10 w-full rounded-lg bg-white  drop-shadow-2xl sm:w-[350px] ${
-                                                        AllocatePayoutModal
-                                                            ? "opacity-1 translate-y-0 duration-300"
-                                                            : "-translate-y-20 opacity-0 duration-150"
-                                                    }`}
-                                                >
-                                                    <div className="flex justify-center items-center py-5 gap-5">
-                                                        <form
-                                                            onSubmit={(e) =>
-                                                                handleAllocatePayout(
-                                                                    e
-                                                                )
-                                                            }
-                                                            className="space-y-5"
-                                                        >
-                                                            <div>
-                                                                <label
-                                                                    className="form-control"
-                                                                    htmlFor="amount"
-                                                                >
-                                                                    <div class="label">
-                                                                        <span class="label-text">
-                                                                            Enter
-                                                                            commission
-                                                                            amount
-                                                                        </span>
-                                                                    </div>
-                                                                </label>
-                                                                <input
-                                                                    type="number"
-                                                                    id="amount"
-                                                                    name="amount"
-                                                                    className="input input-bordered"
-                                                                />
-                                                            </div>
-                                                            <button
-                                                                type="submit"
-                                                                className="btn btn-primary pt-2"
-                                                            >
-                                                                Submit
-                                                            </button>
-                                                        </form>
-                                                    </div>
                                                 </div>
                                             </div>
                                             <button
