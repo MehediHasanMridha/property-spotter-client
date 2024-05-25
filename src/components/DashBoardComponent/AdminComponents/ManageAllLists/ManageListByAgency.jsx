@@ -548,7 +548,7 @@ const ManageListByAgency = () => {
                                                 handleUnassigned(house._id)
                                             }
                                         >
-                                            UNASSIGNED
+                                            Unassign
                                         </button>
                                     </td>
                                 </tr>

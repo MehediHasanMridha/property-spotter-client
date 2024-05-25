@@ -1,13 +1,10 @@
 import { useContext } from "react";
 import { FaRegShareSquare } from "react-icons/fa";
-import { LiaToiletSolid } from "react-icons/lia";
-import { LuBedDouble } from "react-icons/lu";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../Provider/AuthProvider";
 
 const PropertyCard = ({ item }) => {
-    
     const { user } = useContext(AuthContext);
     const copyToClip = (e, link) => {
         e.stopPropagation();
@@ -18,7 +15,7 @@ const PropertyCard = ({ item }) => {
     return (
         <div className=" bg-white shadow rounded-xl">
             <div className="relative">
-                {item.image? (
+                {item.image ? (
                     <img
                         src={item.image}
                         alt=""
@@ -37,7 +34,6 @@ const PropertyCard = ({ item }) => {
                         </svg>
                     </div>
                 )}
-
                 <div className="absolute flex flex-col justify-center items-center left-3.5 gap-2 bottom-2">
                     <img
                         className="w-12 h-12 rounded-full"
@@ -48,9 +44,19 @@ const PropertyCard = ({ item }) => {
                         {item.agencyName}
                     </h3>
                 </div>
+                <div className="absolute flex flex-col justify-center items-center right-3.5 gap-2 bottom-2">
+                    <img
+                        className="w-12 h-12 rounded-full"
+                        src={item.agentImage}
+                        alt=""
+                    />
+                    <h3 className="bg-blue-100/60 px-2 rounded-md py-0.5 text-primary">
+                        {item.agent}
+                    </h3>
+                </div>
             </div>
-            <div className="px-3 py-2.5">
-                {user && (
+            <div className="px-3 pt-2.5">
+                {/* {user && (
                     <h3 className="flex items-center text-sm text-gray-500 uppercase font-semibold gap-2">
                         <span className="text-primary text-2xl">
                             <svg
@@ -71,25 +77,22 @@ const PropertyCard = ({ item }) => {
                                 ></path>
                             </svg>
                         </span>{" "}
-                        {item.address.split(' ').pop()}
+                        {item.address.split(" ").pop()}
                     </h3>
-                )}
-                <h2 className="text-lg font-semibold bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 uppercase">
-                    {item.propertyType}
+                )} */}
+                <h2 className="font-medium bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 ">
+                    {` Bedroom ${item.bedroom} and Bathroom ${item.bathroom}  ${
+                        item.propertyType
+                    } in ${item.address.split(" ").pop()}`}
                 </h2>
-                <ul className="flex justify-between text-gray-700">
+                <ul className="flex-grow flex justify-between items-center text-gray-700 py-5">
                     <li className="space-x-2">
-                        <LuBedDouble className="inline" />
-                        <span>Bed:{item.bedroom}</span>
-                    </li>
-                    <li className="space-x-2">
-                        <LiaToiletSolid className="inline" />
-                        <span>
-                            Baths:
-                            {item.bathroom === "4 or more"
-                                ? "4+"
-                                : item.bathroom}
-                        </span>
+                        <Link
+                            className="text-blue-500 hover:text-blue-700"
+                            to={`/property-details/${item._id}`}
+                        >
+                            View Details
+                        </Link>
                     </li>
                     <li
                         className="space-x-2 cursor-pointer"
@@ -103,11 +106,6 @@ const PropertyCard = ({ item }) => {
                         <FaRegShareSquare className="inline" />
                     </li>
                 </ul>
-            </div>
-            <div className="flex justify-center items-center py-3">
-                <Link to={`/property-details/${item._id}`}>
-                    <button className="btn btn-primary">View Details</button>
-                </Link>
             </div>
         </div>
     );

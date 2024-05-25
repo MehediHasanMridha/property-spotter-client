@@ -304,9 +304,6 @@ const Steper = () => {
                                         <option value={"townhouse"}>
                                             Townhouse
                                         </option>
-                                        <option value={"residential"}>
-                                            Residential
-                                        </option>
                                         <option value={"farm"}>Farm</option>
                                         <option value={"commercial property"}>
                                             Commercial Property
