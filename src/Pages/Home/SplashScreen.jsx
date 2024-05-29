@@ -5,7 +5,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../Provider/AuthProvider";
-import bgImage from "../../assets/logo.png";
+import bgImage from "../../assets/bg.jpg";
 const { useForm } = Form;
 
 const SplashScreen = () => {
