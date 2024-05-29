@@ -15,14 +15,9 @@ const SplashScreen = () => {
     const navigate = useNavigate();
     const [form] = useForm();
 
-    if (user) {
-        if (user?.role === "user" || user?.role === "spotter") navigate("/");
-        if (user?.role !== "user") navigate("/dashboard");
-    }
-
     const onFinish = async (values) => {
         try {
-            const { name, email, password, remember } = values;
+            const { name, email, password } = values;
 
             // Validate password
             if (!/(?=.*[A-Z]).*[a-z]/.test(password)) {

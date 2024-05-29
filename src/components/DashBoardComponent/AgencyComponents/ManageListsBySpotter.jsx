@@ -10,6 +10,7 @@ const ManageListsBySpotter = () => {
     const [HousePerPage] = useState(6);
     const [listings, setListings] = useState([]);
     const [selectedHouse, setSelectedHouse] = useState(null);
+    const [filterValue, setFilterValue] = useState('');
 
     const fetchListingData = async () => {
         if (user) {
@@ -117,6 +118,40 @@ const ManageListsBySpotter = () => {
                     </h4>
                 </div>
             </div>
+            <div className="flex justify-end">
+                    <div className="flex items-center justify-center gap-2 py-2">
+                        <h3>Filter By: </h3>
+                        <select
+                            onChange={(e) => setFilterValue(e.target.value)}
+                            className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1.5"
+                            name=""
+                            id=""
+                        >
+                            <option value="new">New</option>
+                            <option value="approved">Approved</option>
+                            <option value="pending">Pending</option>
+                            <option value="offer pending">Offer Pending</option>
+                            <option value="pending mandate">
+                                Pending Mandate
+                            </option>
+                            <option value="pending contact with client">
+                                Pending Contact With Client
+                            </option>
+                            <option value="hold">Hold</option>
+                            <option value="available">Available</option>
+                            <option value="Sold, Spotter paid">
+                                Sold, Spotter paid
+                            </option>
+                            <option value="sold">Sold</option>
+                        </select>
+                        <button
+                            onClick={() => setFilterValue("")}
+                            className="btn-sm btn-primary text-white rounded-md active:scale-95"
+                        >
+                            Clear
+                        </button>
+                    </div>
+                </div>
             <div className="shadow-2xl border-2 border-primary p-5 rounded-md">
                 <div className="flex justify-between"></div>
                 <div className="overflow-x-auto">
@@ -132,8 +167,10 @@ const ManageListsBySpotter = () => {
                             </tr>
                         </thead>
                         <tbody className="text-center">
-                            {currentJobs.map((house, index) => (
-                                <tr key={house?.jobData?._id}>
+                            {currentJobs.filter(
+                                        (house) => filterValue ? house.status === filterValue : house
+                                    ).map((house, index) => (
+                                <tr key={house?._id}>
                                     <td>{house?.random_id}</td>
                                     <td>{house?.spooterName}</td>
                                     <td>{house?.spooterEmail}</td>

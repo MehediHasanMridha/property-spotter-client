@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import useAuth from "../../hooks/useAuth";
+import { AuthContext } from "../../Provider/AuthProvider";
 import AdvertisesProperty from "./AdvertisesProperty";
 import Banner from "./Banner";
 import Places from "./Places";
@@ -8,7 +8,7 @@ import ReducedPrice from "./ReducedPrice";
 import SplashScreen from "./SplashScreen";
 
 const Home = () => {
-    const { user } = useAuth();
+    const { user } = useContext(AuthContext);
     const [search, setSearch] = useState("");
     const [mainData, setMainData] = useState([]);
 
@@ -35,13 +35,14 @@ const Home = () => {
     useEffect(() => {
         window.scrollTo(0, 0);
     }, []);
+    console.log(user);
     return (
         <main>
             <Helmet>
                 <title>Home</title>
             </Helmet>
-            {user ? <AdvertisesProperty /> : <SplashScreen />}
-
+            {user?.role === 'spotter' && <AdvertisesProperty />}
+            {!user && <SplashScreen />}
             <Banner
                 search={search}
                 setSearch={setSearch}
