@@ -1,220 +1,239 @@
 import axios from "axios";
-import React, { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
-import { Link } from "react-router-dom";
+import { MdDeleteOutline } from "react-icons/md";
 import { toast } from "react-toastify";
+import Swal from "sweetalert2";
+import { AuthContext } from "../../../../Provider/AuthProvider";
 
 const ManageArea = () => {
-  const [showName, setShowName] = useState("");
-  const [showImagePreview, setShowImagePreview] = useState("");
-  const fileInputRef = useRef();
-  const [openModal, setOpenModal] = useState(false);
-  const [area, setArea] = useState([])
+    const [provinces, setProvinces] = useState([]);
+    const { user } = useContext(AuthContext);
 
-  const handleManageArea = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("city", e.target.city.value);
-      formData.append("country", e.target.country.value);
-      if (showName) {
-        formData.append("image", showName);
-      }
+    const fetchProvinces = () => {
+        fetch("http://localhost:5000/area/AreasData")
+            .then((res) => res.json())
+            .then((data) => setProvinces(data));
+    };
+    useEffect(() => {
+        fetchProvinces();
+    }, []);
 
-      const response = await axios.post("http://localhost:5000/area/add-area", formData);
-      if (response.data._id) {
-        toast.success('Successfully added areas');
-        setOpenModal(false)
-        fetchArea()
-      }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    const createProvince = async (e) => {
+        e.preventDefault();
+        const provinces = e.target.provinces.value;
 
-  const handleClearFile = () => {
-    setShowName("");
-    setShowImagePreview("");
-    fileInputRef.current.value = "";
-  };
+        const response = await axios.post(
+            "http://localhost:5000/area/add-area",
+            { provinces }
+        );
+        e.target.reset();
+        if (response.data._id) {
+            toast.success("Successfully added areas");
+            fetchProvinces();
+        } else {
+            toast.error("already exits");
+        }
+    };
 
+    const createCity = async (e) => {
+        e.preventDefault();
+        const provinces = e.target.province.value;
+        const city = e.target.city.value;
 
-  useEffect(() => {
-    fetchArea();
-  }, []);
+        await axios.post("http://localhost:5000/area/add-city", {
+            provinces,
+            city,
+        });
+        e.target.reset();
+        toast.success("Successfully added city");
+        fetchProvinces();
+    };
 
-  const fetchArea = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/area/AreasData");
-      setArea(response.data);
-    } catch (error) {
-      console.error( error);
-      
-    }
-  }
+    const deleteCity = async (id, city) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        });
 
+        if (result.isConfirmed) {
+            await axios.delete(
+                `http://localhost:5000/area/delete-city/${id}?city=${city}`
+            );
+            toast.success("Successfully deleted");
+            await fetchProvinces();
+        } else {
+            toast.warn("Canceled");
+        }
+    };
 
-  const handleAreaDelete = async (id) => {
+    const deleteProvince = async (id) => {
+        const result = await Swal.fire({
+            title: "Are you sure?",
+            text: "You won't be able to revert this!",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, delete it!",
+        });
 
-    try {
-      await axios.delete(`http://localhost:5000/area/delete/${id}`);
-      toast.success("deleted")
-      fetchArea();
-    } catch (error) {
-      console.error('Error deleting', error);
-      
-    }
-  }
+        if (result.isConfirmed) {
+            await axios.delete(
+                `http://localhost:5000/area/delete-province/${id}`
+            );
+            toast.success("Successfully deleted");
+            await fetchProvinces();
+        } else {
+            toast.warn("Canceled");
+        }
+    };
 
-
-  return (
-    <>
-<Helmet>
-        <title>Manage Area</title>
-      </Helmet>
-<div className="mx-auto flex items-center justify-end">
-        <button onClick={() => setOpenModal(true)} className="rounded-md bg-green-700 py-3 px-10 text-white">
-          + Add Manage Area
-        </button>
-        <div onClick={() => setOpenModal(false)} className={`fixed z-[100] flex items-center justify-center ${openModal ? 'opacity-1 visible' : 'invisible opacity-0'} inset-0 h-full w-full bg-black/20 backdrop-blur-sm duration-100`}>
-          <div onClick={(e_) => e_.stopPropagation()} className={`absolute w-full rounded-lg bg-white dark:bg-gray-900 drop-shadow-2xl sm:w-[500px] ${openModal ? 'opacity-1 translate-y-0 duration-300' : '-translate-y-20 opacity-0 duration-150'}`}>
-          <form onSubmit={handleManageArea} className="px-5 pb-5 pt-3 lg:pb-10 lg:pt-5 lg:px-10 h-96 lg:h-[500px] overflow-y-scroll">
-              <svg onClick={() => setOpenModal(false)} className="mx-auto mr-0 w-10 cursor-pointer fill-black dark:fill-white" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"><path d="M6.99486 7.00636C6.60433 7.39689 6.60433 8.03005 6.99486 8.42058L10.58 12.0057L6.99486 15.5909C6.60433 15.9814 6.60433 16.6146 6.99486 17.0051C7.38538 17.3956 8.01855 17.3956 8.40907 17.0051L11.9942 13.4199L15.5794 17.0051C15.9699 17.3956 16.6031 17.3956 16.9936 17.0051C17.3841 16.6146 17.3841 15.9814 16.9936 15.5909L13.4084 12.0057L16.9936 8.42059C17.3841 8.03007 17.3841 7.3969 16.9936 7.00638C16.603 6.61585 15.9699 6.61585 15.5794 7.00638L11.9942 10.5915L8.40907 7.00636C8.01855 6.61584 7.38538 6.61584 6.99486 7.00636Z"></path></g></svg>
-            <div className="space-y-5">
-              {/* Input fields for name, city, and country */}
-              <div className="relative">
-                <input
-                  type="text"
-                  name="city"
-                  placeholder="City"
-                  className="border border-black py-3 px-5 w-full"
-                />
-                <h1 className="absolute -top-2 left-4 px-1 bg-white text-sm">
-                  Your City
-                </h1>
-              </div>
-              <div className="relative">
-                <input
-                  type="text"
-                  name="country"
-                  placeholder="Country"
-                  className="border border-black py-3 px-5 w-full"
-                />
-                <h1 className="absolute -top-2 left-4 px-1 bg-white text-sm">
-                  Your Country
-                </h1>
-              </div>
-              {/* Image preview section */}
-              <div className="my-10">
-                {showName && (
-                  <div className="mx-auto flex max-w-[600px] items-center gap-x-6 rounded-lg border-2 border-dashed border-gray-400 p-5 bg-white">
-                    <img
-                      className="size-[100px] h-[100px] w-full max-w-[150px] rounded-lg object-cover"
-                      src={showImagePreview}
-                      alt="Uploaded"
-                    />
-                    {/* Display the name and size of the uploaded image */}
-                    <div className="flex-1 space-y-1.5 overflow-hidden">
-                      <h5 className="text-xl font-medium tracking-tight truncate">
-                        {showName.name}
-                      </h5>
-                      <p className="text-gray-500">
-                        {(showName.size / 1024).toFixed(1)} KB
-                      </p>
+    return (
+        <div className="p-6">
+            <Helmet>
+                <title>Manage Provinces</title>
+            </Helmet>
+            <div className="grid lg:grid-cols-2 grid-cols-1 lg:gap-7">
+                <div className="flex justify-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
+                    <div className="text-center">
+                        <h4 className="text-xl font-medium ">
+                            Hello,
+                            <span className="text-3xl font-bold text-primary uppercase">
+                                {user?.name}
+                            </span>
+                        </h4>
+                        <p>{"Here's what's going on"}</p>
                     </div>
-                    {/* Button to clear the file */}
-                    <div onClick={handleClearFile}>
-                      <svg
-                        width={30}
-                        viewBox="0 -0.5 25 25"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        {/* SVG content */}
-                      </svg>
-                    </div>
-                  </div>
-                )}
-                {/* Input field for file upload */}
-                <label
-                  className="mx-auto flex max-w-[600px] flex-col items-center justify-center space-y-3 rounded-lg border-2 border-dashed border-gray-400 p-6 bg-white"
-                  htmlFor="fileInput"
-                >
-                  <svg
-                    width={50}
-                    viewBox="0 0 42 32"
-                    fill="#000000"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* SVG content */}
-                  </svg>
-                  <div className="space-y-1.5 text-center">
-                    <h5 className="whitespace-nowrap text-lg font-medium tracking-tight">
-                      Upload your file
-                    </h5>
-                    <p className="text-sm text-gray-500">
-                      File should be in PNG, JPEG, or JPG format
-                    </p>
-                  </div>
-                </label>
-                <input
-                  ref={fileInputRef}
-                  onChange={(e) => {
-                    if (e.target.files && e.target.files[0]) {
-                      const imageFile = e.target.files[0];
-                      setShowName(imageFile);
-                      setShowImagePreview(URL.createObjectURL(imageFile));
-                    }
-                  }}
-                  className="hidden"
-                  id="fileInput"
-                  type="file"
-                />
-              </div>
-              {/* Submit button */}
-              <button
-                type="submit"
-                className="border-2 bg-black text-white border-black py-3 px-5 w-full"
-              >
-               Submit Now
-              </button>
+                </div>
+                <div className="flex justify-center items-center shadow-xl border-2 border-primary p-4 rounded-md mb-7">
+                    <h4 className="text-2xl font-medium">
+                        Total Provinces:{" "}
+                        <span className="text-3xl text-primary font-bold">
+                            {provinces.length}
+                        </span>
+                    </h4>
+                </div>
             </div>
-            </form>
-          </div>
+            <div className="flex justify-between">
+                <form
+                    className="flex items-center justify-center gap-2 py-2"
+                    onSubmit={createProvince}
+                >
+                    <h3>Create Province: </h3>
+                    <input
+                        type="text"
+                        name="provinces"
+                        id="provinces"
+                        className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1"
+                    />
+                    <button
+                        type="submit"
+                        className="btn-sm btn-primary text-white rounded-md active:scale-95"
+                    >
+                        Create
+                    </button>
+                </form>
+                <form
+                    className="flex items-center justify-center gap-2 py-2"
+                    onSubmit={createCity}
+                >
+                    <h3>Create City: </h3>
+                    <select
+                        className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1"
+                        name="province"
+                        id="province"
+                    >
+                        {provinces.map((province) => (
+                            <option
+                                key={province._id}
+                                value={province.provinces}
+                            >
+                                {province.provinces}
+                            </option>
+                        ))}
+                    </select>
+                    <input
+                        type="text"
+                        name="city"
+                        id="city"
+                        className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1"
+                    />
+                    <button
+                        type="submit"
+                        className="btn-sm btn-primary text-white rounded-md active:scale-95"
+                    >
+                        Create City
+                    </button>
+                </form>
+            </div>
+            <div className="shadow-2xl border-2 border-primary p-5 rounded-md">
+                <div className="flex justify-between"></div>
+                <div className="overflow-x-auto">
+                    <table className="table w-full">
+                        {/* head */}
+                        <thead>
+                            <tr className="font-semibold text-base text-center">
+                                <th>Province Name</th>
+                                <th>Cities List</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {provinces.map((province, idx) => (
+                                <tr
+                                    key={idx}
+                                    className="hover:bg-gray-50 transition duration-300"
+                                >
+                                    <td className="py-4 px-6 border-b">
+                                        {province?.provinces}
+                                    </td>
+                                    <td className="py-4 px-6 border-b">
+                                        <ul>
+                                            {province?.cities?.map(
+                                                (city, idx) => (
+                                                    <li
+                                                        key={idx}
+                                                        className="flex py-1 border-b border-gray-200 justify-between items-center"
+                                                    >
+                                                        {city}{" "}
+                                                        <span
+                                                            onClick={() =>
+                                                                deleteCity(
+                                                                    province._id,
+                                                                    city
+                                                                )
+                                                            }
+                                                            className="cursor-pointer text-red-500"
+                                                        >
+                                                            <MdDeleteOutline />
+                                                        </span>
+                                                    </li>
+                                                )
+                                            )}
+                                        </ul>
+                                    </td>
+                                    <td className="text-center">
+                                        <button
+                                            onClick={()=>deleteProvince(province._id)}
+                                            className="text-red-500"
+                                        >
+                                            <MdDeleteOutline size={20} />
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-      </div>
-      
-
-
-      {/* card show for remove  */}
-
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-      {area.map((item, index) => (
-        <Link key={index} to="#" className="block border rounded-xl px-2.5 py-2.5 my-2">
-          <div className="rounded-2xl h-44 object-center object-cover overflow-hidden">
-            <img
-              className="rounded-2xl hover:scale-150 transition-transform duration-300"
-              src={`http://localhost:5000/image/areas/${item.image}`}
-              alt="area"
-            />
-          </div>
-          <h2 className="text-2xl text-secondary font-semibold py-1 my-2">
-            {item.city}
-          </h2>
-          <div className="flex justify-end">
-            <button onClick={()=>handleAreaDelete(item._id)} className="bg-red-500 rounded-md text-white px-2 py-1.5">Remove </button>
-          </div>
-        </Link>
-      ))}
-        </div>
-    </>
-  );
+    );
 };
 
 export default ManageArea;
-
-
-
-
-
-
