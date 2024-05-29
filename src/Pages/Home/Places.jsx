@@ -1,9 +1,8 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import Container from "../../components/Container/Container";
 import PlacesCard from "../../components/cards/PlacesCard/PlacesCard";
 import SectionTitle from "../../components/sectionTitle/SectionTitle";
-import axios from "axios";
-import AdvertisesProperty from "./AdvertisesProperty";
 
 const Places = () => {
 
@@ -86,7 +85,6 @@ const Places = () => {
             </button>
           </div>
         </section>
-        <AdvertisesProperty/>
       </>
     );
 };
