@@ -1,11 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
+import { AuthContext } from "../../Provider/AuthProvider";
 import AdvertisesProperty from "./AdvertisesProperty";
 import Banner from "./Banner";
 import Places from "./Places";
 import ReducedPrice from "./ReducedPrice";
-import { Helmet } from "react-helmet-async";
+import SplashScreen from "./SplashScreen";
 
 const Home = () => {
+    const { user } = useContext(AuthContext);
     const [search, setSearch] = useState("");
     const [mainData, setMainData] = useState([]);
 
@@ -14,7 +17,9 @@ const Home = () => {
     }, [search]);
 
     const fetchData = async () => {
-        const res = await fetch("http://localhost:5000/house/houseAvailableData");
+        const res = await fetch(
+            "http://localhost:5000/house/houseAvailableData"
+        );
         const data = await res.json();
         setMainData(data);
     };
@@ -29,12 +34,15 @@ const Home = () => {
     };
     useEffect(() => {
         window.scrollTo(0, 0);
-      }, []);
+    }, []);
+    console.log(user);
     return (
         <main>
-             <Helmet>
-        <title>Home</title>
-      </Helmet>
+            <Helmet>
+                <title>Home</title>
+            </Helmet>
+            {user?.role === 'spotter' && <AdvertisesProperty />}
+            {!user && <SplashScreen />}
             <Banner
                 search={search}
                 setSearch={setSearch}
@@ -42,7 +50,6 @@ const Home = () => {
                 filterData={filterData}
             />
             <Places />
-            {/* <AdvertisesProperty /> */}
             <ReducedPrice mainData={mainData} filterData={filterData} />
             {/* <Steper /> */}
         </main>
