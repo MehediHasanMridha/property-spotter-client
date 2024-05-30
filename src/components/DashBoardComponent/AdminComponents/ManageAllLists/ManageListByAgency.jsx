@@ -83,10 +83,10 @@ const ManageListByAgency = () => {
                 return "badge-warning";
             case "available":
                 return "badge-success";
-            case "Sold, Spotter paid":
+            case "sold, spotter paid":
                 return "badge-success";
-            case "sold":
-                return "badge-success";
+            case "unsuccessful":
+                return "badge-error";
             default:
                 return "";
         }
@@ -224,10 +224,9 @@ const ManageListByAgency = () => {
                         </option>
                         <option value="hold">Hold</option>
                         <option value="available">Available</option>
-                        <option value="Sold, Spotter paid">
+                        <option value="sold, spotter paid">
                             Sold, Spotter paid
                         </option>
-                        <option value="sold">Sold</option>
                     </select>
                     <button
                         onClick={() => setFilterValue("")}
@@ -250,6 +249,8 @@ const ManageListByAgency = () => {
                                 <th>Owner Email</th>
                                 <th>House Phone</th>
                                 <th>Status</th>
+                                <th>City</th>
+                                <th>Province</th>
                                 <th>Agency Name</th>
                                 <th>Agent Name</th>
                                 <th>Action</th>
@@ -284,129 +285,278 @@ const ManageListByAgency = () => {
                                             </div>
                                         </td>
 
+                                        <td>{house.city}</td>
+                                        <td>{house.province}</td>
                                         <td>{house.agency[0]}</td>
                                         <td>{house.agent}</td>
                                         <td>
-                                            <button
-                                                className="btn btn-primary"
-                                                onClick={() =>
-                                                    document
-                                                        .getElementById(
-                                                            `my_modal_${house._id}`
-                                                        )
-                                                        .showModal()
-                                                }
-                                            >
-                                                Action
-                                            </button>
-                                            <dialog
-                                                id={`my_modal_${house._id}`}
-                                                className="modal"
-                                            >
-                                                <div className="modal-box w-fit">
-                                                    <ul className="p-2 menu z-[1] rounded-box">
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                Approved
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                Available
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                Sold
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                Hold
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                PENDING MANDATE
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                Pending
-                                                            </button>
-                                                        </li>
-                                                        <li>
-                                                            <button
-                                                                className="hover:bg-primary hover:text-white"
-                                                                onClick={(e) =>
-                                                                    houseUpdate(
-                                                                        e,
-                                                                        house
-                                                                    )
-                                                                }
-                                                            >
-                                                                PENDING CONTACT
-                                                                WITH CLIENT
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                    <div className="modal-action">
-                                                        <form method="dialog">
-                                                            <button className="btn btn-primary bg-red-500 border-red-500 hover:border-red-600 hover:bg-red-600">
-                                                                Close
-                                                            </button>
-                                                        </form>
-                                                    </div>
+                                            <div className="flex gap-2">
+                                                <div>
+                                                    <button
+                                                        className="btn btn-primary"
+                                                        onClick={() =>
+                                                            document
+                                                                .getElementById(
+                                                                    `my_modal_${house._id}`
+                                                                )
+                                                                .showModal()
+                                                        }
+                                                    >
+                                                        Action
+                                                    </button>
+                                                    <dialog
+                                                        id={`my_modal_${house._id}`}
+                                                        className="modal"
+                                                    >
+                                                        <div className="modal-box w-fit">
+                                                            <ul className="p-2 menu z-[1] rounded-box">
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Approved
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Available
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Unsuccessful
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Sold,
+                                                                        Spotter
+                                                                        paid
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Hold
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        PENDING
+                                                                        MANDATE
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Pending
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        PENDING
+                                                                        CONTACT
+                                                                        WITH
+                                                                        CLIENT
+                                                                    </button>
+                                                                </li>
+                                                            </ul>
+                                                            <div className="modal-action">
+                                                                <form method="dialog">
+                                                                    <button className="btn btn-primary bg-red-500 border-red-500 hover:border-red-600 hover:bg-red-600">
+                                                                        Close
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </dialog>
                                                 </div>
-                                            </dialog>
+                                                <div>
+                                                    <button
+                                                        className="btn btn-info"
+                                                        onClick={() =>
+                                                            handleDetailsClick(
+                                                                house
+                                                            )
+                                                        }
+                                                    >
+                                                        Details
+                                                    </button>
+                                                    <dialog
+                                                        id="my_modal_5"
+                                                        className="modal modal-bottom sm:modal-middle"
+                                                    >
+                                                        <div className="modal-box">
+                                                            <h3 className="font-bold text-3xl mb-3">
+                                                                House{" "}
+                                                                <span className="text-primary font-bold">
+                                                                    Details!
+                                                                </span>
+                                                            </h3>
+                                                            <div className="text-center text-xl">
+                                                                <h1>
+                                                                    <span className="font-semibold">
+                                                                        Bedroom:
+                                                                    </span>{" "}
+                                                                    <span className="text-primary font-bold text-2xl">
+                                                                        {
+                                                                            selectedHouse?.bedroom
+                                                                        }
+                                                                    </span>
+                                                                </h1>
+                                                                <h1>
+                                                                    <span className="font-semibold">
+                                                                        Bathroom:
+                                                                    </span>{" "}
+                                                                    <span className="text-primary font-bold text-2xl">
+                                                                        {
+                                                                            selectedHouse?.bathroom
+                                                                        }
+                                                                    </span>
+                                                                </h1>
+                                                                <h1>
+                                                                    <span className="font-semibold">
+                                                                        Sell
+                                                                        Time:
+                                                                    </span>{" "}
+                                                                    <span className="text-primary font-bold text-2xl">
+                                                                        {
+                                                                            selectedHouse?.sellTime
+                                                                        }
+                                                                    </span>
+                                                                </h1>
+                                                                <h1>
+                                                                    <span className="font-semibold">
+                                                                        Agency:
+                                                                    </span>
+                                                                    {selectedHouse?.agency.map(
+                                                                        (
+                                                                            agencyItem,
+                                                                            index
+                                                                        ) => (
+                                                                            <span
+                                                                                key={
+                                                                                    index
+                                                                                }
+                                                                                className="text-primary font-bold text-2xl ml-2"
+                                                                            >
+                                                                                {
+                                                                                    agencyItem
+                                                                                }
+
+                                                                                ,
+                                                                            </span>
+                                                                        )
+                                                                    )}
+                                                                </h1>
+                                                                <h1>
+                                                                    <span className="font-semibold">
+                                                                        Agent:
+                                                                    </span>{" "}
+                                                                    <span className="text-primary font-bold text-2xl">
+                                                                        {
+                                                                            selectedHouse?.agent
+                                                                        }
+                                                                    </span>
+                                                                </h1>
+                                                                <h1>
+                                                                    <span className="font-semibold">
+                                                                        Address:
+                                                                    </span>{" "}
+                                                                    <span className="text-primary font-bold text-2xl">
+                                                                        {
+                                                                            selectedHouse?.address
+                                                                        }
+                                                                    </span>
+                                                                </h1>
+                                                            </div>
+                                                            <div className="modal-action">
+                                                                <form method="dialog">
+                                                                    <button className="btn btn-error">
+                                                                        Close
+                                                                    </button>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </dialog>
+                                                </div>
+                                            </div>
                                         </td>
                                         <td>
                                             <button

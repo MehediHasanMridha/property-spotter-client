@@ -126,7 +126,7 @@ const ManageSpotters = () => {
         const email = e.target.spooterEmail.value;
         const data = {
             commissionAmount: e.target.amount.value,
-            status: "Sold, Spotter paid",
+            status: "sold, spotter paid",
         };
 
         await axios.post(`http://localhost:5000/house/update/${id}`, data);
@@ -402,7 +402,7 @@ const ManageSpotters = () => {
                                                                                 item?.sellTime
                                                                             }
                                                                         </td>
-                                                                        <td className="py-4 px-6 border-b">
+                                                                        <td className="py-4 px-6 capitalize border-b">
                                                                             {
                                                                                 item?.status
                                                                             }

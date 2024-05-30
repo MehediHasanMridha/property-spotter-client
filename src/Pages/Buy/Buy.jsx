@@ -12,8 +12,8 @@ const BuyPage = () => {
     const [searchParams] = useSearchParams();
     const city = searchParams.get("city");
 
-    const [search, setSearch] = useState(city || "");
-    const [locationValue, setLocationValue] = useState("");
+    const [search, setSearch] = useState("");
+    const [locationValue, setLocationValue] = useState(city || "");
     const [area, setArea] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);

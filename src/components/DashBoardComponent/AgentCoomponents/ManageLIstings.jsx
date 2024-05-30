@@ -52,8 +52,10 @@ const ManageListings = () => {
                 return "badge-warning";
             case "available":
                 return "badge-success";
-            case "sold":
+            case "sold, spotter paid":
                 return "badge-success";
+            case "unsuccessful":
+                return "badge-error";
             default:
                 return "";
         }
@@ -140,10 +142,9 @@ const ManageListings = () => {
                         </option>
                         <option value="hold">Hold</option>
                         <option value="available">Available</option>
-                        <option value="Sold, Spotter paid">
+                        <option value="sold, spotter paid">
                             Sold, Spotter paid
                         </option>
-                        <option value="sold">Sold</option>
                     </select>
                     <button
                         onClick={() => setFilterValue("")}
@@ -165,6 +166,8 @@ const ManageListings = () => {
                                 <th>Owner Email</th>
                                 <th>House Phone</th>
                                 <th>Status</th>
+                                <th>City</th>
+                                <th>Province</th>
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -190,6 +193,8 @@ const ManageListings = () => {
                                                 {house?.status}
                                             </div>
                                         </td>
+                                        <td>{house.city}</td>
+                                        <td>{house.province}</td>
                                         <td>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
                                             <div className="flex gap-2">
@@ -242,20 +247,35 @@ const ManageListings = () => {
                                                                 </button>
                                                             </li>
                                                             <li>
-                                                                <button
-                                                                    className="hover:bg-primary hover:text-white"
-                                                                    onClick={(
-                                                                        e
-                                                                    ) =>
-                                                                        houseUpdate(
-                                                                            e,
-                                                                            house
-                                                                        )
-                                                                    }
-                                                                >
-                                                                    Sold
-                                                                </button>
-                                                            </li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Unsuccessful
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Sold, Spotter paid
+                                                                    </button>
+                                                                </li>
                                                             <li>
                                                                 <button
                                                                     className="hover:bg-primary hover:text-white"

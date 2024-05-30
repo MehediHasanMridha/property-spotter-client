@@ -43,12 +43,16 @@ const PendingSpottedLIst = () => {
                 return "badge-warning";
             case "pending mandate":
                 return "badge-warning";
+            case "pending contact with client":
+                return "badge-warning";
             case "hold":
                 return "badge-warning";
             case "available":
                 return "badge-success";
-            case "sold":
+            case "sold, spotter paid":
                 return "badge-success";
+            case "unsuccessful":
+                return "badge-error";
             default:
                 return "";
         }
@@ -123,6 +127,8 @@ const PendingSpottedLIst = () => {
                                 <th>Owner Email</th>
                                 <th>House Phone</th>
                                 <th>Status</th>
+                                <th>City</th>
+                                <th>Province</th>
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -146,6 +152,8 @@ const PendingSpottedLIst = () => {
                                                 {house?.status}
                                             </div>
                                         </td>
+                                        <td>{house.city}</td>
+                                        <td>{house.province}</td>
                                         <td>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
                                             <div className="flex gap-2">
@@ -232,6 +240,26 @@ const PendingSpottedLIst = () => {
                                                                     </span>
                                                                 )
                                                             )}
+                                                        </h1>
+                                                        <h1>
+                                                            <span className="font-semibold">
+                                                                Agent:
+                                                            </span>{" "}
+                                                            <span className="text-primary font-bold text-2xl">
+                                                                {
+                                                                    selectedHouse?.agent
+                                                                }
+                                                            </span>
+                                                        </h1>
+                                                        <h1>
+                                                            <span className="font-semibold">
+                                                                Address:
+                                                            </span>{" "}
+                                                            <span className="text-primary font-bold text-2xl">
+                                                                {
+                                                                    selectedHouse?.address
+                                                                }
+                                                            </span>
                                                         </h1>
                                                     </div>
                                                     <div className="modal-action">

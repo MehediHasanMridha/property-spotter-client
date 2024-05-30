@@ -2,7 +2,7 @@ import { UploadOutlined } from "@ant-design/icons";
 import { Button, Form, Input, Upload, message } from "antd";
 import axios from "axios";
 import React, { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../Provider/AuthProvider";
 import bgImage from "../../assets/bg.jpg";
@@ -278,9 +278,18 @@ const SplashScreen = () => {
                                 </Button>
                             </Form.Item>
                         </Form>
-                        <p className="text-center pt-8 text-red-700 font-semibold">
+                        <p className="text-center text-red-700 font-semibold">
                             {error}
                         </p>
+                        <div className="flex flex-wrap justify-center items-center gap-2">
+                            <h3>Already Have an Account ?</h3>{" "}
+                            <Link
+                                className="text-primary font-bold"
+                                to="/loginSignup"
+                            >
+                                Login
+                            </Link>
+                        </div>
                     </>
                 </div>
             </div>

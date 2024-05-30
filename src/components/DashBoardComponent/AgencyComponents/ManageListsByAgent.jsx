@@ -79,6 +79,7 @@ const ManageListsByAgent = () => {
         formData.append("email", e.target.email.value);
         formData.append("password", e.target.password.value);
         formData.append("role", "agent");
+        formData.append("verification", true);
         formData.append("images", showName);
         formData.append("agencyName", user?.name);
         
