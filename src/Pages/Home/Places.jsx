@@ -41,7 +41,7 @@ const Places = () => {
                 subheading={"Exploring Provinces and Cities near by you"}
             />
             <Container>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                <div className="flex flex-wrap gap-3">
                     {currentAgency.map((item) => (
                         <PlacesCard key={item.id} item={item} />
                     ))}

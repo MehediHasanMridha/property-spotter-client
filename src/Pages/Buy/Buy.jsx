@@ -3,17 +3,22 @@ import { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { CiLocationOn } from "react-icons/ci";
 import { IoSearch } from "react-icons/io5";
+import { useSearchParams } from "react-router-dom";
 import Container from "../../components/Container/Container";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import PropertyCard from "../../components/cards/PropertyCard/PropertyCard";
 
 const BuyPage = () => {
-    const [search, setSearch] = useState("");
+    const [searchParams] = useSearchParams();
+    const city = searchParams.get("city");
+
+    const [search, setSearch] = useState(city || "");
     const [locationValue, setLocationValue] = useState("");
     const [area, setArea] = useState([]);
     const [provinces, setProvinces] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [HousePerPage] = useState(12);
+
     useEffect(() => {
         fetchArea();
         fetchProvinces();
@@ -41,10 +46,11 @@ const BuyPage = () => {
             (search === "" && locationValue === "")
         );
     };
-    const handleClearFilter = () =>{
-        setSearch('')
-        setLocationValue('')
-    }
+
+    const handleClearFilter = () => {
+        setSearch("");
+        setLocationValue("");
+    };
     // Logic for pagination
     const indexOfLastFlat = currentPage * HousePerPage;
     const indexOfFirstFlat = indexOfLastFlat - HousePerPage;
@@ -82,6 +88,7 @@ const BuyPage = () => {
                                 type="search"
                                 name="search"
                                 id="search"
+                                defaultValue={search}
                                 onChange={(e) => setSearch(e.target.value)}
                                 placeholder="Search Here ..."
                             />
@@ -122,11 +129,26 @@ const BuyPage = () => {
                                     }
                                     className="select bg-primary/10 select-bordered w-full"
                                 >
-                                    <option value="" disabled>Select a city</option>
+                                    <option value="" disabled>
+                                        Select a city
+                                    </option>
                                     {provinces.map((province, idx) => (
-                                        <option key={idx} value={province.city}>
-                                            {province.city}
-                                        </option>
+                                        <optgroup
+                                            className="text-gray-700 font-medium"
+                                            key={idx}
+                                            label={province.provinces}
+                                        >
+                                            {province.cities.map(
+                                                (city, cityIdx) => (
+                                                    <option
+                                                        key={cityIdx}
+                                                        value={city}
+                                                    >
+                                                        {city}
+                                                    </option>
+                                                )
+                                            )}
+                                        </optgroup>
                                     ))}
                                 </select>
                             </label>
@@ -135,18 +157,25 @@ const BuyPage = () => {
                             <button className="bg-primary px-5 py-3.5 text-center text-sm inline-block text-white cursor-pointer transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95 w-full">
                                 Filter
                             </button>
-                            <button onClick={handleClearFilter} className="bg-primary px-5 py-3.5 text-center text-sm inline-block text-white cursor-pointer transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95 w-full">
+                            <button
+                                onClick={handleClearFilter}
+                                className="bg-primary px-5 py-3.5 text-center text-sm inline-block text-white cursor-pointer transition duration-200 ease-in-out rounded-md hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 active:scale-95 w-full"
+                            >
                                 Clear
                             </button>
                         </div>
                     </div>
                     <div className="px-6 py-5 md:w-3/4">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-10">
-                            {currentAgency
-                                ?.filter(filterData)
-                                .map((item, idx) => (
-                                    <PropertyCard key={idx} item={item} />
-                                ))}
+                            {currentAgency.length > 0 ? (
+                                currentAgency
+                                    ?.filter(filterData)
+                                    .map((item, idx) => (
+                                        <PropertyCard key={idx} item={item} />
+                                    ))
+                            ) : (
+                                <h3> No Data Available</h3>
+                            )}
                         </div>
                     </div>
                 </div>
