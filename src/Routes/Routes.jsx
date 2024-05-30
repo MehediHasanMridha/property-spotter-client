@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom";
 import Dashboard from "../Layout/Dashboard/Dashboard";
 import Main from "../Layout/Main";
 import Chat from "../MessageComponents/Chat";
+import AboutUs from "../Pages/AboutUs";
 import BuyPage from "../Pages/Buy/Buy";
 import CommercialPage from "../Pages/Commercial/Commercial";
 import Home from "../Pages/Home/Home";
@@ -32,7 +33,6 @@ import ResetPassword from "../components/ForgotPassword/ResetPassword/ResetPassw
 import Profiles from "../components/Profiles/Profiles";
 import SoopReg from "../components/SpooterRegistra/SoopReg";
 import PrivateRouter from "./PrivateRouter";
-import AboutUs from "../Pages/AboutUs";
 // import Chat from "../MessageComponents/Chat";
 
 export const router = createBrowserRouter([

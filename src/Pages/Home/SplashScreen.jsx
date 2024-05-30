@@ -189,13 +189,13 @@ const SplashScreen = () => {
     };
     return (
         <div
-            className="flex justify-center bg-center items-center h-[530px]"
+            className="flex justify-center bg-center items-center h-screen"
             style={{
                 backgroundImage: `url(${bgImage})`,
                 backgroundRepeat: "repeat",
             }}
         >
-            <div className="bg-primary">
+            <div className="">
                 <div className="lg:w-[600px] mx-auto shadow-xl rounded-xl bg-white px-16 py-10">
                     <>
                         <Form
