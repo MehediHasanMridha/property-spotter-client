@@ -103,6 +103,8 @@ const Steper = () => {
                 "address",
                 `${street} ${suburb} ${city} ${selectedProvinces}`
             );
+            formData.append("city", city);
+            formData.append("province", selectedProvinces);
             formData.append("description", description);
             formData.append("image", image);
             formData.append("propertyType", property);
@@ -157,6 +159,20 @@ const Steper = () => {
                 )
             );
     }, []);
+
+    const handleChange = (e) => {
+        const selectedCity = e.target.value;
+        setCity(selectedCity);
+
+        // Find the corresponding province
+        const selectedProvince = provinces.find((province) =>
+            province.cities.includes(selectedCity)
+        );
+
+        if (selectedProvince) {
+            setSelectedProvinces(selectedProvince.provinces);
+        }
+    };
 
     return (
         <div className="max-w-3xl mx-auto rounded-lg">
@@ -432,48 +448,37 @@ const Steper = () => {
                                 </label>
                             </div>
                             <div>
-                                <label className="form-control w-[400px]">
-                                    <div className="label">
-                                        <span className="label-text">City</span>
-                                    </div>
-                                    <input
-                                        type="text"
-                                        required
-                                        className="input input-bordered"
-                                        placeholder="Enter City"
-                                        value={city}
-                                        onChange={(e) =>
-                                            setCity(e.target.value)
-                                        }
-                                    />
-                                </label>
-                            </div>
-                            <div>
                                 <label className="form-control">
                                     <div className="label">
                                         <span className="label-text">
-                                            Select Provinces
+                                            Select Provinces & city
                                         </span>
                                     </div>
                                     <select
                                         name="selectProvinces"
                                         id="selectProvinces"
                                         defaultValue={selectedProvinces}
-                                        onChange={(e) =>
-                                            setSelectedProvinces(e.target.value)
-                                        }
+                                        onChange={handleChange}
                                         className="select select-bordered w-full"
                                     >
                                         <option value="" disabled>
-                                            Select a city
+                                            Select a Provinces & city
                                         </option>
                                         {provinces.map((province, idx) => (
-                                            <option
-                                                key={idx}
-                                                value={province.city}
+                                            <optgroup
+                                                label={province.provinces}
                                             >
-                                                {province.city}
-                                            </option>
+                                                {province.cities.map(
+                                                    (city, idx) => (
+                                                        <option
+                                                            key={idx}
+                                                            value={city}
+                                                        >
+                                                            {city}
+                                                        </option>
+                                                    )
+                                                )}
+                                            </optgroup>
                                         ))}
                                     </select>
                                 </label>

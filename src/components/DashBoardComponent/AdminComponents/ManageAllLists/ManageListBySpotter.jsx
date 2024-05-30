@@ -77,10 +77,10 @@ const ManageListBySpotter = () => {
                 return "badge-warning";
             case "available":
                 return "badge-success";
-            case "Sold, Spotter paid":
+            case "sold, spotter paid":
                 return "badge-success";
-            case "sold":
-                return "badge-success";
+            case "unsuccessful":
+                return "badge-error";
             default:
                 return "";
         }
@@ -192,7 +192,7 @@ const ManageListBySpotter = () => {
                         </option>
                         <option value="hold">Hold</option>
                         <option value="available">Available</option>
-                        <option value="Sold, Spotter paid">
+                        <option value="sold, spotter paid">
                             Sold, Spotter paid
                         </option>
                         <option value="sold">Sold</option>
@@ -219,6 +219,8 @@ const ManageListBySpotter = () => {
                                 <th>Owner Email</th>
                                 <th>House Phone</th>
                                 <th>Status</th>
+                                <th>City</th>
+                                <th>Province</th>
                                 <th>Details</th>
                             </tr>
                         </thead>
@@ -246,6 +248,8 @@ const ManageListBySpotter = () => {
                                                 {house?.status}
                                             </div>
                                         </td>
+                                        <td>{house.city}</td>
+                                        <td>{house.province}</td>
                                         <td>
                                             {/* Open the modal using document.getElementById('ID').showModal() method */}
                                             <div className="flex gap-2">
@@ -309,7 +313,23 @@ const ManageListBySpotter = () => {
                                                                         )
                                                                     }
                                                                 >
-                                                                    Sold
+                                                                    Unsuccessful
+                                                                </button>
+                                                            </li>
+                                                            <li>
+                                                                <button
+                                                                    className="hover:bg-primary hover:text-white"
+                                                                    onClick={(
+                                                                        e
+                                                                    ) =>
+                                                                        houseUpdate(
+                                                                            e,
+                                                                            house
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    Sold,
+                                                                    Spotter paid
                                                                 </button>
                                                             </li>
                                                             <li>
@@ -460,6 +480,26 @@ const ManageListBySpotter = () => {
                                                                     </span>
                                                                 )
                                                             )}
+                                                        </h1>
+                                                        <h1>
+                                                            <span className="font-semibold">
+                                                                Agent:
+                                                            </span>{" "}
+                                                            <span className="text-primary font-bold text-2xl">
+                                                                {
+                                                                    selectedHouse?.agent
+                                                                }
+                                                            </span>
+                                                        </h1>
+                                                        <h1>
+                                                            <span className="font-semibold">
+                                                                Address:
+                                                            </span>{" "}
+                                                            <span className="text-primary font-bold text-2xl">
+                                                                {
+                                                                    selectedHouse?.address
+                                                                }
+                                                            </span>
                                                         </h1>
                                                     </div>
                                                     <div className="modal-action">

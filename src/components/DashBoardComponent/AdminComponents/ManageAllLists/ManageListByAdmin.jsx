@@ -14,7 +14,7 @@ const ManageListByAdmin = () => {
     const [allAgency, setAllAgency] = useState([]);
     const [selectedAgency, setSelectedAgency] = useState(false);
     const [allAgent, setAllAgent] = useState([]);
-    const [filterValue, setFilterValue] = useState('');
+    const [filterValue, setFilterValue] = useState("");
 
     const fetchAgency = async () => {
         try {
@@ -53,7 +53,7 @@ const ManageListByAdmin = () => {
     };
 
     const handleDetailsClick = (house) => {
-        document.getElementById("my_modal_4").showModal();
+        document.getElementById("my_modal_5").showModal();
         setSelectedHouse(house);
     };
 
@@ -75,10 +75,10 @@ const ManageListByAdmin = () => {
                 return "badge-warning";
             case "available":
                 return "badge-success";
-            case "Sold, Spotter paid":
+            case "sold, spotter paid":
                 return "badge-success";
-            case "sold":
-                return "badge-success";
+            case "unsuccessful":
+                return "badge-error";
             default:
                 return "";
         }
@@ -192,10 +192,9 @@ const ManageListByAdmin = () => {
                             </option>
                             <option value="hold">Hold</option>
                             <option value="available">Available</option>
-                            <option value="Sold, Spotter paid">
+                            <option value="sold, spotter paid">
                                 Sold, Spotter paid
                             </option>
-                            <option value="sold">Sold</option>
                         </select>
                         <button
                             onClick={() => setFilterValue("")}
@@ -219,13 +218,17 @@ const ManageListByAdmin = () => {
                                     <th>Owner Email</th>
                                     <th>House Phone</th>
                                     <th>Status</th>
+                                    <th>City</th>
+                                    <th>Province</th>
                                     <th>Details</th>
                                 </tr>
                             </thead>
                             <tbody className="text-center">
                                 {currentJobs
-                                    .filter(
-                                        (house) => filterValue ? house.status === filterValue : house
+                                    .filter((house) =>
+                                        filterValue
+                                            ? house.status === filterValue
+                                            : house
                                     )
                                     .map((house, index) => (
                                         <tr key={house?._id}>
@@ -244,6 +247,8 @@ const ManageListByAdmin = () => {
                                                     {house?.status}
                                                 </div>
                                             </td>
+                                            <td>{house.city}</td>
+                                            <td>{house.province}</td>
                                             <td>
                                                 {/* Open the modal using document.getElementById('ID').showModal() method */}
                                                 <div className="flex gap-2">
@@ -307,7 +312,24 @@ const ManageListByAdmin = () => {
                                                                             )
                                                                         }
                                                                     >
-                                                                        Sold
+                                                                        Unsuccessful
+                                                                    </button>
+                                                                </li>
+                                                                <li>
+                                                                    <button
+                                                                        className="hover:bg-primary hover:text-white"
+                                                                        onClick={(
+                                                                            e
+                                                                        ) =>
+                                                                            houseUpdate(
+                                                                                e,
+                                                                                house
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        Sold,
+                                                                        Spotter
+                                                                        paid
                                                                     </button>
                                                                 </li>
                                                                 <li>
@@ -615,6 +637,16 @@ const ManageListByAdmin = () => {
                                                                         </span>
                                                                     )
                                                                 )}
+                                                            </h1>
+                                                            <h1>
+                                                                <span className="font-semibold">
+                                                                    Address:
+                                                                </span>{" "}
+                                                                <span className="text-primary font-bold text-2xl">
+                                                                    {
+                                                                        selectedHouse?.address
+                                                                    }
+                                                                </span>
                                                             </h1>
                                                         </div>
                                                         <div className="modal-action">
