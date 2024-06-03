@@ -49,7 +49,7 @@ const Places = () => {
             </Container>
 
              {/* for pagination */}
-          <div className=" flex flex-wrap justify-center mb-10 mt-10">
+          {/* <div className=" flex flex-wrap justify-center mb-10 mt-10">
             <button
               className="join-agencys btn btn-outline btn-primary mr-2"
               onClick={() => paginate(currentPage - 1)}
@@ -83,7 +83,7 @@ const Places = () => {
             >
               <span className="text-white">Next&rarr;</span>
             </button>
-          </div>
+          </div> */}
         </section>
       </>
     );
