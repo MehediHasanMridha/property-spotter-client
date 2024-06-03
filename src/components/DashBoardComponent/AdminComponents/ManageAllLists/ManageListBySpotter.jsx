@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { toast } from "react-toastify";
 import { AuthContext } from "../../../../Provider/AuthProvider";
@@ -15,7 +15,9 @@ const ManageListBySpotter = () => {
     const [allAgency, setAllAgency] = useState([]);
     const [selectedAgency, setSelectedAgency] = useState(false);
     const [allAgent, setAllAgent] = useState([]);
+    const [searchName, setSearchName] = useState("");
     const [filterValue, setFilterValue] = useState("");
+    const searchRef = useRef(null);
 
     const fetchAgency = async () => {
         try {
@@ -173,12 +175,34 @@ const ManageListBySpotter = () => {
                     </h4>
                 </div>
             </div>
-            <div className="flex justify-end">
+            <div className="flex justify-between">
+                <div className="flex items-center justify-center gap-2 py-2">
+                    <input
+                        type="search"
+                        name="searchName"
+                        id="searchName"
+                        ref={searchRef}
+                        placeholder="Search By Spotter Name"
+                        onChange={(e) => setSearchName(e.target.value)}
+                        className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1"
+                    />
+                    <button
+                        onClick={() => {
+                            setSearchName("");
+                            if (searchRef.current) {
+                                searchRef.current.value = "";
+                            }
+                        }}
+                        className="btn-sm btn-primary text-white rounded-md active:scale-95"
+                    >
+                        Clear
+                    </button>
+                </div>
                 <div className="flex items-center justify-center gap-2 py-2">
                     <h3>Filter By: </h3>
                     <select
                         onChange={(e) => setFilterValue(e.target.value)}
-                        className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1.5"
+                        className="bg-blue-50 rounded-md border border-blue-200 outline-none px-2 py-1"
                         name=""
                         id=""
                     >
@@ -226,11 +250,20 @@ const ManageListBySpotter = () => {
                         </thead>
                         <tbody className="text-center">
                             {currentJobs
-                                .filter((house) =>
-                                    filterValue
-                                        ? house.status === filterValue
-                                        : house
-                                )
+                                .filter((house) => {
+                                    if (filterValue) {
+                                        return house.status === filterValue;
+                                    }
+
+                                    if (searchName) {
+                                        console.log(house.spooterName.toLowerCase(), searchName.toLowerCase());
+                                        return (
+                                            house.spooterName.toLowerCase().includes(searchName.toLowerCase())
+                                            
+                                        );
+                                    }
+                                    return true;
+                                })
                                 .map((house, index) => (
                                     <tr key={house?._id}>
                                         <td>{house?.random_id}</td>
