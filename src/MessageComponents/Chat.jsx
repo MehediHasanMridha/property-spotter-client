@@ -96,6 +96,38 @@ const Chat = () => {
                                 user?.role === 'admin' &&
                                 <>
                                     <div>
+                                        <h1 className='text-2xl font-bold text-white'>Agents Here</h1>
+                                        {
+                                            agents && agents.map((chat, idx) =>
+                                                <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
+                                                    <img src={chat?.photoURL ? chat?.photoURL : "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"} alt="" className='w-12 h-12 rounded-full' />
+                                                    <div>
+                                                        <div className='flex justify-between w-full items-center gap-2'>
+                                                            <h1 className='text-base font-bold capitalize text-white'>{chat.name}</h1>
+                                                            <h1 className='text-[10px] capitalize text-white'>-({chat.agencyName})</h1>
+                                                        </div>
+                                                        {onlineUsers.some(user => user.userId === chat._id) ? (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-green-700 mr-2"></span>
+                                                                <p className="text-sm text-green-700">Online</p>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="flex items-center">
+                                                                <span className="absolute bottom-4 left-12 w-2 h-2 rounded-full bg-red-500 mr-2"></span>
+                                                                <p className="text-sm text-red-500">Offline</p>
+                                                            </div>
+                                                        )}
+                                                    </div>
+                                                </li>
+                                            )
+                                        }
+                                    </div>
+                                </>
+                            }
+                            {
+                                user?.role === 'spotter' &&
+                                <>
+                                    <div>
                                         <h1 className='text-2xl font-bold text-white'>Agency Here</h1>
                                         {
                                             agency && agency.map((chat, idx) =>
@@ -209,7 +241,7 @@ const Chat = () => {
                             {
                                 <>
                                     <div>
-                                        <h1 className='text-2xl font-bold text-white'>Your Spotters Here</h1>
+                                        <h1 className='text-2xl font-bold text-white'>Spotters Here</h1>
                                         {
                                             spotters && spotters.map((chat, idx) =>
                                                 <li onClick={() => setReciever(chat)} key={idx} className='p-2 relative my-2 cursor-pointer hover:shadow-lg text-xl font-medium flex justify-start items-center gap-2 border border-black rounded-lg'>
