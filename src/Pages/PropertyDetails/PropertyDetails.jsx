@@ -110,7 +110,7 @@ const PropertyDetails = () => {
                                         </span>
                                     ) : (
                                         <span className=" font-bold">
-                                            Bed Room: {propertyData?.bedroom}
+                                            Bedroom: {propertyData?.bedroom}
                                         </span>
                                     )}
                                 </h4>
