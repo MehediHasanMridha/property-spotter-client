@@ -286,7 +286,7 @@ const SignUp = () => {
       </div>
       <div className="text-center">
         <small>
-          By continuing I understand and agree with Property24’s{" "}
+          By continuing I understand and agree with{" "}
           <Link to="/forgot-password" className="link link-info">
             Terms & Conditions
           </Link>{" "}
