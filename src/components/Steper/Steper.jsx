@@ -9,11 +9,9 @@ import { AuthContext } from "../../Provider/AuthProvider";
 const Steper = () => {
     const [activeStep, setActiveStep] = useState(1);
     const [description, setDescription] = useState("");
-    const [selectedOptionSelector, setSelectedOptionSelector] = useState("");
     const [access, setAccess] = useState(false);
     const [agencyList, setAgencyList] = useState([]);
     const [selectedAgencies, setSelectedAgencies] = useState("");
-    const [title, setTitle] = useState("");
     const [name, setName] = useState(null);
     const [property, setProperty] = useState("");
     const [bedroom, setBedroom] = useState("");
@@ -99,10 +97,8 @@ const Steper = () => {
             formData.append("spooterEmail", user?.email);
             formData.append("status", "new");
 
-            formData.append(
-                "address",
-                `${street} ${suburb} ${city} ${selectedProvinces}`
-            );
+            formData.append("address", street);
+            formData.append("suburb", suburb);
             formData.append("city", city);
             formData.append("province", selectedProvinces);
             formData.append("description", description);

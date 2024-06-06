@@ -81,9 +81,15 @@ const PropertyCard = ({ item }) => {
                     </h3>
                 )} */}
                 <h2 className="font-medium bg-gradient-to-r from-black to-slate-800 bg-clip-text text-transparent py-3 ">
-                    {` Bedroom ${item.bedroom} and Bathroom ${item.bathroom}  ${
-                        item.propertyType
-                    } in ${item.address.split(" ").pop()}`}
+                    {` ${
+                        item.propertyType === "commercial property"
+                            ? item.room
+                            : item.bedroom
+                    } ${
+                        item.propertyType === "commercial property"
+                            ? 'Room'
+                            : 'Bedroom'
+                    }  and ${item.bathroom} Bathroom in ${item.suburb} ${item.city}  ${item.province}`}
                 </h2>
                 <ul className="flex-grow flex justify-between items-center text-gray-700 py-5">
                     <li className="space-x-2">
