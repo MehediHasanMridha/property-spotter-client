@@ -57,7 +57,7 @@ const PropertyDetails = () => {
                                         </svg>
                                     </span>
                                     <span className=" hover:text-primary uppercase text-xs md:text-base">
-                                        {propertyData.address.split(' ').pop()}
+                                        {`${propertyData.suburb} ${propertyData.city}  ${propertyData.province}`}
                                     </span>
                                 </p>
                             )}
