@@ -212,8 +212,8 @@ const ManageListByAdmin = () => {
                             <thead>
                                 <tr className="font-semibold text-base text-center">
                                     <th>Random Id</th>
-                                    <th>Spooter Name</th>
-                                    <th>Spooter Email</th>
+                                    <th>Spotter Name</th>
+                                    <th>Spotter Email</th>
                                     <th>Owner Name</th>
                                     <th>Owner Email</th>
                                     <th>House Phone</th>
