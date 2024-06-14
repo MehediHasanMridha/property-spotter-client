@@ -23,7 +23,7 @@ const Steper = () => {
     const [spooEmail, setSpooEmail] = useState("");
     const [spooPhone, setSpooPhone] = useState("");
     const [selectedAgency, setSelectedAgency] = useState(null);
-    const [selectedAgent, setSelectedAgent] = useState();
+    const [selectedAgent, setSelectedAgent] = useState({});
     const { user } = useContext(AuthContext);
     const [allAgent, setAllAgent] = useState([]);
     const [allAgency, setAllAgency] = useState([]);
@@ -33,6 +33,10 @@ const Steper = () => {
     const [provinces, setProvinces] = useState([]);
     const [selectedProvinces, setSelectedProvinces] = useState("");
     const [addParking, setAddParking] = useState(false);
+
+
+    console.log(selectedAgent, 'selected agent');
+    console.log(allAgent);
 
     const navigate = useNavigate();
 
@@ -118,7 +122,8 @@ const Steper = () => {
             formData.append("houseOwnerPhone", spooPhone);
             if (selectedAgency === "Yes") {
                 formData.append("agency", [selectedAgencies]);
-                formData.append("agent", selectedAgent);
+                formData.append("agentName", selectedAgent?.name);
+                formData.append("agentEmail", selectedAgent?.email);
             } else {
                 formData.append("agency", ["admin"]);
             }
@@ -179,16 +184,15 @@ const Steper = () => {
                     <ol className="grid grid-cols-4 text-sm font-medium text-gray-500">
                         <li className="relative flex justify-start text-blue-600">
                             <span
-                                className={`absolute -bottom-[1.75rem] start-0 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
-                                    activeStep === 1
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-white"
-                                }`}
+                                className={`absolute -bottom-[1.75rem] start-0 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${activeStep === 1
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-white"
+                                    }`}
                             >
                                 {activeStep === 2 ||
-                                activeStep === 3 ||
-                                activeStep === 4 ||
-                                activeStep === 5 ? (
+                                    activeStep === 3 ||
+                                    activeStep === 4 ||
+                                    activeStep === 5 ? (
                                     <IoIosCheckmarkCircle className="h-6 w-6 text-[#5D656A]" />
                                 ) : (
                                     <h1>1</h1>
@@ -198,15 +202,14 @@ const Steper = () => {
 
                         <li className="relative flex justify-center text-blue-600">
                             <span
-                                className={`absolute -bottom-[1.75rem] -ml-10  border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
-                                    activeStep === 2
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-white"
-                                }`}
+                                className={`absolute -bottom-[1.75rem] -ml-10  border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${activeStep === 2
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-white"
+                                    }`}
                             >
                                 {activeStep === 3 ||
-                                activeStep === 4 ||
-                                activeStep === 5 ? (
+                                    activeStep === 4 ||
+                                    activeStep === 5 ? (
                                     <IoIosCheckmarkCircle className="h-6 w-6 text-[#5D656A]" />
                                 ) : (
                                     <h1>2</h1>
@@ -216,11 +219,10 @@ const Steper = () => {
 
                         <li className="relative flex justify-center text-blue-600">
                             <span
-                                className={`absolute -bottom-[1.75rem] ml-16 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
-                                    activeStep === 3
-                                        ? "bg-blue-500  text-white"
-                                        : "bg-white"
-                                }`}
+                                className={`absolute -bottom-[1.75rem] ml-16 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${activeStep === 3
+                                    ? "bg-blue-500  text-white"
+                                    : "bg-white"
+                                    }`}
                             >
                                 {activeStep === 4 || activeStep === 5 ? (
                                     <IoIosCheckmarkCircle className="h-6 w-6 text-[#5D656A]" />
@@ -232,11 +234,10 @@ const Steper = () => {
 
                         <li className="relative flex justify-center text-blue-600">
                             <span
-                                className={`absolute -bottom-[1.75rem] end-0 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${
-                                    activeStep === 4
-                                        ? "bg-blue-500 text-white"
-                                        : "bg-white"
-                                }`}
+                                className={`absolute -bottom-[1.75rem] end-0 border border-gray-400 w-8 h-8 flex justify-center items-center rounded-full text-black ${activeStep === 4
+                                    ? "bg-blue-500 text-white"
+                                    : "bg-white"
+                                    }`}
                             >
                                 {activeStep === 5 ? (
                                     <IoIosCheckmarkCircle className="h-6 w-6 text-white" />
@@ -274,9 +275,8 @@ const Steper = () => {
                                         className="flex cursor-pointer w-full justify-center items-center gap-2 bg-[#AEB2B4] px-10"
                                     >
                                         <button
-                                            className={`text-white py-2 rounded ${
-                                                name ? "enabled" : "disabled"
-                                            }`}
+                                            className={`text-white py-2 rounded ${name ? "enabled" : "disabled"
+                                                }`}
                                         >
                                             Next{" "}
                                         </button>
@@ -590,41 +590,37 @@ const Steper = () => {
                                 </p>
                                 <button
                                     onClick={() => setSellTime("now")}
-                                    className={`border w-full py-2 border-black hover:border-primary ${
-                                        sellTime === "now"
-                                            ? "bg-primary text-white"
-                                            : ""
-                                    }`}
+                                    className={`border w-full py-2 border-black hover:border-primary ${sellTime === "now"
+                                        ? "bg-primary text-white"
+                                        : ""
+                                        }`}
                                 >
                                     <h1>Now</h1>
                                 </button>
                                 <button
                                     onClick={() => setSellTime("1-3 month")}
-                                    className={`border w-full py-2 border-black hover:border-primary ${
-                                        sellTime === "1-3 month"
-                                            ? "bg-primary text-white"
-                                            : ""
-                                    }`}
+                                    className={`border w-full py-2 border-black hover:border-primary ${sellTime === "1-3 month"
+                                        ? "bg-primary text-white"
+                                        : ""
+                                        }`}
                                 >
                                     <h1>1-3 months</h1>
                                 </button>
                                 <button
                                     onClick={() => setSellTime("4-6 month")}
-                                    className={`border w-full py-2 border-black hover:border-primary ${
-                                        sellTime === "4-6 month"
-                                            ? "bg-primary text-white"
-                                            : ""
-                                    }`}
+                                    className={`border w-full py-2 border-black hover:border-primary ${sellTime === "4-6 month"
+                                        ? "bg-primary text-white"
+                                        : ""
+                                        }`}
                                 >
                                     <h1>4-6 months</h1>
                                 </button>
                                 <button
                                     onClick={() => setSellTime("not for sell")}
-                                    className={`border w-full py-2 border-black hover:border-primary ${
-                                        sellTime === "not for sell"
-                                            ? "bg-primary text-white"
-                                            : ""
-                                    }`}
+                                    className={`border w-full py-2 border-black hover:border-primary ${sellTime === "not for sell"
+                                        ? "bg-primary text-white"
+                                        : ""
+                                        }`}
                                 >
                                     <h1>I'm not looking to sell</h1>
                                 </button>
@@ -757,7 +753,7 @@ const Steper = () => {
                                         <label className="block text-sm z-50 font-medium absolute -top-2 px-2 bg-white left-3 text-gray-700 rounded-xl">
                                             Select Agent
                                         </label>
-                                        <select
+                                        {/* <select
                                             className="select select-bordered w-full"
                                             defaultValue={""}
                                             onChange={(e) =>
@@ -770,8 +766,31 @@ const Steper = () => {
                                             {allAgent.map((agent, idx) => (
                                                 <option
                                                     key={idx}
-                                                    value={agent.name}
+                                                    value={
+                                                        {
+                                                            name: agent.name,
+                                                            email: agent.email
+                                                        }
+                                                    }
                                                 >
+                                                    {agent.name}
+                                                </option>
+                                            ))}
+                                        </select> */}
+                                        <select
+                                            className="select select-bordered w-full"
+                                            defaultValue=""
+                                            onChange={(e) => {
+                                                const selectedEmail = e.target.value;
+                                                const selectedAgent = allAgent.find(agent => agent.email === selectedEmail);
+                                                setSelectedAgent(selectedAgent);
+                                            }}
+                                        >
+                                            <option value="" disabled>
+                                                Select an agent
+                                            </option>
+                                            {allAgent.map((agent, idx) => (
+                                                <option key={idx} value={agent.email}>
                                                     {agent.name}
                                                 </option>
                                             ))}

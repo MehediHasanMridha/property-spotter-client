@@ -98,6 +98,8 @@ const ManageListBySpotter = () => {
 
     const houseUpdate = async (e, house) => {
         try {
+
+            console.log('hit this route bro', house);
             const value = e.target.innerText.toLowerCase();
             await fetch(
                 `http://localhost:5000/house/updateHouseDataByAgent/${house._id}`,
@@ -108,9 +110,13 @@ const ManageListBySpotter = () => {
                     },
                     body: JSON.stringify({
                         status: value,
-                        agencyName: house.agency[0],
-                        // agencyEmail: user.email,
-                        // agencyImage: user.photoURL,
+                        agencyName: house?.agency[0],
+                        agentEmail: house?.agentEmail,
+                        agentName: house?.agentName,
+                        spotterName: house?.spooterName,
+                        spotterEmail: house?.spooterEmail,
+                        random_id: house?.random_id,
+                        oldStatus: house?.status,
                     }),
                 }
             );
@@ -259,7 +265,7 @@ const ManageListBySpotter = () => {
                                         console.log(house.spooterName.toLowerCase(), searchName.toLowerCase());
                                         return (
                                             house.spooterName.toLowerCase().includes(searchName.toLowerCase())
-                                            
+
                                         );
                                     }
                                     return true;
@@ -711,11 +717,10 @@ const ManageListBySpotter = () => {
                             <button
                                 key={i}
                                 onClick={() => paginate(i + 1)}
-                                className={`join-item btn btn-outline btn-primary  text-white mr-2 ${
-                                    currentPage === i + 1
-                                        ? "bg-primary border-2 border-black text-white"
-                                        : ""
-                                }`}
+                                className={`join-item btn btn-outline btn-primary  text-white mr-2 ${currentPage === i + 1
+                                    ? "bg-primary border-2 border-black text-white"
+                                    : ""
+                                    }`}
                             >
                                 <span className="text-white">{i + 1}</span>
                             </button>
